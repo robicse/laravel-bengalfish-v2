@@ -1,0 +1,23 @@
+product-page-one .tab-content .tab-pane .tabs-pera {
+  padding: 10px;
+  border: 1px solid #d1d8df;
+  background-color: #fff;
+}
+.glyphicon { margin-right:5px;}
+.rating .glyphicon {font-size: 22px;}
+.rating-num { margin-top:0px;font-size: 54px; }
+.progress { margin-bottom: 5px; width: 240px;}
+.progress-bar { text-align: left; }
+.rating-desc .col-md-3 {padding-right: 0px;}
+.sr-only { margin-left: 5px;overflow: visible;clip: auto; }
+.product-page-one .tab-content .tab-pane .tabs-pera p {
+  margin-bottom: 19.8px;
+      margin-top: 15px;
+}
+.review-single{
+
+      padding: 10px;
+}
+ .even{
+  background-color: #f4f4f4;
+}
