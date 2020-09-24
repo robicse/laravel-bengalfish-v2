@@ -52,11 +52,13 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	$OrderTotal=$order_price+$shipping_cost;
 	
 	$testql=mysqli_query($conn, "select  orders_status_id from orders_status_history where orders_id='$orders_id'  order by date_added DESC") ;
+	
 	$fe=mysqli_fetch_array($testql);
 	$orders_status_id=$fe["orders_status_id"];
 	
 	$testql=mysqli_query($conn, "select  orders_status_name from orders_status_description where orders_status_id='$orders_status_id'") ;
 	$fe=mysqli_fetch_array($testql);
+	
 	$orders_status_name=$fe["orders_status_name"];
 	
 	

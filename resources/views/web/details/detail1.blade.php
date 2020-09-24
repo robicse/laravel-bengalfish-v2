@@ -517,7 +517,7 @@
                   </h2>
                   <hr style="margin-bottom: 0;">
                 </div>
-                <div id="p2" class="owl-carousel" style="margin-bottom: 10px;">
+                <div id="owl-tab" class="owl-tab owl-carousel owl-loaded owl-drag" style="margin-bottom: 10px;">
                   @foreach($result['simliar_products']['product_data'] as $key=>$products)
                   @if($result['detail']['product_data'][0]->products_id != $products->products_id)
                   @if(++$key<=5)
@@ -528,7 +528,6 @@
                 </div>
               </div>
             </div>
-
       </div>
     </div>
   </section>

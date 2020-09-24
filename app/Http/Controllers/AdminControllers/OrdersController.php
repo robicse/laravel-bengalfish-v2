@@ -29,9 +29,10 @@ class OrdersController extends Controller
         $message = array();
         $errorMessage = array();
 
-        $orders = DB::table('orders')->orderBy('created_at', 'DESC')
-            ->where('customers_id', '!=', '')->paginate(40);
-
+        $orders = DB::table('orders')->latest('date_purchased')
+            ->where('customers_id', '!=', '')->get();
+            
+        
         $index = 0;
         $total_price = array();
 
@@ -59,6 +60,8 @@ class OrdersController extends Controller
         $ordersData['errorMessage'] = $errorMessage;
         $ordersData['orders'] = $orders;
         $ordersData['currency'] = $this->myVarsetting->getSetting();
+        
+        
         return view("admin.Orders.index", $title)->with('listingOrders', $ordersData);
     }
 

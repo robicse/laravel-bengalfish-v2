@@ -7,6 +7,7 @@
 <!-- END NOTIFICATION CONTENT -->
 
 <!-- Carousel Content -->
+
 <?php  echo $final_theme['carousel']; ?>
 <!-- Fixed Carousel Content -->
 
@@ -59,27 +60,49 @@ echo '</pre>';*/
 //die();
 ?>
 
+<?php
 
+  $product_section_orders = json_decode($final_theme['product_section_order'], true);
+  foreach ($product_section_orders as $product_section_order){
+    //   echo '<pre>';
+    //   print_r($product_section_order);
+    //   echo '</pre>';
+      
+      if($product_section_order['order'] == 2 && $product_section_order['status'] == 1){
+        $r =   'web.product-sections.' . $product_section_order['file_name'];
+        ?>
+        @include($r)
+        <?php
+      
+      }
+  }
+?>
 
 @if($result['categoryLists']['status'] == 1)
     <section class="products-content">
         <div class="container">
+            
             @foreach($result['categoryLists']['categoryProducts'] as $key=>$categoryLists)
+            
+            @if($categoryLists['success']==1)
+           
                 <div class="products-area">
                     <div class="row">
                         <div class="col-md-12">
                             @foreach($categoryLists['product_data'] as $key1=>$products)
                                 @php
                                     $dynamic_category_name = $products->categories['0']->categories_name;
+                                
                                     $categories_id = $products->categories['0']->categories_id;
                                     $dynamic_categories = DB::table('categories')->where('categories_id',$categories_id)->get();
                                     $dynamic_categories_slug=$dynamic_categories[0]->categories_slug;
                                 @endphp
                             @endforeach
+                            
+                    
                             {{--<div class="nav nav-pills">{{$dynamic_category_name}}</div>--}}
                             <div class="heading">
-                                <h2>{{$dynamic_category_name}} </h2>
-                                <hr style="margin-bottom: 0;">
+                                <h2>{{$dynamic_category_name}}</h2>
                             </div>
                             <div class="tab-content">
                                 <div role="tabpanel" class="tab-pane fade active show" id="featured" aria-labelledby="featured-tab">
@@ -87,7 +110,6 @@ echo '</pre>';*/
                                         @foreach($categoryLists['product_data'] as $key1=>$products)
                                             <div class="product">
                                                 <article>
-                                                    
                                                     <div class="thumb">
                                                         <div class="icons mobile-icons d-lg-none d-xl-none">
                                                             <div class="icon-liked">
@@ -99,9 +121,7 @@ echo '</pre>';*/
                                                             <div class="icon"><i class="fas fa-eye"></i></div>
                                                             <a href="{{url('compare')}}" class="icon"><i class="fas fa-align-right" data-fa-transform="rotate-90"></i></a>
                                                         </div>
-                                                       
                                                         <img class="img-fluid" src="{{asset('').$products->image_path}}" alt="{{$products->image_alt_tag ? $products->image_alt_tag :$products->products_name}}">
-                                                       
                                                     </div>
                                                     <?php
                                                     $default_currency = DB::table('currencies')->where('is_default',1)->first();
@@ -147,17 +167,12 @@ echo '</pre>';*/
                                                     print_r($products);
                                                     echo '</pre>';*/
                                                     ?>
-                                                    <span class="tag ok1">
+                                                    <span class="tag">
                                                         @foreach($products->categories as $key=>$category)
                                                             {{$category->categories_name}}@if(++$key === count($products->categories)) @else, @endif
                                                         @endforeach
-                                                        <?php 
-														if($key==0){
-															echo "Uncategorized";
-															}
-														?>
                                                     </span>
-                                                    <h2 class="title text-center"> <a href="{{ URL::to('/product-detail/'.$products->products_slug)}}">{{strtoupper($products->products_name)}}</a></h2>
+                                                    <h2 class="title text-center"><a href="{{ URL::to('/product-detail/'.$products->products_slug)}}">{{strtoupper($products->products_name)}}</a></h2>
                                                     <span class="tag">
                                                         {{ $products->products_weight ? $products->products_weight : '' }} {{ $products->products_weight_unit ? $products->products_weight_unit : '' }}
                                                     </span>
@@ -202,7 +217,7 @@ echo '</pre>';*/
                                                             @endif
                                                         </div>
                                                     </div>
-                                                                                            <div class="mobile-buttons d-lg-none d-xl-none">
+                                                    <div class="mobile-buttons d-lg-none d-xl-none">
                                                         @if($products->products_type==0)
                                                             @if(!in_array($products->products_id,$result['cartArray']))
                                                                 @if($products->defaultStock==0)
@@ -225,8 +240,6 @@ echo '</pre>';*/
                                             </div>
 
                                         @endforeach
-                                        
-                                        
                                         <div class="product last-product">
                                             <article>
                                                 <div class="icons">
@@ -241,9 +254,11 @@ echo '</pre>';*/
                                 </div>
                             </div>
                             <!-- 1st tab -->
+                            
                         </div>
                     </div>
                 </div>
+                @endif
             @endforeach
         </div>
     </section>
@@ -251,7 +266,6 @@ echo '</pre>';*/
 
 
 
- 
 
 
 
@@ -261,41 +275,35 @@ echo '</pre>';*/
 
 
 
-<!--
 
-<br/><br/><br/><br/><br/>
-Category
-<br/><br/><br/><br/><br/>
--->
+
+
+
+
+
 <?php
 
   $product_section_orders = json_decode($final_theme['product_section_order'], true);
   foreach ($product_section_orders as $product_section_order){
-      /*
-      echo '<pre>';
-      print_r($product_section_order);
-      echo '</pre>';
-      */
+    //   echo '<pre>';
+    //   print_r($product_section_order);
+    //   echo '</pre>';
       if($product_section_order['order'] == 1 && $product_section_order['status'] == 1){
         $r =   'web.product-sections.' . $product_section_order['file_name'];
         ?>
 
         <?php
-       
       }
-      if($product_section_order['order'] == 2 && $product_section_order['status'] == 1){
-        $r =   'web.product-sections.' . $product_section_order['file_name'];
+      
         ?>
-        @include($r)
-        <?php
         
-      }
+        <?php
+      
       if($product_section_order['order'] == 3 && $product_section_order['status'] == 1){
         $r =   'web.product-sections.' . $product_section_order['file_name'];
         ?>
         @include($r)
         <?php
-       
       }
       if($product_section_order['order'] == 4 && $product_section_order['status'] == 1){
         $r =   'web.product-sections.' . $product_section_order['file_name'];
@@ -344,7 +352,6 @@ Category
         ?>
         @include($r)
         <?php
-        
       }
   }
 ?>

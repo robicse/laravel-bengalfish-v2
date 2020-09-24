@@ -2,7 +2,7 @@
 <script src="{!! asset('admin/plugins/jQuery/jQuery-2.2.0.min.js') !!}"></script>
 <script src="{!! asset('admin/bootstrap/js/bootstrap.min.js') !!}"></script>
 <script src="{!! asset('admin/plugins/select2/select2.full.min.js') !!}"></script>
-
+<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
 <!-- InputMask -->
 <script src="{!! asset('admin/plugins/input-mask/jquery.inputmask.js') !!}"></script>
 <script src="{!! asset('admin/plugins/input-mask/jquery.inputmask.date.extensions.js') !!}"></script>
@@ -136,7 +136,16 @@ $("img").click(function() {
     jQuery('#images').val(id);
 console.log(id);
   });
-
+    
+    $("#ordr").dataTable({
+                "paging": true,
+                "lengthChange": true,
+                "searching": true,
+                "ordering": false,
+                "info": true,
+                "autoWidth": true
+            });
+  
   $("#btn").click(function() {
 
     var imgs = $("img.hover").length;

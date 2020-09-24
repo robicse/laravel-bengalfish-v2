@@ -1,3 +1,8 @@
+<style>
+    .header-mobile .header-maxi {
+        background-color: #000;
+    }
+</style>
 <header id="headerMobile" class="header-area header-mobile d-lg-none d-xl-none">
     <div class="header-mini bg-top-bar">
       <div class="container">

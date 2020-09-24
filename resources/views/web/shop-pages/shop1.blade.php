@@ -8,27 +8,41 @@
         font-family:Roboto Condensed ;
         color: #7c838a;
     }
-    .product article .title{
-        font-size: 22px;
+    .product article .title a{
+        font-size: 19px;
         font-weight: bold;
         font-family:Roboto Condensed ;
-        color: #2c3941;
+        color: #f89e20;
     }
     .product article .price{
-        font-size: 19px;
+        font-size: 18px;
         font-weight: bold;
         font-family:Roboto Condensed ;
         color: #f89e20;
         margin-bottom: 5px;
     }
     .product article .product-hover .icons .icon{
+        display: none;
         color: #f89e20;
         border: 0px;
         background-color: #0a0b0b4f;
     }
     .product article{
         -webkit-box-shadow: 1px 1px 6px -1px rgba(20,20,20,0.1);
-
+    }
+    .product article .product-hover .buttons {
+        bottom: -74px;
+        margin-left: -50%;
+        width: 100%;
+    }
+    .product article .product-hover {
+        background-color: #00bfff00;
+    }
+    /*.product article .tag {*/
+    /*    display: none;*/
+    /*}*/
+    .owl-item.active .product, .product{
+        border: 0px !important;
     }
 </style>
 <section class="shop-content shop-four">
@@ -346,7 +360,7 @@
                                    <span class="tag">
                                        {{$products->products_weight}} {{$products->products_weight_unit}}
                                    </span>
-                                 <p class="discription">{{$products->products_description}}</p>
+                                 <!--<p class="discription">{!!$products->products_description!!}</p>-->
 
                                  <div class="price">
                                    @if(!empty($products->discount_price))

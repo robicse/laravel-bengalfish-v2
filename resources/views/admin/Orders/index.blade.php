@@ -22,6 +22,7 @@
                         <div class="box-header">
                             <h3 class="box-title">{{ trans('labels.ListingAllOrders') }} </h3>
                         </div>
+                    
 
                         <!-- /.box-header -->
                         <div class="box-body">
@@ -39,10 +40,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-xs-12">
-                                    
-                                    <iframe src="https://bengalfish.com.bd/datatable/" frameborder="0" scrolling="auto" style="width:100%; height:600px; float:left; margin:0 0 50px 0;"  title="Order Details"></iframe> <!-- https://bengalfish.com.bd/datatable/orders_display.php -->
-                                    
-                                    <table id="example1" class="table table-bordered table-striped">
+                                    <table id="ordr" class="table table-bordered table-striped">
                                         <thead>
                                         <tr>
                                             <th>{{ trans('labels.ID') }}</th>
@@ -90,9 +88,7 @@
                                         @endif
                                         </tbody>
                                     </table>
-                                    <div class="col-xs-12 text-right">
-                                        {{$listingOrders['orders']->links()}}
-                                    </div>
+                                
                                 </div>
                             </div>
                         </div>
@@ -134,3 +130,4 @@
         <!-- /.content -->
     </div>
 @endsection
+
