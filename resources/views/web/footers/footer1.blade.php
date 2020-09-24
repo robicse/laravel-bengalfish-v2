@@ -169,3 +169,5 @@ Plot No 03, Road No 03, Block D, Dhaka Uddan Housing, Mohammedpur, Dhaka.</span>
           </div>
     </div>
 </footer>
+{{--toastr js--}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>

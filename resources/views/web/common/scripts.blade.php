@@ -313,14 +313,17 @@ jQuery(document).on('click', '.cart', function(e){
 		data: '&products_id='+products_id,
 		success: function (res) {
 			if(res.status == 'exceed'){
-				swal("Something Happened To Stock", "@lang('website.Ops! Product is available in stock But Not Active For Sale. Please contact to the admin')", "error");
+				//swal("Something Happened To Stock", "@lang('website.Ops! Product is available in stock But Not Active For Sale. Please contact to the admin')", "error");
+                toastr.warning('Something Happened To Stock!', 'website.Ops! Product is available in stock But Not Active For Sale. Please contact to the admin');
 			}
 			else{
 				jQuery('.head-cart-content').html(res);
 				jQuery(parent).removeClass('cart');
 				jQuery(parent).addClass('active');
 				jQuery(parent).html("@lang('website.Added')");
-				swal("Congrates!", "Product Added Successfully Thanks.Continue Shopping", "success");
+				//swal("Congrates!", "Product Added Successfully Thanks.Continue Shopping", "success");
+                //Toastr::success('Transaction is successfully Completed tar','Success');
+                toastr.success('Product Added Successfully Thanks.Continue Shopping', 'Congrates!');
 
 			}
 

@@ -1,5 +1,7 @@
 <!-- //header style One -->
 <link href="https://fonts.googleapis.com/css?family=Oswald|Roboto+Condensed&display=swap" rel="stylesheet">
+{{--toastr css--}}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 <style>
     .header-one .header-maxi .form-inline .search .select-control .form-control{
         font-family: Roboto Condensed;
@@ -55,7 +57,7 @@
     <?php  ?>
     <div class="header-maxi bg-header-bar">
       <div class="container">
- <!-- ------------------------------------------------------Start Row 01 ---------------------------------------------- -->     
+ <!-- ------------------------------------------------------Start Row 01 ---------------------------------------------- -->
         <div class="row align-items-center">
              <div class="col-12 col-lg-5">
                  <ul class="fm-top-contact-list">
@@ -70,8 +72,8 @@
                  <ul class="fm-top-middle-menu">
                     <li style="margin-top:13px;"><a href="https://bengalfish.com.bd/">Home |</a>  </li>
                     <li style="margin-top:13px;"><a href="https://bengalfish.com.bd/shop">Shop | </a> </li>
-	                
-                
+
+
                       <li>
                   <div class="navbar-lang">
 
@@ -168,12 +170,12 @@
                                 }
                                 @endphp
                                 <div class="shopping-cart shopping-cart-empty dropdown-menu dropdown-menu-right" aria-labelledby="dropdownCartButton_9">
-                                    
-                                        
-                                      
-                                      
+
+
+
+
                                     <table class="table">
- 
+
                                       <tbody>
                                         <?php
                                             $total_amount=0;
@@ -201,7 +203,7 @@
 
                                         </tr>
                                         <!--<li>-->
-                                            
+
                                         <!--    <div class="item-detail">-->
                                         <!--      <h6 class="item-name" style="font-family: 'Roboto Condensed'">{{strtoupper($cart_data->products_name)}}</h6>-->
                                         <!--      <span class="item-quantity">@lang('website.Qty')&nbsp;:&nbsp;{{$cart_data->customers_basket_quantity}}</span>-->
@@ -212,11 +214,11 @@
                                         <tr>
                                           <td>
                                               <p>@lang('website.items')<span>{{ $qunatity }}</span></p>
-                                                
+
                                           </td>
                                           <td>
                                               <p>@lang('website.SubTotal')<span>{{Session::get('symbol_left')}}{{ $total_amount*$currency_value }}{{Session::get('symbol_right')}}</span></p>
-                                                    
+
                                           </td>
                                           <td>
                                               <!--<a class="btn btn-dark" href="{{ URL::to('/viewcart')}}">@lang('website.View Cart')</a>-->
@@ -283,20 +285,20 @@
 {{--                      <li class="nav-item"> <a href="{{url('logout')}}" class="nav-link padding-r0">@lang('website.Logout')</a> </li>--}}
                       <?php }else{ ?>
                         <li class="nav-item p-0" style="background-color: #f89e20;padding: 4px 18px;"> <a href="{{ URL::to('/login')}}" class="nav-link -before"><i class="fa fa-lock" aria-hidden="true"></i>&nbsp;@lang('website.Login/Register')</a> </li>
-                        
+
 
                       <?php } ?>
-              
-</ul>
-             </div>     
-        </div>  
-<!-- ------------------------------------------------------End Row 01 ---------------------------------------------- -->    
 
-<!-- ------------------------------------------------------Start Row 02 ---------------------------------------------- --> 
-		
-<!-- ------------------------------------------------------End Row 02 ---------------------------------------------- -->     
-        
-        
+</ul>
+             </div>
+        </div>
+<!-- ------------------------------------------------------End Row 01 ---------------------------------------------- -->
+
+<!-- ------------------------------------------------------Start Row 02 ---------------------------------------------- -->
+
+<!-- ------------------------------------------------------End Row 02 ---------------------------------------------- -->
+
+
         <div class="row align-items-center">
             <div class="col-12 col-lg-2">
                 <a href="{{ URL::to('/')}}" class="logo">
@@ -365,7 +367,7 @@
 
                         </div>
                       </li>
-                     
+
                 </ul>
               </div>
             </nav>
@@ -375,7 +377,7 @@
               <div class="search">
                   <div class="select-control">
                       <select class="form-control" name="category">
-                      
+
                        @php    productCategories(); @endphp
                       </select>
                     </div>
@@ -385,16 +387,16 @@
               </div>
             </form>
           </div>
-          
-         
-          
-         
+
+
+
+
         </div>
       </div>
     </div>
-   
-    
-   
+
+
+
     <?php  ?>
     <?php /* ?>
     <div class="header-navbar logo-nav bg-menu-bar">
