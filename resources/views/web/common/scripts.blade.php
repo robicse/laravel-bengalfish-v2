@@ -44,8 +44,40 @@ $("#rating-star-"+ix).toggleClass('btn-default');
 
 });
 
+$(document).ready(function() {
+    $("#order_comments").on('blur',function(){
+        //$("order_comments").css("background-color", "yellow");
+        jQuery('#loader').css('display','flex');
+        var comments = jQuery('#order_comments').val();
+        jQuery.ajax({
+            headers: {'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')},
+            url: '{{ URL::to("/commentsOrder")}}',
+            type: "POST",
+            data: '&comments='+comments,
+            async: false,
+            success: function (res) {
+                jQuery('#loader').hide();
+            },
+        });
+    });
+});
 
 
+//commeents
+{{--jQuery(document).on('focusout','#order_comments', function(e){--}}
+{{--    jQuery('#loader').css('display','flex');--}}
+{{--    var comments = jQuery('#order_comments').val();--}}
+{{--    jQuery.ajax({--}}
+{{--        headers: {'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')},--}}
+{{--        url: '{{ URL::to("/commentsOrder")}}',--}}
+{{--        type: "POST",--}}
+{{--        data: '&comments='+comments,--}}
+{{--        async: false,--}}
+{{--        success: function (res) {--}}
+{{--            jQuery('#loader').hide();--}}
+{{--        },--}}
+{{--    });--}}
+{{--});--}}
 
 
 jQuery(document).on('click', '.shipping_data', function(e){
@@ -383,21 +415,7 @@ jQuery(document).on('click', '.modal_show', function(e){
 	});
  });
 });
-	//commeents
-jQuery(document).on('focusout','#order_comments', function(e){
-	jQuery('#loader').css('display','flex');
-	var comments = jQuery('#order_comments').val();
-	jQuery.ajax({
-		headers: {'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')},
-		url: '{{ URL::to("/commentsOrder")}}',
-		type: "POST",
-		data: '&comments='+comments,
-		async: false,
-		success: function (res) {
-			jQuery('#loader').hide();
-		},
-	});
-});
+
 		//hyperpayresponse
 var resposne = jQuery('#hyperpayresponse').val();
 if(typeof resposne  !== "undefined"){

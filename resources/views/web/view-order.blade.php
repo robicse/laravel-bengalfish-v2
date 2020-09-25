@@ -270,6 +270,9 @@
                         </div>
                         <div class="card-body">
                         @foreach($result['orders'][0]->statusess as $key=>$statusess)
+{{--                            @php--}}
+{{--                            dd($statusess);--}}
+{{--                            @endphp--}}
                             @if(!empty($statusess->comments))
                                 @if(++$key==1)
                                   <h6>@lang('website.Order Comments'): {{ date('d/m/Y', strtotime($statusess->date_added))}}</h6>

@@ -628,7 +628,7 @@ class Order extends Model
 				$orders_status_history = DB::table('orders_status_history')
 					->LeftJoin('orders_status', 'orders_status.orders_status_id', '=', 'orders_status_history.orders_status_id')
 					->LeftJoin('orders_status_description', 'orders_status_description.orders_status_id', '=', 'orders_status.orders_status_id')
-					->select('orders_status_description.orders_status_name', 'orders_status.orders_status_id')
+					->select('orders_status_description.orders_status_name', 'orders_status.orders_status_id','orders_status_history.date_added','orders_status_history.comments')
 					->where('orders_id', '=', $orders_data->orders_id)->where('orders_status_description.language_id',session('language_id'))->orderby('orders_status_history.orders_status_history_id', 'DESC')->limit(1)->get();
 
 
@@ -636,6 +636,7 @@ class Order extends Model
 				$orders[$index]->products = $products_array;
 				$orders[$index]->orders_status_id = $orders_status_history[0]->orders_status_id;
 				$orders[$index]->orders_status = $orders_status_history[0]->orders_status_name;
+				$orders[$index]->comments = $orders_status_history[0]->comments;
 				$index++;
 
 			}

@@ -366,7 +366,7 @@ class OrdersController extends Controller
                 //session(['shipping_cost' => $shipping_cost]);
                 return redirect('/checkout/pay');
             }
-/* ****************************************************************************************************************************************************** */  /*          
+/* ****************************************************************************************************************************************************** */  /*
             Mail::send('/mail/orderEmail', ['userData' => $existUser], function($m) use ($existUser){
 				$m->to($existUser[0]->email)->subject(Lang::get("labels.Orderinformation"))->getSwiftMessage()
 				->getHeaders()
