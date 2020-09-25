@@ -86,6 +86,20 @@
 	 }]);
 
     </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org/",
+      "@type": "WebSite",
+      "name": "Bengal Fish",
+      "url": "https://bengalfish.com.bd/",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://bengalfish.com.bd/shop/search{search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
     @endif
 
     @if(!empty($result['setting'][76]->value))
