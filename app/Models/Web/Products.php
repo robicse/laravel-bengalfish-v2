@@ -1009,20 +1009,20 @@ alert('products_id:  $products_id ::: language_id=".Session::get('language_id').
                      ->where('products_to_categories.products_id',$products_id)
                      ->where('categories.parent_id',0)
                      ->where('language_id',Session::get('language_id'))->get();
-        
+
         /*
          foreach ($category as $key => $value){
              echo"$key => $value <br/>";
          }
          */
-        
-        if(empty($category)){             
-        $category = DB::table('categories') 
+
+        if(empty($category)){
+        $category = DB::table('categories')
         ->leftJoin('categories_description','categories_description.categories_id','=','categories.categories_id')
          ->where('categories.categories_id',11)
          ->where('categories.parent_id',0)->get();
         }
-        
+
         return $category;
     }
 
@@ -1143,6 +1143,15 @@ alert('products_id:  $products_id ::: language_id=".Session::get('language_id').
 
 		return($response);
 	}
+
+    Public function getShopPageInformation(){
+        $shop_page_info = DB::table('pages')
+            ->leftJoin('pages_description','pages_description.page_id','=','pages.page_id')
+            ->where('pages.slug','shop')
+            ->where('language_id',Session::get('language_id'))
+            ->get();
+        return $shop_page_info;
+    }
 
 
 }

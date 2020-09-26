@@ -226,6 +226,8 @@ public static function addnewwebpage($request)
   		$page_id = DB::table('pages')->insertGetId([
   					'slug'		 			 =>   $slug,
   					'type'		 			 =>   2,
+  					'meta_title'		 	 =>   $request->meta_title,
+  					'meta_description'		 =>   $request->meta_description,
   					'status'		 		 =>   $request->status,
   					]);
 
@@ -302,6 +304,8 @@ public static function updatewebpage($request)
   DB::table('pages')->where('page_id','=',$page_id)->update([
         'slug'		 			 =>   $slug,
         'type'		 			 =>   2,
+        'meta_title'		 	 =>   $request->meta_title,
+        'meta_description'		 =>   $request->meta_description,
         'status'		 		 =>   $request->status,
         ]);
 

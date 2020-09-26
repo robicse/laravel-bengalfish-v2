@@ -51,7 +51,7 @@
                                             <div class="form-group">
                                                 <label for="name" class="col-sm-2 col-md-3 control-label">{{ trans('labels.PageSlug') }}</label>
                                                 <div class="col-sm-10 col-md-4">
-                                                    {!! Form::text('slug',  $result['editPage'][0]->slug, array('class'=>'form-control field-validate', 'id'=>'slug')) !!}
+                                                    {!! Form::text('slug',  $result['editPage'][0]->slug, array('class'=>'form-control field-validate', 'id'=>'slug', 'readonly')) !!}
                                                     <span class="help-block" style="font-weight: normal;font-size: 11px;margin-bottom: 0;">{{ trans('labels.pageSlugWithDashesText') }}</span>
                                                 </div>
                                             </div>
@@ -78,6 +78,20 @@
                                                 </div>
 
                                             @endforeach
+
+                                                <div class="form-group">
+                                                    <label for="name" class="col-sm-2 col-md-3 control-label">Meta Title</label>
+                                                    <div class="col-sm-10 col-md-4">
+                                                        <input type="text" class="form-control" name="meta_title" id="meta_title" value="{{$result['editPage'][0]->meta_title}}">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="name" class="col-sm-2 col-md-3 control-label">Meta Description</label>
+                                                    <div class="col-sm-10 col-md-4">
+                                                        <textarea class="form-control" name="meta_description" id="meta_description">{{$result['editPage'][0]->meta_description}}</textarea>
+                                                    </div>
+                                                </div>
 
                                             <div class="form-group">
                                                 <label for="name" class="col-sm-2 col-md-3 control-label">{{ trans('labels.Status') }}</label>

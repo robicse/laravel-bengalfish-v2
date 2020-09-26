@@ -236,6 +236,7 @@ class ProductsController extends Controller
 		//liked products
 		$result['liked_products'] = $this->products->likedProducts();
 		$result['categories'] = $this->products->categories();
+		$result['shop_page_info'] = $this->products->getShopPageInformation();
 
 		$result['min_price'] = $min_price;
 		$result['max_price'] = $max_price;
@@ -468,7 +469,7 @@ alert(' Not::');
 			$category_name = '';
 		}
 
-		
+
 ///			$category_slug = '';
 //			$category_name = '';
 		$sub_category = $this->products->getSubCategoryByParent($products[0]->products_id);

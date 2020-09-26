@@ -210,11 +210,12 @@
          <div class="col-12 col-lg-9">
              {{--<div class="breadcum-area" style="background-image: url('https://bengalfish.test/images/media/2020/01/rQbQb06906.jpg'); ">--}}
              <div class="breadcum-area">
-                 @php
-                 /*echo '<pre>';
-                 print_r($result);
-                 echo '</pre>';*/
-                 @endphp
+{{--                 @php--}}
+{{--                 echo '<pre>';--}}
+{{--                 //print_r($result);--}}
+{{--                 print_r($result['shop_page_info'][0]);--}}
+{{--                 echo '</pre>';--}}
+{{--                 @endphp--}}
                  @if(!empty($result['category_name']) and !empty($result['sub_category_name']))
                  <h1 style="font-weight: bold; font-family: Krona One;color: #00bfff;">{{$result['category_name']}}</h1>
                  <p style="font-size: 1.09375rem;">{{$result['cat_slogan']}}</p>
@@ -223,7 +224,7 @@
                  <p style="font-size: 1.09375rem;">{{$result['cat_slogan']}}</p>
                  @else
                  <h1>All Fishes Collections</h1>
-                 <p>Bangladesh is a country with thousands of rivers...</p>
+                 <p>{{$result['shop_page_info'][0]->name}}</p>
                  @endif
              </div>
              <div class="products-area">
@@ -477,7 +478,13 @@
                                </div>
              </div>
 
-             <div>{!! $result['cat_description'] !!}</div>
+             <div>
+                 @if(!empty($result['cat_description']))
+                 {!! $result['cat_description'] !!}
+                     @else
+                     {!! $result['shop_page_info'][0]->description !!}
+                 @endif
+             </div>
 
            </form>
          </div>
