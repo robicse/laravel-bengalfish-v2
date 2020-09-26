@@ -136,7 +136,7 @@ $("img").click(function() {
     jQuery('#images').val(id);
 console.log(id);
   });
-    
+
     $("#ordr").dataTable({
                 "paging": true,
                 "lengthChange": true,
@@ -145,7 +145,7 @@ console.log(id);
                 "info": true,
                 "autoWidth": true
             });
-  
+
   $("#btn").click(function() {
 
     var imgs = $("img.hover").length;

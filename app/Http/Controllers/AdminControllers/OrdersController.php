@@ -308,4 +308,15 @@ class OrdersController extends Controller
 
     }
 
+    public function commentsOrder(Request $request){
+        //dd($request->all());
+        $orders_status_history_id = $request->orders_status_history_id;
+        $order_comments = $request->order_comments;
+        DB::table('orders_status_history')
+            ->where('orders_status_history_id', '=', $orders_status_history_id)
+            ->update(['comments' => $order_comments]);
+
+        return redirect()->back()->with('message', 'Comments updated.');
+    }
+
 }

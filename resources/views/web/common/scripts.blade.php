@@ -629,7 +629,8 @@ jQuery( function() {
 });
 
 function swalalert() {
-swal("Congrates!", "Thanks For Shopping!", "success");
+//swal("Congrates!", "Thanks For Shopping!", "success");
+    toastr.success('Thanks For Shopping!', 'Congrates!');
 }
 function validd() {
 	var max = parseInt(document.detailform.quantity.max);

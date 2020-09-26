@@ -362,6 +362,7 @@ Route::group(['middleware' => ['installer']], function()
         Route::get('/editorderstatus/{id}', 'SiteSettingController@editorderstatus')->middleware('edit_order');
         Route::post('/updateOrderStatus', 'SiteSettingController@updateOrderStatus')->middleware('edit_order');
         Route::post('/deleteOrderStatus', 'SiteSettingController@deleteOrderStatus')->middleware('edit_order');
+        Route::post('/commentsOrder', 'OrdersController@commentsOrder');
     });
 
     Route::group(['prefix'=>'admin/banners','middleware' => 'auth','namespace' => 'AdminControllers'], function () {

@@ -293,7 +293,14 @@
                             {{ $orders_status_history->orders_status_name }}
                                  </span>
                         </td>
-                        <td style="text-transform: initial;">{{ $orders_status_history->comments }}</td>
+                        <td style="text-transform: initial;">
+                            {!! Form::open(array('url' =>'admin/orders/commentsOrder', 'method'=>'post', 'class' => 'form-horizontal form-validate', 'enctype'=>'multipart/form-data')) !!}
+                            <textarea class="form-control" rows="4" name="order_comments" cols="50">{{$orders_status_history->comments}}</textarea>
+                            <input type="hidden" name="orders_status_history_id" value="{{$orders_status_history->orders_status_history_id}}">
+                            <button type="submit" class="btn btn-primary">{{ trans('labels.Update') }}</button>
+                            <span>&nbsp;</span>
+                            {!! Form::close() !!}
+                        </td>
                     </tr>
                 @endforeach
               </tbody>
