@@ -12,7 +12,11 @@
     <link rel="icon" href="{{asset('').$result['setting'][86]->value}}" type="image/gif">
     @endif
     <meta name="DC.title"  content="<?=stripslashes($result['setting'][73]->value)?>"/>
-    <meta name="description" content="<?=stripslashes($result['setting'][75]->value)?>"/>
+    @if(!empty($result['setting'][75]->value))
+        <meta name="description" content="<?=stripslashes($result['setting'][75]->value)?>"/>
+    @else
+        <meta name="description" content="@yield('dynamic_description')"/>
+    @endif
     <meta name="keywords" content="<?=stripslashes($result['setting'][74]->value)?>"/>
 
 	<!-- Tell the browser to be responsive to screen width -->

@@ -128,7 +128,8 @@ class ProductsController extends Controller
 			$max_price = '';
 		}
 		//category
-		if(!empty($request->category) and $request->category!='all'){
+
+        if(!empty($request->category) and $request->category!='all'){
             $category = $this->products->getCategories($request);
 
 			$categories_id = $category[0]->categories_id;
@@ -136,6 +137,7 @@ class ProductsController extends Controller
 			if($category[0]->parent_id==0){
 				$category_name = $category[0]->categories_name;
 				$meta_title = $category[0]->meta_title;
+				$meta_description = $category[0]->meta_description;
 				$sub_category_name = '';
 				$category_slug = '';
                 $cat_slogan = $category[0]->cat_slogan;
@@ -147,6 +149,7 @@ class ProductsController extends Controller
 				$category_slug = $main_category[0]->categories_slug;
 				$category_name = $main_category[0]->categories_name;
 				$meta_title = $main_category[0]->meta_title;
+                $meta_description = $category[0]->meta_description;
 				$sub_category_name = $category[0]->categories_name;
 				$cat_slogan = $category[0]->cat_slogan;
 				$cat_description = $category[0]->cat_description;
@@ -156,6 +159,7 @@ class ProductsController extends Controller
             $categories_id = '';
 			$category_name = '';
             $meta_title = '';
+            $meta_description = '';
 			$sub_category_name = '';
 			$category_slug = '';
             $cat_slogan = '';
@@ -164,6 +168,7 @@ class ProductsController extends Controller
 
 		$result['category_name'] = $category_name;
 		$result['meta_title'] = $meta_title;
+		$result['meta_description'] = $meta_description;
 		$result['category_slug'] = $category_slug;
 		$result['sub_category_name'] = $sub_category_name;
 		$result['cat_slogan'] = $cat_slogan;
@@ -240,6 +245,7 @@ class ProductsController extends Controller
 
 		$result['min_price'] = $min_price;
 		$result['max_price'] = $max_price;
+		dd($result);
 
 		return view("web.shop", ['title' => $title,'final_theme' => $final_theme])->with('result', $result);
 

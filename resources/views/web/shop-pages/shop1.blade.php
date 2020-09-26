@@ -1,6 +1,9 @@
 @section('dynamic_title')
     {{$result['meta_title'] ? $result['meta_title'] : $result['category_name']}}
 @endsection
+@section('dynamic_description')
+    {{$result['meta_description'] ? $result['meta_description'] : $result['category_name']}}
+@endsection
 <link href="https://fonts.googleapis.com/css?family=Krona+One&display=swap" rel="stylesheet">
 <style>
     .product article .tag{
