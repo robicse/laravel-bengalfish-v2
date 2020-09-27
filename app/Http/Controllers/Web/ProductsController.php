@@ -96,6 +96,8 @@ class ProductsController extends Controller
 	//shop
 	public function shop(Request $request){
 		$title = array('pageTitle' => Lang::get('website.Shop'));
+        $first_segment = request()->segment(1);
+        $second_segment = request()->segment(2);
 		$result = array();
 
 		$result['commonContent'] = $this->index->commonContent();
@@ -164,6 +166,15 @@ class ProductsController extends Controller
 			$category_slug = '';
             $cat_slogan = '';
             $cat_description = '';
+
+            // shop page
+            if($first_segment == 'shop' && $second_segment == ''){
+                $shop_page_info = $this->products->getShopPageInformation();
+                if(!empty($shop_page_info)){
+                    $meta_title = $shop_page_info[0]->meta_title;
+                    $meta_description = $shop_page_info[0]->meta_description;
+                }
+            }
 		}
 
 		$result['category_name'] = $category_name;
@@ -245,7 +256,6 @@ class ProductsController extends Controller
 
 		$result['min_price'] = $min_price;
 		$result['max_price'] = $max_price;
-		dd($result);
 
 		return view("web.shop", ['title' => $title,'final_theme' => $final_theme])->with('result', $result);
 
