@@ -139,55 +139,57 @@ class PublicSslCommerzPaymentController extends Controller
     }
     public function fail(Request $request)
     {
-        $tran_id = $_SESSION['payment_values']['tran_id'];
+        //$tran_id = $_SESSION['payment_values']['tran_id'];
+        $tran_id = $request->tran_id;
         $order_detials = DB::table('orders')
             ->where('transaction_id', $tran_id)
             ->select('orders_id', 'transaction_status','currency','order_price')->first();
 
-        if($order_detials->order_status=='Pending')
+        if($order_detials->transaction_status=='Pending')
         {
-            dd($_POST);
+            //dd($_POST);
             $update_product = DB::table('orders')
                 ->where('transaction_id', $tran_id)
                 ->update(['transaction_status' => 'Failed']);
-            echo "Transaction is Failed";
+            return redirect('/')->withSuccess('Transaction is Failed');
         }
-        else if($order_detials->order_status=='Processing' || $order_detials->order_status=='Complete')
+        else if($order_detials->transaction_status=='Processing' || $order_detials->transaction_status=='Complete')
         {
-            echo "Transaction is already Successful";
+            return redirect('/')->withSuccess('Transaction is already Successful');
         }
         else
         {
-            echo "Transaction is Invalid";
+            return redirect('/')->withSuccess('Transaction is Invalid');
         }
 
     }
 
     public function cancel(Request $request)
     {
-        $tran_id = $_SESSION['payment_values']['tran_id'];
+        //dd($request->tran_id);
+        //$tran_id = $_SESSION['payment_values']['tran_id'];
+        $tran_id = $request->tran_id;
+        //dd($tran_id);
 
         $order_detials = DB::table('orders')
             ->where('transaction_id', $tran_id)
             ->select('orders_id', 'transaction_status','currency','order_price')->first();
 
-        if($order_detials->order_status=='Pending')
+        if($order_detials->transaction_status=='Pending')
         {
             $update_product = DB::table('orders')
                 ->where('transaction_id', $tran_id)
                 ->update(['transaction_status' => 'Canceled']);
-            echo "Transaction is Cancel";
+            return redirect('/')->withSuccess('Transaction is Cancel');
         }
-        else if($order_detials->order_status=='Processing' || $order_detials->order_status=='Complete')
+        else if($order_detials->transaction_status=='Processing' || $order_detials->transaction_status=='Complete')
         {
-            echo "Transaction is already Successful";
+            return redirect('/')->withSuccess('Transaction is already Successful');
         }
         else
         {
-            echo "Transaction is Invalid";
+            return redirect('/')->withSuccess('Transaction is Invalid');
         }
-
-
     }
     public function ipn(Request $request)
     {
@@ -202,7 +204,7 @@ class PublicSslCommerzPaymentController extends Controller
                 ->where('transaction_id', $tran_id)
                 ->select('orders_id', 'transaction_status','currency','order_price')->first();
 
-            if($order_details->order_status =='Pending')
+            if($order_details->transaction_status =='Pending')
             {
                 $sslc = new SSLCommerz();
                 $validation = $sslc->orderValidate($tran_id, $order_details->order_price, $order_details->currency, $request->all());
@@ -233,7 +235,7 @@ class PublicSslCommerzPaymentController extends Controller
                 }
 
             }
-            else if($order_details->order_status == 'Processing' || $order_details->order_status =='Complete')
+            else if($order_details->transaction_status == 'Processing' || $order_details->transaction_status =='Complete')
             {
 
                 #That means Order status already updated. No need to udate database.
