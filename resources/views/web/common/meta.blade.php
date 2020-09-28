@@ -1,22 +1,28 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta content="width=device-width, initial-scale=1" name="viewport" />
-	<?php $result['setting'] = DB::table('settings')->get(); ?>
-    @if(empty($result['setting'][18]->value))
-    <title>@lang('website.Ecommerce')</title>
-    @else
-    <title>@yield('dynamic_title')<?=stripslashes($result['setting'][18]->value)?></title>
+	@php
+      $result['setting'] = DB::table('settings')->get();
+      $first_segment = request()->segment(1);
+      $second_segment = request()->segment(2);
+    @endphp
+    @if($first_segment == '')
+        <title><?=stripslashes($result['setting'][118]->value)?> : <?=stripslashes($result['setting'][18]->value)?></title>
+    @elseif($first_segment != '')
+        <title>@yield('dynamic_title') : <?=stripslashes($result['setting'][18]->value)?></title>
     @endif
 
     @if(!empty($result['setting'][86]->value))
     <link rel="icon" href="{{asset('').$result['setting'][86]->value}}" type="image/gif">
     @endif
     <meta name="DC.title"  content="<?=stripslashes($result['setting'][73]->value)?>"/>
-    @if(!empty($result['setting'][75]->value))
-        <meta name="description" content="<?=stripslashes($result['setting'][75]->value)?>"/>
+
+    @if($first_segment == '')
+        <meta name="description" content="<?=stripslashes($result['setting'][119]->value)?>"/>
     @else
-        <meta name="description" content="@yield('dynamic_description')"/>
+        <meta name="description" content="@yield('dynamic_description') : <?=stripslashes($result['setting'][119]->value)?>"/>
     @endif
+
     <meta name="keywords" content="<?=stripslashes($result['setting'][74]->value)?>"/>
 
 	<!-- Tell the browser to be responsive to screen width -->

@@ -178,7 +178,21 @@
                                                 </div>
                                             </div>
 
+                                                <div class="form-group">
+                                                    <label for="name" class="col-sm-2 col-md-3 control-label">Meta Title</label>
+                                                    <div class="col-sm-10 col-md-4">
+                                                        {!! Form::text($result['settings'][119]->name,  $result['settings'][119]->value, array('class'=>'form-control', 'id'=>$result['settings'][119]->name)) !!}
+                                                        <span class="help-block" style="font-weight: normal;font-size: 11px;margin-bottom: 0;margin-top: 0;">Please enter your 'Meta Title' here.</span>
+                                                    </div>
+                                                </div>
 
+                                                <div class="form-group">
+                                                    <label for="name" class="col-sm-2 col-md-3 control-label">Meta Description</label>
+                                                    <div class="col-sm-10 col-md-4">
+                                                        {!! Form::text($result['settings'][120]->name,  $result['settings'][120]->value, array('class'=>'form-control', 'id'=>$result['settings'][120]->name)) !!}
+                                                        <span class="help-block" style="font-weight: normal;font-size: 11px;margin-bottom: 0;margin-top: 0;">Please enter your 'Meta Description' here.</span>
+                                                    </div>
+                                                </div>
                                         </div>
 
                                         <!-- /.box-body -->
