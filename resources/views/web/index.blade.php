@@ -13,7 +13,19 @@
 
 <!-- Banners Content -->
 <!-- Products content -->
-
+<script type="application/ld+json">
+    {
+      "@context": "https://schema.org/",
+      "@type": "WebSite",
+      "name": "Bengal Fish",
+      "url": "https://bengalfish.com.bd/",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://bengalfish.com.bd/shop/search={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
 
 
 
@@ -67,13 +79,13 @@ echo '</pre>';*/
     //   echo '<pre>';
     //   print_r($product_section_order);
     //   echo '</pre>';
-      
+
       if($product_section_order['order'] == 2 && $product_section_order['status'] == 1){
         $r =   'web.product-sections.' . $product_section_order['file_name'];
         ?>
         @include($r)
         <?php
-      
+
       }
   }
 ?>
@@ -81,25 +93,25 @@ echo '</pre>';*/
 @if($result['categoryLists']['status'] == 1)
     <section class="products-content">
         <div class="container">
-            
+
             @foreach($result['categoryLists']['categoryProducts'] as $key=>$categoryLists)
-            
+
             @if($categoryLists['success']==1)
-           
+
                 <div class="products-area">
                     <div class="row">
                         <div class="col-md-12">
                             @foreach($categoryLists['product_data'] as $key1=>$products)
                                 @php
                                     $dynamic_category_name = $products->categories['0']->categories_name;
-                                
+
                                     $categories_id = $products->categories['0']->categories_id;
                                     $dynamic_categories = DB::table('categories')->where('categories_id',$categories_id)->get();
                                     $dynamic_categories_slug=$dynamic_categories[0]->categories_slug;
                                 @endphp
                             @endforeach
-                            
-                    
+
+
                             {{--<div class="nav nav-pills">{{$dynamic_category_name}}</div>--}}
                             <div class="heading">
                                 <h2>{{$dynamic_category_name}}</h2>
@@ -254,7 +266,7 @@ echo '</pre>';*/
                                 </div>
                             </div>
                             <!-- 1st tab -->
-                            
+
                         </div>
                     </div>
                 </div>
@@ -294,11 +306,11 @@ echo '</pre>';*/
 
         <?php
       }
-      
+
         ?>
-        
+
         <?php
-      
+
       if($product_section_order['order'] == 3 && $product_section_order['status'] == 1){
         $r =   'web.product-sections.' . $product_section_order['file_name'];
         ?>

@@ -10,6 +10,95 @@
     @endphp
 {{$prduct_description->meta_title ? $prduct_description->meta_title : $result['detail']['product_data'][0]->products_name}}
 @endsection
+
+<script type="application/ld+json">
+    {
+
+  "@context": "https://schema.org/",
+
+  "@type": "Product",
+
+  "name": "<?=stripslashes($result['detail']['product_data'][0]->products_name)?>",
+
+  "image": [
+
+    "<?= asset('').$result['detail']['product_data'][0]->image_path?>"
+
+   ],
+
+  "description": "<?=strip_tags($result['detail']['product_data'][0]->products_description)?>",
+
+  "sku": "0446310786",
+
+  "mpn": "<?= $result['detail']['product_data'][0]->products_weight ? $result['detail']['product_data'][0]->products_weight : ''?>",
+
+  "brand": {
+
+    "@type": "Thing",
+
+    "name": "Product Name"
+
+  },
+
+  "review": {
+
+    "@type": "Review",
+
+    "reviewRating": {
+
+      "@type": "Rating",
+
+      "ratingValue": "4",
+
+      "bestRating": "5"
+
+    },
+
+    "author": {
+
+      "@type": "Person",
+
+      "name": "Fred Benson"
+
+    }
+
+  },
+
+  "aggregateRating": {
+
+    "@type": "AggregateRating",
+
+    "ratingValue": "4.4",
+
+    "reviewCount": "89"
+
+  },
+
+  "offers": {
+
+    "@type": "Offer",
+
+    "url": "https://bengalfish.com.bd/product-detail/<?=stripslashes($result['detail']['product_data'][0]->products_name)?>",
+
+    "priceCurrency": "BDT",
+
+    "price": "<?= $result['detail']['product_data'][0]->products_price?>",
+
+    "availability": "https://schema.org/InStock",
+
+    "seller": {
+
+      "@type": "Organization",
+
+      "name": "https://bengalfish.com.bd"
+
+    }
+
+  }
+
+}
+</script>
+
 <link href="https://fonts.googleapis.com/css?family=Oswald|Roboto+Condensed&display=swap" rel="stylesheet">
 <section class="product-page product-page-one ">
     <div class="container">
