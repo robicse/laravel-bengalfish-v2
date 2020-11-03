@@ -126,3 +126,6 @@ Route::group(['namespace' => 'Web','middleware' => $middleware], function () {
 Route::get('/test', 'Web\IndexController@test1');
 
 Route::get('artisan/{command}/{param}', 'CacheController@show');
+
+// select one table and update another table
+Route::get('/select-and-update', 'Web\IndexController@selectAndUpdate');

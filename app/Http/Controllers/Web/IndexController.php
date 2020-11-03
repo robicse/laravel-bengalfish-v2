@@ -1,5 +1,7 @@
 <?php
 namespace App\Http\Controllers\Web;
+use App\User;
+use Illuminate\Support\Str;
 use Validator;
 use DB;
 use Hash;
@@ -414,5 +416,55 @@ class IndexController extends Controller
 
 		return redirect()->back()->with('success', Lang::get("website.contact us message"));
 	}
+
+	public function selectAndUpdate(){
+//	    $userDatas = User::all();
+//
+//	    if(count($userDatas) > 0){
+//	        foreach($userDatas as $data){
+//	            //echo $data->id."<br/>";
+//
+//                $id = $data->id;
+//                $api_token = Str::random(60);
+//
+//                $user = User::find($id);
+//                $user->api_token = $api_token;
+//                $user->save();
+//                echo "data updated!"."<br/>";
+//            }
+//        }else{
+//	        echo "no data found!";
+//        }
+//	    die();
+
+
+
+
+        //$userDatas = User::all();
+        $userDatas = \Illuminate\Support\Facades\DB::table('users_2')->get();
+        //dd($userDatas);
+
+        if(count($userDatas) > 0){
+            //while($row = $result->fetch_assoc()) {
+            foreach($userDatas as $data){
+                echo $data->id."<br/>";
+                echo $data->created_at."<br/>";
+
+//                $id = $data->id;
+//                $created_at = $data->created_at;
+//
+//                $user = User::find($id);
+//                echo '<pre>';
+//                print($user);
+//                echo '</pre>';
+//                $user->created_at = $created_at;
+//                $user->save();
+//                echo "data updated!"."<br/>";
+            }
+        }else{
+            echo "no data found!";
+        }
+        die();
+    }
 
 }
