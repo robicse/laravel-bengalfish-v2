@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\API;
 use App\Helpers\UserInfo;
+use App\Http\Controllers\Web\AlertController;
 use App\Models\Web\Order;
 use App\Password_Reset_Code;
 use App\User;
@@ -51,9 +52,14 @@ class UserController extends Controller
         if(!empty($checkmail)){
             return response()->json(['success'=>false,'response' =>'Email Already Exist'], 403);
         }
+        $checkPhone=User::where('phone',$request->phone)->first();
+        if(!empty($checkPhone)){
+            return response()->json(['success'=>false,'response' =>'Phone Already Exist'], 403);
+        }
         $userReg = new User();
         $userReg->first_name = $request->firstName;
-        $userReg->last_name = $request->lastName;
+        //$userReg->last_name = $request->lastName;
+        $userReg->last_name = '';
         $userReg->email = $request->email;
         $userReg->gender = $request->gender;
         $userReg->status = 1;
@@ -61,6 +67,13 @@ class UserController extends Controller
         $userReg->password = Hash::make($request->password);
         $userReg->role_id = 2;
         $userReg->save();
+
+        if($userReg->id){
+            //email and notification
+            $customers = DB::table('users')->where('id', $userReg->id)->get();
+            $myVar = new AlertController();
+            $myVar->createUserAlert($customers);
+        }
 
 
 //        $verification = VerificationCode::where('phone',$user->phone)->first();

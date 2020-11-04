@@ -501,7 +501,7 @@ class Customer extends Model
         $email = $request->email;
         $password = $request->password;
         //$token = $request->token;
-        $date = date('y-md h:i:s');
+        //$date = date('Y-m-d h:i:s');
         $profile_photo = 'images/user.png';
 
       //echo "Value is completed";
@@ -514,8 +514,8 @@ class Customer extends Model
         'phone' => $request->phone,
         'email' => $request->email,
         'password' => Hash::make($password),
-        'created_at' => $date,
-        'updated_at' => $date,
+        //'created_at' => $date,
+        //'updated_at' => $date,
       );
 
 
@@ -544,8 +544,8 @@ class Customer extends Model
                     'phone' => $request->phone,
                     'email' => $request->email,
                     'password' => Hash::make($password),
-                    'created_at' => $date,
-                    'updated_at' => $date,
+                    //'created_at' => $date,
+                    //'updated_at' => $date,
                     ])
                    ){
                      $res['insert'] = "true";
