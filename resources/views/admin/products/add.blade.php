@@ -455,7 +455,7 @@
                                                 <div class="form-group">
                                                     <label for="name" class="col-sm-2 col-md-3 control-label">Meta Title</label>
                                                     <div class="col-sm-10 col-md-8">
-                                                        <input class="form-control" type="text" name="meta_title_<?=$languages->languages_id?>" id="meta_title" value="">
+                                                        <input class="form-control" type="text" name="meta_title" id="meta_title" value="">
                                                     </div>
                                                 </div>
                                             </div>
@@ -463,7 +463,7 @@
                                                 <div class="form-group">
                                                     <label for="name" class="col-sm-2 col-md-3 control-label">Meta Description</label>
                                                     <div class="col-sm-10 col-md-8">
-                                                        <textarea id="editor" name="meta_description_<?=$languages->languages_id?>" class="form-control" rows="1"></textarea>
+                                                        <textarea id="editor" name="meta_description" class="form-control" rows="1"></textarea>
                                                     </div>
                                                 </div>
                                             </div>

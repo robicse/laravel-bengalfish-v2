@@ -214,8 +214,10 @@ class Products extends Model
         $products_name = 'products_name_'.$languages_data->languages_id;
         $products_url = 'products_url_'.$languages_data->languages_id;
         $products_description = 'products_description_'.$languages_data->languages_id;
-        $meta_title = 'meta_title_'.$languages_data->languages_id;
-        $meta_description = 'meta_description_'.$languages_data->languages_id;
+        //$meta_title = 'meta_title_'.$languages_data->languages_id;
+        $meta_title = 'meta_title';
+        //$meta_description = 'meta_description_'.$languages_data->languages_id;
+        $meta_description = 'meta_description';
         //left banner
         $products_left_banner = 'products_left_banner_'.$languages_data->languages_id;
         $products_left_banner_start_date = 'products_left_banner_start_date_'.$languages_data->languages_id;
@@ -572,8 +574,10 @@ class Products extends Model
               $products_name = 'products_name_'.$languages_data->languages_id;
               $products_url = 'products_url_'.$languages_data->languages_id;
               $products_description = 'products_description_'.$languages_data->languages_id;
-              $meta_title = 'meta_title_'.$languages_data->languages_id;
-              $meta_description = 'meta_description_'.$languages_data->languages_id;
+              //$meta_title = 'meta_title_'.$languages_data->languages_id;
+              $meta_title = 'meta_title';
+              //$meta_description = 'meta_description_'.$languages_data->languages_id;
+              $meta_description = 'meta_description';
               //left banner
               $products_left_banner = 'products_left_banner_'.$languages_data->languages_id;
               $products_left_banner_start_date = 'products_left_banner_start_date_'.$languages_data->languages_id;
