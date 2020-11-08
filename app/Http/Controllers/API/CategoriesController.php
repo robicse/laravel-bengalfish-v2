@@ -118,8 +118,7 @@ class CategoriesController extends Controller
 
     public function categoryByProduct(Request $request)
     {
-        $category=Categories::all();
-        $category = DB::table('products_to_categories')
+        $categories = DB::table('products_to_categories')
             ->join('products', 'products_to_categories.products_id', '=', 'products.products_id')
             ->join('products_description', 'products_to_categories.products_id', '=', 'products_description.products_id')
             ->join('image_categories', 'products.products_image', '=', 'image_categories.image_id')
@@ -129,13 +128,37 @@ class CategoriesController extends Controller
             ->select('products_to_categories.*','products.*','products_description.*','image_categories.path as image_path')
             ->get();
 
+
+        $category = [];
+        foreach($categories as $data){
+
+            $product_image = $this->custom_live_base_url().'/'.$data->image_path;
+            //$product_image = $this->custom_localhost_base_url().$data->image_path;
+
+            $nested_data['categories_id'] = $data->categories_id;
+            $nested_data['products_id'] = $data->products_id;
+            $nested_data['products_name'] = $data->products_name;
+            $nested_data['products_slug'] = $data->products_slug;
+            $nested_data['products_description'] = $data->products_description;
+            $nested_data['products_price'] = $data->products_price;
+            $nested_data['products_weight'] = $data->products_weight;
+            $nested_data['products_weight_unit'] = $data->products_weight_unit;
+            $nested_data['products_status'] = $data->products_status;
+            $nested_data['products_ordered'] = $data->products_ordered;
+            $nested_data['products_liked'] = $data->products_liked;
+            $nested_data['is_feature'] = $data->is_feature;
+            $nested_data['products_min_order'] = $data->products_min_order;
+            $nested_data['image_path'] = $product_image;
+            $category[] = $nested_data;
+        }
+
         return response()->json(['success'=>true,'response'=>$category], $this->successStatus);
 
     }
     public function product(Request $request)
     {
 
-        $image = DB::table('products')
+        $images = DB::table('products')
             ->join('image_categories', 'products.products_image', '=', 'image_categories.image_id')
             ->where('products.products_id',$request->products_id)
             ->select('image_categories.path as product_image')
@@ -148,7 +171,32 @@ class CategoriesController extends Controller
             ->where('language_id',1)
             ->first();
 
-        return response()->json(['success'=>true,'product'=>$product,'image'=>$image], $this->successStatus);
+        $product_info['products_name'] = $product->products_name;
+        $product_info['products_slug'] = $product->products_slug;
+        $product_info['products_description'] = $product->products_description;
+        $product_info['products_price'] = $product->products_price;
+        $product_info['products_weight'] = $product->products_weight;
+        $product_info['products_weight_unit'] = $product->products_weight_unit;
+        $product_info['products_status'] = $product->products_status;
+        $product_info['products_ordered'] = $product->products_ordered;
+        $product_info['products_liked'] = $product->products_liked;
+        $product_info['is_feature'] = $product->is_feature;
+        $product_info['products_min_order'] = $product->products_min_order;
+
+
+
+        $image = [];
+        foreach($images as $data){
+            $product_image = $this->custom_live_base_url().'/'.$data->product_image;
+            //$product_image = $this->custom_localhost_base_url().$data->product_image;
+
+            $nested_data['product_image'] = $product_image;
+
+            $image[] = $nested_data;
+        }
+
+
+        return response()->json(['success'=>true,'product'=>$product_info,'image'=>$image], $this->successStatus);
 
     }
     public function special_product()
