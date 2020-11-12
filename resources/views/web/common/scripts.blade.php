@@ -275,29 +275,29 @@ jQuery(document).ready(function(e) {
 jQuery( document ).ready( function () {
 	jQuery('#loader').hide();
 
-	@if($result['commonContent']['setting'][54]->value=='onesignal')
-	 OneSignal.push(function () {
-	  OneSignal.registerForPushNotifications();
-	  OneSignal.on('subscriptionChange', function (isSubscribed) {
-	   if (isSubscribed) {
-		OneSignal.getUserId(function (userId) {
-		 device_id = userId;
-		 //ajax request
-		 jQuery.ajax({
-			 headers: {'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')},
-			url: '{{ URL::to("/subscribeNotification")}}',
-			type: "POST",
-			data: '&device_id='+device_id,
-			success: function (res) {},
-		});
+{{--	@if($result['commonContent']['setting'][54]->value=='onesignal')--}}
+{{--	 OneSignal.push(function () {--}}
+{{--	  OneSignal.registerForPushNotifications();--}}
+{{--	  OneSignal.on('subscriptionChange', function (isSubscribed) {--}}
+{{--	   if (isSubscribed) {--}}
+{{--		OneSignal.getUserId(function (userId) {--}}
+{{--		 device_id = userId;--}}
+{{--		 //ajax request--}}
+{{--		 jQuery.ajax({--}}
+{{--			 headers: {'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')},--}}
+{{--			url: '{{ URL::to("/subscribeNotification")}}',--}}
+{{--			type: "POST",--}}
+{{--			data: '&device_id='+device_id,--}}
+{{--			success: function (res) {},--}}
+{{--		});--}}
 
-		 //$scope.oneSignalCookie();
-		});
-	   }
-	  });
+{{--		 //$scope.oneSignalCookie();--}}
+{{--		});--}}
+{{--	   }--}}
+{{--	  });--}}
 
-	 });
-	@endif
+{{--	 });--}}
+{{--	@endif--}}
 
 	//load google map
 @if(Request::path() == 'contact-us')
@@ -1577,7 +1577,7 @@ jQuery(function(){
 // sticky start
 window.onscroll = function() {myFunction()};
 
-var header = document.getElementById("myHeader");
+var header = document.getElementById("headerOne");
 var sticky = header.offsetTop;
 
 function myFunction() {

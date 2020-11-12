@@ -79,47 +79,47 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
 
 <!--------- stripe js ------>
-<script src="https://js.stripe.com/v3/"></script>
+{{--<script src="https://js.stripe.com/v3/"></script>--}}
 
-<link rel="stylesheet" type="text/css" href="{{asset('web/css/stripe.css') }}" data-rel-css="" />
+{{--<link rel="stylesheet" type="text/css" href="{{asset('web/css/stripe.css') }}" data-rel-css="" />--}}
 
 <!------- paypal ---------->
-<script src="https://www.paypalobjects.com/api/checkout.js"></script>
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+{{--<script src="https://www.paypalobjects.com/api/checkout.js"></script>--}}
+{{--<script src="https://checkout.razorpay.com/v1/checkout.js"></script>--}}
 
 
 <!---- onesignal ------>
-@if($result['setting'][54]->value=='onesignal')
-    <link rel="manifest" href="{!! asset('onesignal/manifest.json') !!}" />
-    <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
-    <script>
-        var OneSignal = window.OneSignal || [];
-        OneSignal.push(function() {
-            //push here
-        });
+{{--@if($result['setting'][54]->value=='onesignal')--}}
+{{--    <link rel="manifest" href="{!! asset('onesignal/manifest.json') !!}" />--}}
+{{--    <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>--}}
+{{--    <script>--}}
+{{--        var OneSignal = window.OneSignal || [];--}}
+{{--        OneSignal.push(function() {--}}
+{{--            //push here--}}
+{{--        });--}}
 
-        //onesignal
-        OneSignal.push(["init", {
-            appId: "{{$result['setting'][55]->value}}",
-            // safari_web_id: oneSignalSafariWebId,
-            persistNotification: false,
-            notificationClickHandlerMatch: 'origin',
-            autoRegister: false,
-            notifyButton: {
-                enable: false
-            }
-        }]);
+{{--        //onesignal--}}
+{{--        OneSignal.push(["init", {--}}
+{{--            appId: "{{$result['setting'][55]->value}}",--}}
+{{--            // safari_web_id: oneSignalSafariWebId,--}}
+{{--            persistNotification: false,--}}
+{{--            notificationClickHandlerMatch: 'origin',--}}
+{{--            autoRegister: false,--}}
+{{--            notifyButton: {--}}
+{{--                enable: false--}}
+{{--            }--}}
+{{--        }]);--}}
 
-    </script>
+{{--    </script>--}}
 
-    @php
-        $first_segment = request()->segment(1);
-        $second_segment = request()->segment(2);
-        $third_segment = request()->segment(3);
-    @endphp
+{{--    @php--}}
+{{--        $first_segment = request()->segment(1);--}}
+{{--        $second_segment = request()->segment(2);--}}
+{{--        $third_segment = request()->segment(3);--}}
+{{--    @endphp--}}
 
 
-@endif
+{{--@endif--}}
 
 @if(!empty($result['setting'][76]->value))
     <?=stripslashes($result['setting'][76]->value)?>
