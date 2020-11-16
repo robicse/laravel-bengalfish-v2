@@ -29,10 +29,25 @@ class UserController extends Controller
 
     public function login(Request $request)
     {
-        $credentials = [
-            'email' => $request->email,
-            'password' => $request->password,
-        ];
+//        $credentials = [
+//            'email' => $request->email,
+//            'password' => $request->password,
+//        ];
+
+        if (is_numeric($request->email)){
+            $credentials = [
+                'phone' => $request->email,
+                'password' => $request->password,
+            ];
+        }else{
+            $credentials = [
+                'email' => $request->email,
+                'password' => $request->password,
+            ];
+        }
+
+
+
         if(Auth::attempt($credentials))
         {
             $user = Auth::user();
@@ -66,6 +81,7 @@ class UserController extends Controller
         $userReg->api_token = Str::random(60);
         $userReg->password = Hash::make($request->password);
         $userReg->role_id = 2;
+        $userReg->registration_as = 'phone';
         $userReg->save();
 
         if($userReg->id){
