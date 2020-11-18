@@ -52,69 +52,79 @@ class CategoriesController extends Controller
     /*custom base url*/
 
 
-
     public function category()
     {
-        //$category=Categories::all();
+
         $categories = DB::table('categories')
             ->join('categories_description', 'categories.categories_id', '=', 'categories_description.categories_id')
             ->join('images', 'categories.categories_image', '=', 'images.id')
-            ->join('image_categories', 'image_categories.image_id', '=', 'images.id')
             ->where('categories.parent_id',0)
             ->where('categories_description.language_id',1)
-            ->select('categories.*', 'images.name as category_image','categories_description.categories_name as categories_name','image_categories.path as category_image')
+            ->select('categories.*', 'images.id as image_id','categories_description.categories_name as categories_name')
             ->get();
 
-        $category = [];
-        foreach($categories as $data){
+        $data = array();
 
-            $category_image = $this->custom_live_base_url().'/'.$data->category_image;
-            //$category_image = $this->custom_localhost_base_url().$data->category_image;
+        foreach ($categories as $category) {
 
-            $nested_data['categories_id'] = $data->categories_id;
-            $nested_data['parent_id'] = $data->parent_id;
-            $nested_data['categories_name'] = $data->categories_name;
-            $nested_data['categories_slug'] = $data->categories_slug;
-            $nested_data['cat_slogan'] = $data->cat_slogan;
-            $nested_data['position_sequence'] = $data->position_sequence;
-            $nested_data['categories_status'] = $data->categories_status;
-            $nested_data['categories_image'] = $category_image;
-            $category[] = $nested_data;
+            $image_path = DB::table('image_categories')->where('image_id',$category->image_id)->pluck('path')->first();
+
+            $category_image = $this->custom_live_base_url().'/'.$image_path;
+            //$category_image = $this->custom_localhost_base_url().$image_path;
+
+            $data[] = array(
+                'categories_id' => $category->categories_id,
+                'parent_id' => $category->parent_id,
+                'categories_name' => $category->categories_name,
+                'categories_slug' => $category->categories_slug,
+                //'cat_slogan' => $category->cat_slogan,
+                //'position_sequence' => $category->position_sequence,
+                'categories_status' => $category->categories_status,
+                'categories_image' => $category_image,
+            );
         }
-        return response()->json(['success'=>true,'response'=>$category], $this->successStatus);
+
+        return response()->json(['success'=>true,'response'=>$data], $this->successStatus);
     }
 
     public function subcategory(Request $request)
     {
-        //$category=Categories::all();
+
         $categories = DB::table('categories')
             ->join('categories_description', 'categories.categories_id', '=', 'categories_description.categories_id')
             ->join('images', 'categories.categories_image', '=', 'images.id')
-            ->join('image_categories', 'image_categories.image_id', '=', 'images.id')
-            ->where('categories.parent_id',$request->category_id)
+            ->where('categories.parent_id',0)
             ->where('categories_description.language_id',1)
-            ->select('categories.*', 'images.name as category_image','categories_description.categories_name as categories_name','image_categories.path as category_image')
+            ->where('categories.parent_id',$request->category_id)
+            ->select('categories.*', 'images.id as image_id','categories_description.categories_name as categories_name')
             ->get();
 
-        $category = [];
-        foreach($categories as $data){
+        $data = array();
 
-            $category_image = $this->custom_live_base_url().'/'.$data->category_image;
-            //$category_image = $this->custom_localhost_base_url().$data->category_image;
+        foreach ($categories as $category) {
 
-            $nested_data['categories_id'] = $data->categories_id;
-            $nested_data['parent_id'] = $data->parent_id;
-            $nested_data['categories_name'] = $data->categories_name;
-            $nested_data['categories_slug'] = $data->categories_slug;
-            $nested_data['cat_slogan'] = $data->cat_slogan;
-            $nested_data['position_sequence'] = $data->position_sequence;
-            $nested_data['categories_status'] = $data->categories_status;
-            $nested_data['categories_image'] = $category_image;
-            $category[] = $nested_data;
+            $image_path = DB::table('image_categories')->where('image_id',$category->image_id)->pluck('path')->first();
+
+            $category_image = $this->custom_live_base_url().'/'.$image_path;
+            //$category_image = $this->custom_localhost_base_url().$image_path;
+
+            $data[] = array(
+                'categories_id' => $category->categories_id,
+                'parent_id' => $category->parent_id,
+                'categories_name' => $category->categories_name,
+                'categories_slug' => $category->categories_slug,
+                //'cat_slogan' => $category->cat_slogan,
+                //'position_sequence' => $category->position_sequence,
+                'categories_status' => $category->categories_status,
+                'categories_image' => $category_image,
+            );
         }
-        return response()->json(['success'=>true,'response'=>$category], $this->successStatus);
 
+        return response()->json(['success'=>true,'response'=>$data], $this->successStatus);
     }
+
+
+
 
     public function categoryByProduct(Request $request)
     {
