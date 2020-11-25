@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
@@ -209,38 +210,772 @@ class CategoriesController extends Controller
         return response()->json(['success'=>true,'product'=>$product_info,'image'=>$image], $this->successStatus);
 
     }
+
+//    public function special_product()
+//    {
+//        session()->put('language_id', 1);
+//        $data = array('page_number' => '0', 'type' => 'special', 'limit' => 12, 'min_price' => '', 'max_price' => '');
+//        $special = $this->products->products($data);
+//
+//        return response()->json(['success'=>true,'product'=>$special], $this->successStatus);
+//    }
+
     public function special_product()
     {
-        session()->put('language_id', 1);
-        $data = array('page_number' => '0', 'type' => 'special', 'limit' => 12, 'min_price' => '', 'max_price' => '');
-        $special = $this->products->products($data);
+        $sortby	     = "specials.products_id";
+        $order	     = "DESC";
+        $currentDate = time();
 
-        return response()->json(['success'=>true,'product'=>$special], $this->successStatus);
+        $categories = DB::table('products')
+            ->leftJoin('products_description','products_description.products_id','=','products.products_id')
+            ->LeftJoin('image_categories','products.products_image','=','image_categories.image_id');
+
+
+//        $categories->LeftJoin('specials', function ($join) use ($currentDate) {
+//            $join->on('specials.products_id', '=', 'products.products_id')->where('status', '=', '1')->where('expires_date', '>', $currentDate);
+//        })->select('products.products_id','products.products_quantity','products.products_image','products.products_price','products.products_weight','products.products_weight_unit','products.products_status','products.is_current','products.products_ordered','products.products_liked','products.low_limit','products.is_feature','products.products_slug','products.products_type','products.products_min_order','image_categories.path as image_path','products_description.products_name','products_description.products_description');
+        $categories->LeftJoin('specials', 'specials.products_id', '=', 'products.products_id')
+            ->select('products.products_id','products.products_quantity','products.products_image','products.products_price','products.products_weight','products.products_weight_unit','products.products_status','products.is_current','products.products_ordered','products.products_liked','products.low_limit','products.is_feature','products.products_slug','products.products_type','products.products_min_order','image_categories.path as image_path','products_description.products_name','products_description.products_description', 'specials.specials_new_products_price as discount_price');
+
+
+        $categories->where('products_description.language_id','=',1)->where('products_status','=',1);
+        $categories->where('specials.status','=', '1')->where('expires_date','>',  $currentDate);
+        $categories->orderBy($sortby, $order)->groupBy('products.products_id');
+
+        //count
+        $total_record = $categories->get();
+        $products  = $categories->get();
+
+        $result = array();
+
+        //check if record exist
+        if(count($products)>0){
+
+            $index = 0;
+            foreach ($products as $products_data){
+                $reviews = DB::table('reviews')
+                    ->leftjoin('users', 'users.id', '=', 'reviews.customers_id')
+                    ->leftjoin('reviews_description', 'reviews.reviews_id', '=', 'reviews_description.review_id')
+                    ->select('reviews.*','reviews_description.reviews_text')
+                    ->where('products_id', $products_data->products_id)
+                    ->where('reviews_status', '1')
+                    ->where('reviews_read', '1')
+                    ->get();
+
+                if (count($reviews) > 0) {
+                    $five_star = 0;
+                    $five_count = 0;
+
+                    $four_star = 0;
+                    $four_count = 0;
+
+                    $three_star = 0;
+                    $three_count = 0;
+
+                    $two_star = 0;
+                    $two_count = 0;
+
+                    $one_star = 0;
+                    $one_count = 0;
+
+                    foreach ($reviews as $review) {
+
+                        //five star ratting
+                        if ($review->reviews_rating == '5') {
+                            $five_star += $review->reviews_rating;
+                            $five_count++;
+                        }
+
+                        //four star ratting
+                        if ($review->reviews_rating == '4') {
+                            $four_star += $review->reviews_rating;
+                            $four_count++;
+                        }
+                        //three star ratting
+                        if ($review->reviews_rating == '3') {
+                            $three_star += $review->reviews_rating;
+                            $three_count++;
+                        }
+                        //two star ratting
+                        if ($review->reviews_rating == '2') {
+                            $two_star += $review->reviews_rating;
+                            $two_count++;
+                        }
+
+                        //one star ratting
+                        if ($review->reviews_rating == '1') {
+                            $one_star += $review->reviews_rating;
+                            $one_count++;
+                        }
+                    }
+
+                    $five_ratio = round($five_count / count($reviews) * 100);
+                    $four_ratio = round($four_count / count($reviews) * 100);
+                    $three_ratio = round($three_count / count($reviews) * 100);
+                    $two_ratio = round($two_count / count($reviews) * 100);
+                    $one_ratio = round($one_count / count($reviews) * 100);
+
+                    $avarage_rate = (5 * $five_star + 4 * $four_star + 3 * $three_star + 2 * $two_star + 1 * $one_star) / ($five_star + $four_star + $three_star + $two_star + $one_star);
+                    $total_user_rated = count($reviews);
+                    $reviewed_customers = $reviews;
+                } else {
+                    $reviewed_customers = array();
+                    $avarage_rate = 0;
+                    $total_user_rated = 0;
+
+                    $five_ratio = 0;
+                    $four_ratio = 0;
+                    $three_ratio = 0;
+                    $two_ratio = 0;
+                    $one_ratio = 0;
+                }
+
+                $products_data->rating = number_format($avarage_rate, 2);
+                $products_data->total_user_rated = $total_user_rated;
+
+                $products_data->five_ratio = $five_ratio;
+                $products_data->four_ratio = $four_ratio;
+                $products_data->three_ratio = $three_ratio;
+                $products_data->two_ratio = $two_ratio;
+                $products_data->one_ratio = $one_ratio;
+
+                //review by users
+                //$products_data->reviewed_customers = $reviewed_customers;
+                $products_id = $products_data->products_id;
+
+                //multiple images
+//                $products_images = DB::table('products_images')
+//                    ->LeftJoin('image_categories','products_images.image','=','image_categories.image_id')
+//                    ->select('image_categories.path as image_path','image_categories.image_type')
+//                    ->where('products_id','=', $products_id)
+//                    ->orderBy('sort_order', 'ASC')
+//                    ->get();
+//                $products_data->images =  $products_images;
+
+                $default_image_thumb = DB::table('products')
+                    ->LeftJoin('image_categories','products.products_image','=','image_categories.image_id')
+                    ->select('image_categories.path as image_path','image_categories.image_type')
+                    ->where('products_id','=', $products_id)
+                    ->where('image_type','=', 'THUMBNAIL')
+                    ->first();
+
+                $products_data->default_thumb =  $default_image_thumb;
+
+                //categories
+                $categories = DB::table('products_to_categories')
+                    ->leftjoin('categories','categories.categories_id','products_to_categories.categories_id')
+                    ->leftjoin('categories_description','categories_description.categories_id','products_to_categories.categories_id')
+                    ->select('categories.categories_id','categories_description.categories_name','categories.categories_image','categories.categories_icon', 'categories.parent_id')
+                    ->where('products_id','=', $products_id)
+                    ->where('categories_description.language_id','=', 1)->get();
+
+                $products_data->categories =  $categories;
+                array_push($result,$products_data);
+
+
+                $stocks = 0;
+                $stockOut = 0;
+                if($products_data->products_type == '0'){
+                    $stocks = DB::table('inventory')->where('products_id',$products_data->products_id)->where('stock_type','in')->sum('stock');
+                    $stockOut = DB::table('inventory')->where('products_id',$products_data->products_id)->where('stock_type','out')->sum('stock');
+                }
+
+                $result[$index]->defaultStock = $stocks - $stockOut;
+
+                //like product
+                if(!empty(session('customers_id'))){
+                    $liked_customers_id						=	session('customers_id');
+                    $categories = DB::table('liked_products')->where('liked_products_id', '=', $products_id)->where('liked_customers_id', '=', $liked_customers_id)->get();
+
+                    if(count($categories)>0){
+                        $result[$index]->isLiked = '1';
+                    }else{
+                        $result[$index]->isLiked = '0';
+                    }
+                }else{
+                    $result[$index]->isLiked = '0';
+                }
+            }
+            $responseData = array('success'=>'1', 'product_data'=>$result,  'message'=>Lang::get('website.Returned all products'), 'total_record'=>count($total_record));
+
+        }else{
+            $responseData = array('success'=>'0', 'product_data'=>$result,  'message'=>Lang::get('website.Empty record'), 'total_record'=>count($total_record));
+        }
+
+        return response()->json(['success'=>true,'product'=>$responseData], $this->successStatus);
     }
+
+//    public function top_seller_product()
+//    {
+//        session()->put('language_id', 1);
+//        $data = array('page_number' => '0', 'type' => 'topseller', 'limit' => 12, 'min_price' => '', 'max_price' => '');
+//        $top_seller = $this->products->products($data);
+//
+//        return response()->json(['success'=>true,'product'=>$top_seller], $this->successStatus);
+//    }
+
     public function top_seller_product()
     {
-        session()->put('language_id', 1);
-        $data = array('page_number' => '0', 'type' => 'topseller', 'limit' => 12, 'min_price' => '', 'max_price' => '');
-        $top_seller = $this->products->products($data);
+        $sortby	     = "products_ordered";
+        $order	     = "DESC";
+        $currentDate = time();
 
-        return response()->json(['success'=>true,'product'=>$top_seller], $this->successStatus);
+        $categories = DB::table('products')
+            ->leftJoin('products_description','products_description.products_id','=','products.products_id')
+            ->LeftJoin('image_categories','products.products_image','=','image_categories.image_id');
+
+
+        $categories->LeftJoin('specials', function ($join) use ($currentDate) {
+            $join->on('specials.products_id', '=', 'products.products_id')->where('status', '=', '1')->where('expires_date', '>', $currentDate);
+        })->select('products.products_id','products.products_quantity','products.products_image','products.products_price','products.products_weight','products.products_weight_unit','products.products_status','products.is_current','products.products_ordered','products.products_liked','products.low_limit','products.is_feature','products.products_slug','products.products_type','products.products_min_order','image_categories.path as image_path','products_description.products_name','products_description.products_description');
+
+
+        $categories->where('products_description.language_id','=',1)->where('products_status','=',1);
+        $categories->orderBy($sortby, $order)->groupBy('products.products_id');
+
+        //count
+        $total_record = $categories->get();
+        $products  = $categories->get();
+
+        $result = array();
+
+        //check if record exist
+        if(count($products)>0){
+
+            $index = 0;
+            foreach ($products as $products_data){
+                $reviews = DB::table('reviews')
+                    ->leftjoin('users', 'users.id', '=', 'reviews.customers_id')
+                    ->leftjoin('reviews_description', 'reviews.reviews_id', '=', 'reviews_description.review_id')
+                    ->select('reviews.*','reviews_description.reviews_text')
+                    ->where('products_id', $products_data->products_id)
+                    ->where('reviews_status', '1')
+                    ->where('reviews_read', '1')
+                    ->get();
+
+                if (count($reviews) > 0) {
+                    $five_star = 0;
+                    $five_count = 0;
+
+                    $four_star = 0;
+                    $four_count = 0;
+
+                    $three_star = 0;
+                    $three_count = 0;
+
+                    $two_star = 0;
+                    $two_count = 0;
+
+                    $one_star = 0;
+                    $one_count = 0;
+
+                    foreach ($reviews as $review) {
+
+                        //five star ratting
+                        if ($review->reviews_rating == '5') {
+                            $five_star += $review->reviews_rating;
+                            $five_count++;
+                        }
+
+                        //four star ratting
+                        if ($review->reviews_rating == '4') {
+                            $four_star += $review->reviews_rating;
+                            $four_count++;
+                        }
+                        //three star ratting
+                        if ($review->reviews_rating == '3') {
+                            $three_star += $review->reviews_rating;
+                            $three_count++;
+                        }
+                        //two star ratting
+                        if ($review->reviews_rating == '2') {
+                            $two_star += $review->reviews_rating;
+                            $two_count++;
+                        }
+
+                        //one star ratting
+                        if ($review->reviews_rating == '1') {
+                            $one_star += $review->reviews_rating;
+                            $one_count++;
+                        }
+                    }
+
+                    $five_ratio = round($five_count / count($reviews) * 100);
+                    $four_ratio = round($four_count / count($reviews) * 100);
+                    $three_ratio = round($three_count / count($reviews) * 100);
+                    $two_ratio = round($two_count / count($reviews) * 100);
+                    $one_ratio = round($one_count / count($reviews) * 100);
+
+                    $avarage_rate = (5 * $five_star + 4 * $four_star + 3 * $three_star + 2 * $two_star + 1 * $one_star) / ($five_star + $four_star + $three_star + $two_star + $one_star);
+                    $total_user_rated = count($reviews);
+                    $reviewed_customers = $reviews;
+                } else {
+                    $reviewed_customers = array();
+                    $avarage_rate = 0;
+                    $total_user_rated = 0;
+
+                    $five_ratio = 0;
+                    $four_ratio = 0;
+                    $three_ratio = 0;
+                    $two_ratio = 0;
+                    $one_ratio = 0;
+                }
+
+                $products_data->rating = number_format($avarage_rate, 2);
+                $products_data->total_user_rated = $total_user_rated;
+
+                $products_data->five_ratio = $five_ratio;
+                $products_data->four_ratio = $four_ratio;
+                $products_data->three_ratio = $three_ratio;
+                $products_data->two_ratio = $two_ratio;
+                $products_data->one_ratio = $one_ratio;
+
+                //review by users
+                //$products_data->reviewed_customers = $reviewed_customers;
+                $products_id = $products_data->products_id;
+
+                //multiple images
+//                $products_images = DB::table('products_images')
+//                    ->LeftJoin('image_categories','products_images.image','=','image_categories.image_id')
+//                    ->select('image_categories.path as image_path','image_categories.image_type')
+//                    ->where('products_id','=', $products_id)
+//                    ->orderBy('sort_order', 'ASC')
+//                    ->get();
+//                $products_data->images =  $products_images;
+
+                $default_image_thumb = DB::table('products')
+                    ->LeftJoin('image_categories','products.products_image','=','image_categories.image_id')
+                    ->select('image_categories.path as image_path','image_categories.image_type')
+                    ->where('products_id','=', $products_id)
+                    ->where('image_type','=', 'THUMBNAIL')
+                    ->first();
+
+                $products_data->default_thumb =  $default_image_thumb;
+
+                //categories
+                $categories = DB::table('products_to_categories')
+                    ->leftjoin('categories','categories.categories_id','products_to_categories.categories_id')
+                    ->leftjoin('categories_description','categories_description.categories_id','products_to_categories.categories_id')
+                    ->select('categories.categories_id','categories_description.categories_name','categories.categories_image','categories.categories_icon', 'categories.parent_id')
+                    ->where('products_id','=', $products_id)
+                    ->where('categories_description.language_id','=', 1)->get();
+
+                $products_data->categories =  $categories;
+                array_push($result,$products_data);
+
+
+                $stocks = 0;
+                $stockOut = 0;
+                if($products_data->products_type == '0'){
+                    $stocks = DB::table('inventory')->where('products_id',$products_data->products_id)->where('stock_type','in')->sum('stock');
+                    $stockOut = DB::table('inventory')->where('products_id',$products_data->products_id)->where('stock_type','out')->sum('stock');
+                }
+
+                $result[$index]->defaultStock = $stocks - $stockOut;
+
+                //like product
+                if(!empty(session('customers_id'))){
+                    $liked_customers_id						=	session('customers_id');
+                    $categories = DB::table('liked_products')->where('liked_products_id', '=', $products_id)->where('liked_customers_id', '=', $liked_customers_id)->get();
+
+                    if(count($categories)>0){
+                        $result[$index]->isLiked = '1';
+                    }else{
+                        $result[$index]->isLiked = '0';
+                    }
+                }else{
+                    $result[$index]->isLiked = '0';
+                }
+            }
+            $responseData = array('success'=>'1', 'product_data'=>$result,  'message'=>Lang::get('website.Returned all products'), 'total_record'=>count($total_record));
+
+        }else{
+            $responseData = array('success'=>'0', 'product_data'=>$result,  'message'=>Lang::get('website.Empty record'), 'total_record'=>count($total_record));
+        }
+
+        return response()->json(['success'=>true,'product'=>$responseData], $this->successStatus);
     }
+
+//    public function most_liked()
+//    {
+//        session()->put('language_id', 1);
+//        $data = array('page_number' => '0', 'type' => 'mostliked', 'limit' => 12, 'min_price' => '', 'max_price' => '');
+//        $most_liked = $this->products->products($data);
+//
+//        return response()->json(['success'=>true,'product'=>$most_liked], $this->successStatus);
+//    }
+
     public function most_liked()
     {
-        session()->put('language_id', 1);
-        $data = array('page_number' => '0', 'type' => 'mostliked', 'limit' => 12, 'min_price' => '', 'max_price' => '');
-        $most_liked = $this->products->products($data);
+        $sortby	     = "products_liked";
+        $order	     = "DESC";
+        $currentDate = time();
 
-        return response()->json(['success'=>true,'product'=>$most_liked], $this->successStatus);
+        $categories = DB::table('products')
+            ->leftJoin('products_description','products_description.products_id','=','products.products_id')
+            ->LeftJoin('image_categories','products.products_image','=','image_categories.image_id');
+
+
+        $categories->LeftJoin('specials', function ($join) use ($currentDate) {
+            $join->on('specials.products_id', '=', 'products.products_id')->where('status', '=', '1')->where('expires_date', '>', $currentDate);
+        })->select('products.products_id','products.products_quantity','products.products_image','products.products_price','products.products_weight','products.products_weight_unit','products.products_status','products.is_current','products.products_ordered','products.products_liked','products.low_limit','products.is_feature','products.products_slug','products.products_type','products.products_min_order','image_categories.path as image_path','products_description.products_name','products_description.products_description');
+
+
+        $categories->where('products_description.language_id','=',1)->where('products_status','=',1);
+        $categories->orderBy($sortby, $order)->groupBy('products.products_id');
+
+        //count
+        $total_record = $categories->get();
+        $products  = $categories->get();
+
+        $result = array();
+
+        //check if record exist
+        if(count($products)>0){
+
+            $index = 0;
+            foreach ($products as $products_data){
+                $reviews = DB::table('reviews')
+                    ->leftjoin('users', 'users.id', '=', 'reviews.customers_id')
+                    ->leftjoin('reviews_description', 'reviews.reviews_id', '=', 'reviews_description.review_id')
+                    ->select('reviews.*','reviews_description.reviews_text')
+                    ->where('products_id', $products_data->products_id)
+                    ->where('reviews_status', '1')
+                    ->where('reviews_read', '1')
+                    ->get();
+
+                if (count($reviews) > 0) {
+                    $five_star = 0;
+                    $five_count = 0;
+
+                    $four_star = 0;
+                    $four_count = 0;
+
+                    $three_star = 0;
+                    $three_count = 0;
+
+                    $two_star = 0;
+                    $two_count = 0;
+
+                    $one_star = 0;
+                    $one_count = 0;
+
+                    foreach ($reviews as $review) {
+
+                        //five star ratting
+                        if ($review->reviews_rating == '5') {
+                            $five_star += $review->reviews_rating;
+                            $five_count++;
+                        }
+
+                        //four star ratting
+                        if ($review->reviews_rating == '4') {
+                            $four_star += $review->reviews_rating;
+                            $four_count++;
+                        }
+                        //three star ratting
+                        if ($review->reviews_rating == '3') {
+                            $three_star += $review->reviews_rating;
+                            $three_count++;
+                        }
+                        //two star ratting
+                        if ($review->reviews_rating == '2') {
+                            $two_star += $review->reviews_rating;
+                            $two_count++;
+                        }
+
+                        //one star ratting
+                        if ($review->reviews_rating == '1') {
+                            $one_star += $review->reviews_rating;
+                            $one_count++;
+                        }
+                    }
+
+                    $five_ratio = round($five_count / count($reviews) * 100);
+                    $four_ratio = round($four_count / count($reviews) * 100);
+                    $three_ratio = round($three_count / count($reviews) * 100);
+                    $two_ratio = round($two_count / count($reviews) * 100);
+                    $one_ratio = round($one_count / count($reviews) * 100);
+
+                    $avarage_rate = (5 * $five_star + 4 * $four_star + 3 * $three_star + 2 * $two_star + 1 * $one_star) / ($five_star + $four_star + $three_star + $two_star + $one_star);
+                    $total_user_rated = count($reviews);
+                    $reviewed_customers = $reviews;
+                } else {
+                    $reviewed_customers = array();
+                    $avarage_rate = 0;
+                    $total_user_rated = 0;
+
+                    $five_ratio = 0;
+                    $four_ratio = 0;
+                    $three_ratio = 0;
+                    $two_ratio = 0;
+                    $one_ratio = 0;
+                }
+
+                $products_data->rating = number_format($avarage_rate, 2);
+                $products_data->total_user_rated = $total_user_rated;
+
+                $products_data->five_ratio = $five_ratio;
+                $products_data->four_ratio = $four_ratio;
+                $products_data->three_ratio = $three_ratio;
+                $products_data->two_ratio = $two_ratio;
+                $products_data->one_ratio = $one_ratio;
+
+                //review by users
+                //$products_data->reviewed_customers = $reviewed_customers;
+                $products_id = $products_data->products_id;
+
+                //multiple images
+//                $products_images = DB::table('products_images')
+//                    ->LeftJoin('image_categories','products_images.image','=','image_categories.image_id')
+//                    ->select('image_categories.path as image_path','image_categories.image_type')
+//                    ->where('products_id','=', $products_id)
+//                    ->orderBy('sort_order', 'ASC')
+//                    ->get();
+//                $products_data->images =  $products_images;
+
+                $default_image_thumb = DB::table('products')
+                    ->LeftJoin('image_categories','products.products_image','=','image_categories.image_id')
+                    ->select('image_categories.path as image_path','image_categories.image_type')
+                    ->where('products_id','=', $products_id)
+                    ->where('image_type','=', 'THUMBNAIL')
+                    ->first();
+
+                $products_data->default_thumb =  $default_image_thumb;
+
+                //categories
+                $categories = DB::table('products_to_categories')
+                    ->leftjoin('categories','categories.categories_id','products_to_categories.categories_id')
+                    ->leftjoin('categories_description','categories_description.categories_id','products_to_categories.categories_id')
+                    ->select('categories.categories_id','categories_description.categories_name','categories.categories_image','categories.categories_icon', 'categories.parent_id')
+                    ->where('products_id','=', $products_id)
+                    ->where('categories_description.language_id','=', 1)->get();
+
+                $products_data->categories =  $categories;
+                array_push($result,$products_data);
+
+
+                $stocks = 0;
+                $stockOut = 0;
+                if($products_data->products_type == '0'){
+                    $stocks = DB::table('inventory')->where('products_id',$products_data->products_id)->where('stock_type','in')->sum('stock');
+                    $stockOut = DB::table('inventory')->where('products_id',$products_data->products_id)->where('stock_type','out')->sum('stock');
+                }
+
+                $result[$index]->defaultStock = $stocks - $stockOut;
+
+                //like product
+                if(!empty(session('customers_id'))){
+                    $liked_customers_id						=	session('customers_id');
+                    $categories = DB::table('liked_products')->where('liked_products_id', '=', $products_id)->where('liked_customers_id', '=', $liked_customers_id)->get();
+
+                    if(count($categories)>0){
+                        $result[$index]->isLiked = '1';
+                    }else{
+                        $result[$index]->isLiked = '0';
+                    }
+                }else{
+                    $result[$index]->isLiked = '0';
+                }
+            }
+            $responseData = array('success'=>'1', 'product_data'=>$result,  'message'=>Lang::get('website.Returned all products'), 'total_record'=>count($total_record));
+
+        }else{
+            $responseData = array('success'=>'0', 'product_data'=>$result,  'message'=>Lang::get('website.Empty record'), 'total_record'=>count($total_record));
+        }
+
+        return response()->json(['success'=>true,'product'=>$responseData], $this->successStatus);
     }
+
+//    public function newest_product()
+//    {
+//        session()->put('language_id', 1);
+//        $data = array('page_number' => '0', 'type' => '', 'limit' => 12, 'min_price' => '', 'max_price' => '');
+//        $newest_products = $this->products->products($data);
+//
+//        return response()->json(['success'=>true,'product'=>$newest_products], $this->successStatus);
+//    }
 
     public function newest_product()
     {
-        session()->put('language_id', 1);
-        $data = array('page_number' => '0', 'type' => '', 'limit' => 12, 'min_price' => '', 'max_price' => '');
-        $newest_products = $this->products->products($data);
+        $sortby	     = "products_id";
+        $order	     = "DESC";
+        $currentDate = time();
 
-        return response()->json(['success'=>true,'product'=>$newest_products], $this->successStatus);
+        $categories = DB::table('products')
+            ->leftJoin('products_description','products_description.products_id','=','products.products_id')
+            ->LeftJoin('image_categories','products.products_image','=','image_categories.image_id');
+
+
+        $categories->LeftJoin('specials', function ($join) use ($currentDate) {
+            $join->on('specials.products_id', '=', 'products.products_id')->where('status', '=', '1')->where('expires_date', '>', $currentDate);
+        })->select('products.products_id','products.products_quantity','products.products_image','products.products_price','products.products_weight','products.products_weight_unit','products.products_status','products.is_current','products.products_ordered','products.products_liked','products.low_limit','products.is_feature','products.products_slug','products.products_type','products.products_min_order','image_categories.path as image_path','products_description.products_name','products_description.products_description');
+
+
+        $categories->where('products_description.language_id','=',1)->where('products_status','=',1);
+        $categories->orderBy($sortby, $order)->groupBy('products.products_id');
+
+        //count
+        $total_record = $categories->get();
+        $products  = $categories->get();
+
+        $result = array();
+
+        //check if record exist
+        if(count($products)>0){
+
+            $index = 0;
+            foreach ($products as $products_data){
+                $reviews = DB::table('reviews')
+                    ->leftjoin('users', 'users.id', '=', 'reviews.customers_id')
+                    ->leftjoin('reviews_description', 'reviews.reviews_id', '=', 'reviews_description.review_id')
+                    ->select('reviews.*','reviews_description.reviews_text')
+                    ->where('products_id', $products_data->products_id)
+                    ->where('reviews_status', '1')
+                    ->where('reviews_read', '1')
+                    ->get();
+
+                if (count($reviews) > 0) {
+                    $five_star = 0;
+                    $five_count = 0;
+
+                    $four_star = 0;
+                    $four_count = 0;
+
+                    $three_star = 0;
+                    $three_count = 0;
+
+                    $two_star = 0;
+                    $two_count = 0;
+
+                    $one_star = 0;
+                    $one_count = 0;
+
+                    foreach ($reviews as $review) {
+
+                        //five star ratting
+                        if ($review->reviews_rating == '5') {
+                            $five_star += $review->reviews_rating;
+                            $five_count++;
+                        }
+
+                        //four star ratting
+                        if ($review->reviews_rating == '4') {
+                            $four_star += $review->reviews_rating;
+                            $four_count++;
+                        }
+                        //three star ratting
+                        if ($review->reviews_rating == '3') {
+                            $three_star += $review->reviews_rating;
+                            $three_count++;
+                        }
+                        //two star ratting
+                        if ($review->reviews_rating == '2') {
+                            $two_star += $review->reviews_rating;
+                            $two_count++;
+                        }
+
+                        //one star ratting
+                        if ($review->reviews_rating == '1') {
+                            $one_star += $review->reviews_rating;
+                            $one_count++;
+                        }
+                    }
+
+                    $five_ratio = round($five_count / count($reviews) * 100);
+                    $four_ratio = round($four_count / count($reviews) * 100);
+                    $three_ratio = round($three_count / count($reviews) * 100);
+                    $two_ratio = round($two_count / count($reviews) * 100);
+                    $one_ratio = round($one_count / count($reviews) * 100);
+
+                    $avarage_rate = (5 * $five_star + 4 * $four_star + 3 * $three_star + 2 * $two_star + 1 * $one_star) / ($five_star + $four_star + $three_star + $two_star + $one_star);
+                    $total_user_rated = count($reviews);
+                    $reviewed_customers = $reviews;
+                } else {
+                    $reviewed_customers = array();
+                    $avarage_rate = 0;
+                    $total_user_rated = 0;
+
+                    $five_ratio = 0;
+                    $four_ratio = 0;
+                    $three_ratio = 0;
+                    $two_ratio = 0;
+                    $one_ratio = 0;
+                }
+
+                $products_data->rating = number_format($avarage_rate, 2);
+                $products_data->total_user_rated = $total_user_rated;
+
+                $products_data->five_ratio = $five_ratio;
+                $products_data->four_ratio = $four_ratio;
+                $products_data->three_ratio = $three_ratio;
+                $products_data->two_ratio = $two_ratio;
+                $products_data->one_ratio = $one_ratio;
+
+                //review by users
+                //$products_data->reviewed_customers = $reviewed_customers;
+                $products_id = $products_data->products_id;
+
+                //multiple images
+//                $products_images = DB::table('products_images')
+//                    ->LeftJoin('image_categories','products_images.image','=','image_categories.image_id')
+//                    ->select('image_categories.path as image_path','image_categories.image_type')
+//                    ->where('products_id','=', $products_id)
+//                    ->orderBy('sort_order', 'ASC')
+//                    ->get();
+//                $products_data->images =  $products_images;
+
+                $default_image_thumb = DB::table('products')
+                    ->LeftJoin('image_categories','products.products_image','=','image_categories.image_id')
+                    ->select('image_categories.path as image_path','image_categories.image_type')
+                    ->where('products_id','=', $products_id)
+                    ->where('image_type','=', 'THUMBNAIL')
+                    ->first();
+
+                $products_data->default_thumb =  $default_image_thumb;
+
+                //categories
+                $categories = DB::table('products_to_categories')
+                    ->leftjoin('categories','categories.categories_id','products_to_categories.categories_id')
+                    ->leftjoin('categories_description','categories_description.categories_id','products_to_categories.categories_id')
+                    ->select('categories.categories_id','categories_description.categories_name','categories.categories_image','categories.categories_icon', 'categories.parent_id')
+                    ->where('products_id','=', $products_id)
+                    ->where('categories_description.language_id','=', 1)->get();
+
+                $products_data->categories =  $categories;
+                array_push($result,$products_data);
+
+
+                $stocks = 0;
+                $stockOut = 0;
+                if($products_data->products_type == '0'){
+                    $stocks = DB::table('inventory')->where('products_id',$products_data->products_id)->where('stock_type','in')->sum('stock');
+                    $stockOut = DB::table('inventory')->where('products_id',$products_data->products_id)->where('stock_type','out')->sum('stock');
+                }
+
+                $result[$index]->defaultStock = $stocks - $stockOut;
+
+                //like product
+                if(!empty(session('customers_id'))){
+                    $liked_customers_id						=	session('customers_id');
+                    $categories = DB::table('liked_products')->where('liked_products_id', '=', $products_id)->where('liked_customers_id', '=', $liked_customers_id)->get();
+
+                    if(count($categories)>0){
+                        $result[$index]->isLiked = '1';
+                    }else{
+                        $result[$index]->isLiked = '0';
+                    }
+                }else{
+                    $result[$index]->isLiked = '0';
+                }
+            }
+            $responseData = array('success'=>'1', 'product_data'=>$result,  'message'=>Lang::get('website.Returned all products'), 'total_record'=>count($total_record));
+
+        }else{
+            $responseData = array('success'=>'0', 'product_data'=>$result,  'message'=>Lang::get('website.Empty record'), 'total_record'=>count($total_record));
+        }
+
+        return response()->json(['success'=>true,'product'=>$responseData], $this->successStatus);
     }
 
 public function productSearch(Request $request)
