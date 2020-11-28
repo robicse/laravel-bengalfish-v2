@@ -4,6 +4,7 @@ namespace App\Models\Web;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Lang;
 use App\User;
 use Socialite;
@@ -544,6 +545,7 @@ class Customer extends Model
                     'phone' => $request->phone,
                     'email' => $request->email,
                     'password' => Hash::make($password),
+                    'api_token' => Str::random(60),
                     //'created_at' => $date,
                     //'updated_at' => $date,
                     ])

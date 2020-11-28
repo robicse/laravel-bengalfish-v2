@@ -24,7 +24,7 @@ use App\Models\Web\Products;
 
 class CategoriesController extends Controller
 {
-     public function __construct(
+    public function __construct(
         Products $products
     ) {
         $this->products = $products;
@@ -370,8 +370,6 @@ class CategoriesController extends Controller
                     ->where('categories_description.language_id','=', 1)->get();
 
                 $products_data->categories =  $categories;
-                array_push($result,$products_data);
-
 
                 $stocks = 0;
                 $stockOut = 0;
@@ -380,21 +378,17 @@ class CategoriesController extends Controller
                     $stockOut = DB::table('inventory')->where('products_id',$products_data->products_id)->where('stock_type','out')->sum('stock');
                 }
 
-                $result[$index]->defaultStock = $stocks - $stockOut;
+                $products_data->defaultStock =  $stocks - $stockOut;
 
                 //like product
-                if(!empty(session('customers_id'))){
-                    $liked_customers_id						=	session('customers_id');
-                    $categories = DB::table('liked_products')->where('liked_products_id', '=', $products_id)->where('liked_customers_id', '=', $liked_customers_id)->get();
+                $categories = DB::table('liked_products')->where('liked_products_id', '=', $products_id)->get();
 
-                    if(count($categories)>0){
-                        $result[$index]->isLiked = '1';
-                    }else{
-                        $result[$index]->isLiked = '0';
-                    }
+                if(count($categories)>0){
+                    $products_data->isLiked = count($categories);
                 }else{
-                    $result[$index]->isLiked = '0';
+                    $products_data->isLiked = '0';
                 }
+                array_push($result,$products_data);
             }
             $responseData = array('success'=>'1', 'product_data'=>$result,  'message'=>Lang::get('website.Returned all products'), 'total_record'=>count($total_record));
 
@@ -561,8 +555,6 @@ class CategoriesController extends Controller
                     ->where('categories_description.language_id','=', 1)->get();
 
                 $products_data->categories =  $categories;
-                array_push($result,$products_data);
-
 
                 $stocks = 0;
                 $stockOut = 0;
@@ -571,21 +563,17 @@ class CategoriesController extends Controller
                     $stockOut = DB::table('inventory')->where('products_id',$products_data->products_id)->where('stock_type','out')->sum('stock');
                 }
 
-                $result[$index]->defaultStock = $stocks - $stockOut;
+                $products_data->defaultStock =  $stocks - $stockOut;
 
                 //like product
-                if(!empty(session('customers_id'))){
-                    $liked_customers_id						=	session('customers_id');
-                    $categories = DB::table('liked_products')->where('liked_products_id', '=', $products_id)->where('liked_customers_id', '=', $liked_customers_id)->get();
+                $categories = DB::table('liked_products')->where('liked_products_id', '=', $products_id)->get();
 
-                    if(count($categories)>0){
-                        $result[$index]->isLiked = '1';
-                    }else{
-                        $result[$index]->isLiked = '0';
-                    }
+                if(count($categories)>0){
+                    $products_data->isLiked = count($categories);
                 }else{
-                    $result[$index]->isLiked = '0';
+                    $products_data->isLiked = '0';
                 }
+                array_push($result,$products_data);
             }
             $responseData = array('success'=>'1', 'product_data'=>$result,  'message'=>Lang::get('website.Returned all products'), 'total_record'=>count($total_record));
 
@@ -752,8 +740,6 @@ class CategoriesController extends Controller
                     ->where('categories_description.language_id','=', 1)->get();
 
                 $products_data->categories =  $categories;
-                array_push($result,$products_data);
-
 
                 $stocks = 0;
                 $stockOut = 0;
@@ -762,21 +748,17 @@ class CategoriesController extends Controller
                     $stockOut = DB::table('inventory')->where('products_id',$products_data->products_id)->where('stock_type','out')->sum('stock');
                 }
 
-                $result[$index]->defaultStock = $stocks - $stockOut;
+                $products_data->defaultStock =  $stocks - $stockOut;
 
                 //like product
-                if(!empty(session('customers_id'))){
-                    $liked_customers_id						=	session('customers_id');
-                    $categories = DB::table('liked_products')->where('liked_products_id', '=', $products_id)->where('liked_customers_id', '=', $liked_customers_id)->get();
+                $categories = DB::table('liked_products')->where('liked_products_id', '=', $products_id)->get();
 
-                    if(count($categories)>0){
-                        $result[$index]->isLiked = '1';
-                    }else{
-                        $result[$index]->isLiked = '0';
-                    }
+                if(count($categories)>0){
+                    $products_data->isLiked = count($categories);
                 }else{
-                    $result[$index]->isLiked = '0';
+                    $products_data->isLiked = '0';
                 }
+                array_push($result,$products_data);
             }
             $responseData = array('success'=>'1', 'product_data'=>$result,  'message'=>Lang::get('website.Returned all products'), 'total_record'=>count($total_record));
 
@@ -943,8 +925,6 @@ class CategoriesController extends Controller
                     ->where('categories_description.language_id','=', 1)->get();
 
                 $products_data->categories =  $categories;
-                array_push($result,$products_data);
-
 
                 $stocks = 0;
                 $stockOut = 0;
@@ -953,21 +933,17 @@ class CategoriesController extends Controller
                     $stockOut = DB::table('inventory')->where('products_id',$products_data->products_id)->where('stock_type','out')->sum('stock');
                 }
 
-                $result[$index]->defaultStock = $stocks - $stockOut;
+                $products_data->defaultStock =  $stocks - $stockOut;
 
                 //like product
-                if(!empty(session('customers_id'))){
-                    $liked_customers_id						=	session('customers_id');
-                    $categories = DB::table('liked_products')->where('liked_products_id', '=', $products_id)->where('liked_customers_id', '=', $liked_customers_id)->get();
+                $categories = DB::table('liked_products')->where('liked_products_id', '=', $products_id)->get();
 
-                    if(count($categories)>0){
-                        $result[$index]->isLiked = '1';
-                    }else{
-                        $result[$index]->isLiked = '0';
-                    }
+                if(count($categories)>0){
+                    $products_data->isLiked = count($categories);
                 }else{
-                    $result[$index]->isLiked = '0';
+                    $products_data->isLiked = '0';
                 }
+                array_push($result,$products_data);
             }
             $responseData = array('success'=>'1', 'product_data'=>$result,  'message'=>Lang::get('website.Returned all products'), 'total_record'=>count($total_record));
 
@@ -978,7 +954,7 @@ class CategoriesController extends Controller
         return response()->json(['success'=>true,'product'=>$responseData], $this->successStatus);
     }
 
-public function productSearch(Request $request)
+    public function productSearch(Request $request)
     {
 
         $products = DB::table('products')
