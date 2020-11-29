@@ -34,6 +34,7 @@ Route::get('special/product', 'API\CategoriesController@special_product');
 Route::get('top-seller/product', 'API\CategoriesController@top_seller_product');
 Route::get('most-liked/product', 'API\CategoriesController@most_liked');
 Route::get('newest/product', 'API\CategoriesController@newest_product');
+Route::get('all/product', 'API\CategoriesController@all_product');
 
 Route::post('product/search', 'API\CategoriesController@productSearch');
 
