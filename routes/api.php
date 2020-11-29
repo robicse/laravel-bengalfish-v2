@@ -28,6 +28,7 @@ Route::post('subcategory', 'API\CategoriesController@subcategory');
 
 Route::post('category/products', 'API\CategoriesController@categoryByProduct');
 //Route::post('subcategory/products', 'API\CategoriesController@subcategoryByProduct');
+Route::post('related/products', 'API\CategoriesController@categoryByRelatedProduct');
 
 Route::post('product', 'API\CategoriesController@product');
 Route::get('special/product', 'API\CategoriesController@special_product');
@@ -35,6 +36,7 @@ Route::get('top-seller/product', 'API\CategoriesController@top_seller_product');
 Route::get('most-liked/product', 'API\CategoriesController@most_liked');
 Route::get('newest/product', 'API\CategoriesController@newest_product');
 Route::get('all/product', 'API\CategoriesController@all_product');
+Route::get('banners', 'API\CategoriesController@banners');
 
 Route::post('product/search', 'API\CategoriesController@productSearch');
 
