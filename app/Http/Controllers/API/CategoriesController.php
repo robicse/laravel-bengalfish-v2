@@ -429,7 +429,7 @@ class CategoriesController extends Controller
                 if(count($categories)>0){
                     $products_data->isLiked = count($categories);
                 }else{
-                    $products_data->isLiked = '0';
+                    $products_data->isLiked = 0;
                 }
                 array_push($result,$products_data);
             }
@@ -614,7 +614,7 @@ class CategoriesController extends Controller
                 if(count($categories)>0){
                     $products_data->isLiked = count($categories);
                 }else{
-                    $products_data->isLiked = '0';
+                    $products_data->isLiked = 0;
                 }
                 array_push($result,$products_data);
             }
@@ -799,7 +799,7 @@ class CategoriesController extends Controller
                 if(count($categories)>0){
                     $products_data->isLiked = count($categories);
                 }else{
-                    $products_data->isLiked = '0';
+                    $products_data->isLiked = 0;
                 }
                 array_push($result,$products_data);
             }
@@ -984,7 +984,7 @@ class CategoriesController extends Controller
                 if(count($categories)>0){
                     $products_data->isLiked = count($categories);
                 }else{
-                    $products_data->isLiked = '0';
+                    $products_data->isLiked = 0;
                 }
                 array_push($result,$products_data);
             }
@@ -1160,7 +1160,7 @@ class CategoriesController extends Controller
                 if(count($categories)>0){
                     $products_data->isLiked = count($categories);
                 }else{
-                    $products_data->isLiked = '0';
+                    $products_data->isLiked = 0;
                 }
                 array_push($result,$products_data);
             }
