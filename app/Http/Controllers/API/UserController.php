@@ -167,15 +167,15 @@ class UserController extends Controller
         }
 
         $address_book_data = array(
+            'user_id' => $request->user_id,
+            'customers_id' => $request->user_id,
             'entry_firstname' => $request->entry_firstname,
             'entry_lastname' => $request->entry_lastname,
             'entry_street_address' => $request->entry_street_address,
             'entry_city' => $request->entry_city,
-            'entry_zone_id' => $request->entry_zone_id,
             'entry_postcode' => $request->entry_postcode,
-            'entry_country_id' => $request->entry_country_id,
-            'customers_id' => $request->user_id,
-            'user_id' => $request->user_id,
+            'entry_zone_id' => 182,
+            'entry_country_id' => 18,
         );
         $address_book_id = DB::table('address_book')->insertGetId($address_book_data);
 
@@ -199,15 +199,15 @@ class UserController extends Controller
         }
 
         $address_book_data = array(
+            'user_id' => $request->user_id,
+            'customers_id' => $request->user_id,
             'entry_firstname' => $request->entry_firstname,
             'entry_lastname' => $request->entry_lastname,
             'entry_street_address' => $request->entry_street_address,
             'entry_city' => $request->entry_city,
-            'entry_zone_id' => $request->entry_zone_id,
             'entry_postcode' => $request->entry_postcode,
-            'entry_country_id' => $request->entry_country_id,
-            'customers_id' => $request->user_id,
-            'user_id' => $request->user_id,
+            //'entry_zone_id' => 182,
+            //'entry_country_id' => 18,
         );
 
         $address_book_id = DB::table('address_book')
@@ -260,7 +260,7 @@ class UserController extends Controller
         $shipping_address = DB::table('user_to_address')
             ->join('address_book', 'user_to_address.address_book_id', '=', 'address_book.address_book_id')
             ->where('user_to_address.user_id', $request->user_id)
-            ->select('address_book.address_book_id','address_book.user_id','address_book.entry_firstname','address_book.entry_lastname','address_book.entry_street_address','address_book.entry_postcode','address_book.entry_city','address_book.entry_country_id')
+            ->select('address_book.address_book_id','address_book.user_id','address_book.entry_firstname','address_book.entry_lastname','address_book.entry_street_address','address_book.entry_postcode','address_book.entry_city')
             ->get();
 
         return response()->json(['success'=>true,'response' => $shipping_address], $this-> successStatus);
