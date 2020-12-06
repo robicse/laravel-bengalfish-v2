@@ -116,6 +116,14 @@ class UserController extends Controller
             return response()->json(['success'=>false,'response'=>'Unauthorised'], 401);
         }else{
             $user=User::find($request->user_id);
+
+            unset($user['country_code']);
+            unset($user['avatar']);
+            unset($user['phone_verified']);
+            unset($user['auth_id_tiwilo']);
+            unset($user['created_at']);
+            unset($user['updated_at']);
+
             if($user->api_token!=$authorization){
                 return response()->json(['success'=>false,'response'=>'Unauthorised'], 401);
             }
@@ -174,6 +182,7 @@ class UserController extends Controller
             'entry_street_address' => $request->entry_street_address,
             'entry_city' => $request->entry_city,
             'entry_postcode' => $request->entry_postcode,
+            'entry_phone' => $request->entry_phone,
             'entry_zone_id' => 182,
             'entry_country_id' => 18,
         );
@@ -206,6 +215,7 @@ class UserController extends Controller
             'entry_street_address' => $request->entry_street_address,
             'entry_city' => $request->entry_city,
             'entry_postcode' => $request->entry_postcode,
+            'entry_phone' => $request->entry_phone,
             //'entry_zone_id' => 182,
             //'entry_country_id' => 18,
         );
@@ -260,7 +270,7 @@ class UserController extends Controller
         $shipping_address = DB::table('user_to_address')
             ->join('address_book', 'user_to_address.address_book_id', '=', 'address_book.address_book_id')
             ->where('user_to_address.user_id', $request->user_id)
-            ->select('address_book.address_book_id','address_book.user_id','address_book.entry_firstname','address_book.entry_lastname','address_book.entry_street_address','address_book.entry_postcode','address_book.entry_city')
+            ->select('address_book.address_book_id','address_book.user_id','address_book.entry_firstname','address_book.entry_lastname','address_book.entry_street_address','address_book.entry_postcode','address_book.entry_city','address_book.entry_phone')
             ->get();
 
         return response()->json(['success'=>true,'response' => $shipping_address], $this-> successStatus);
@@ -302,7 +312,12 @@ class UserController extends Controller
             }
         }
 
-        $orders=Order::where('customers_id',$request->user_id)->get();
+        $orders=Order::where('customers_id',$request->user_id)
+            ->select('orders_id','customers_id','customers_name','customers_street_address','customers_city','customers_postcode','email','delivery_phone','delivery_name','delivery_street_address','delivery_city','delivery_postcode','billing_name','billing_street_address','billing_city','billing_postcode','billing_phone','payment_method','order_price','shipping_cost','shipping_method','coupon_amount','free_shipping')
+            ->get();
+
+        //unset unnecessary field
+        unset($orders['customers_company']);
 
 
         return response()->json(['success'=>true,'response' => $orders], $this-> successStatus);
@@ -322,7 +337,7 @@ class UserController extends Controller
 
         $order_details = DB::table('orders')
             ->join('orders_products', 'orders.orders_id', '=', 'orders_products.orders_id')
-            ->select('orders.shipping_cost','orders.shipping_method','orders.shipping_method','orders.date_purchased','orders.payment_method','orders.order_price','orders_products.*')
+            ->select('orders.shipping_cost','orders.shipping_method','orders.shipping_method','orders.date_purchased','orders.payment_method','orders.order_price','orders_products.orders_products_id','orders_products.orders_id','orders_products.products_id','orders_products.products_name','orders_products.products_price','orders_products.final_price','orders_products.products_tax','orders_products.products_quantity')
             ->where('orders_products.orders_id', $request->order_id)
             ->get();
 
@@ -363,6 +378,13 @@ class UserController extends Controller
     public function place_order(Request $request)
     {
         //dd($request->all());
+        //return response()->json(['success'=>true,'response'=>$request->cart], 401);
+//        $cart_items = json_decode($request->cart);
+//        foreach($cart_items as $product){
+//            $products_name = $product->products_name;
+//        }
+        //return response()->json(['success'=>true,'response'=>$cart_items], 401);
+//        return response()->json(['success'=>true,'response'=>$products_name], 401);
 
         $authorization = $request->header('Auth');
         if(empty($authorization)){
@@ -432,27 +454,34 @@ class UserController extends Controller
             ]);
 //        dd($request->cart);
 
-        foreach ($request->cart as $products) {
+
+
+
+        $cart_items = json_decode($request->cart);
+
+        foreach ($cart_items as $products) {
             //get products info
-//dd($products['products_id']);
+            //dd($products['products_id']);
             $orders_products_id = DB::table('orders_products')->insertGetId(
                 [
                     'orders_id' => $orders_id,
-                    'products_id' => $products['products_id'],
-                    'products_name' => $products['products_name'],
-                    'products_price' => $products['price'],
-                    'final_price' => $products['final_price'] * $products['customers_basket_quantity'],
-                    'products_quantity' => $products['customers_basket_quantity'],
+                    'products_id' => $products->products_id,
+                    'products_name' => $products->products_name,
+                    'products_price' => $products->price,
+                    'final_price' => $products->final_price * $products->customers_basket_quantity,
+                    'products_quantity' => $products->customers_basket_quantity,
                 ]);
             $inventory_ref_id = DB::table('inventory')->insertGetId([
-                'products_id' => $products['products_id'],
+                'products_id' => $products->products_id,
                 'reference_code' => '',
-                'stock' => $products['customers_basket_quantity'],
+                'stock' => $products->customers_basket_quantity,
                 'admin_id' => 0,
                 'added_date' => time(),
                 'purchase_price' => 0,
                 'stock_type' => 'out',
             ]);
+
+
 //            if($request->payment_method_name == 'sslcommerz')
 //            {
 //                return redirect('/checkout/ssl/pay');
