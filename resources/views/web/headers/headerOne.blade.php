@@ -235,13 +235,15 @@
                             <i class="fa fa-lock" aria-hidden="true"></i>&nbsp;@lang('website.Login/Register')
                         </a>
                     </li>
-                    @foreach($languages as $language)
-                         <li class="nav-item p-0" style="background-color: #f89e20;">
-                             <button  onclick="myFunction1({{$language->languages_id}})" class="btn" style="background:none;color: #ffffff;" href="#">
-                                 <span>{{$language->name}}</span>
-                             </button>
-                         </li>
-                    @endforeach
+                    @if(count($languages) > 1)
+                        @foreach($languages as $language)
+                             <li class="nav-item p-0" @if(session('locale')==$language->code) style="background-color: #f89e20;" @elseif((session('locale')== null) && ('en'==$language->code)) style="background-color: #f89e20;" @else style="background:lightgrey;" @endif>
+                                 <button  onclick="myFunction1({{$language->languages_id}})" class="btn" style="background:none;color: #ffffff;" href="#">
+                                     <span>{{$language->name}}</span>
+                                 </button>
+                             </li>
+                        @endforeach
+                    @endif
                     <?php } ?>
                  </ul>
              </div>

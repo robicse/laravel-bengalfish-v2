@@ -12,24 +12,34 @@
             <nav id="navbar_0" class="navbar navbar-expand-md navbar-dark navbar-0">
               <div class="navbar-lang">
                 @if(count($languages) > 1)
-                <div class="dropdown">
-                    <button class="btn" style="background:none;" href="#">
-                      <img style="margin-right:-30px;"src="{{asset('').session('language_image')}}" width="17px" />
-                    </button>
-                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                     {{	session('language_name')}}
-                    </button>
-                    <ul class="dropdown-menu">
-                      @foreach($languages as $language)
-                      <li  @if(session('locale')==$language->code) style="background:lightgrey;" @endif>
-                        <button  onclick="myFunction1({{$language->languages_id}})" class="btn" style="background:none;" href="#">
-                          <img style="margin-left:10px; margin-right:10px;"src="{{asset('').$language->image_path}}" width="17px" />
-                          <span>{{$language->name}}</span>
-                        </button>
-                      </li>
-                      @endforeach
-                    </ul>
-                  </div>
+{{--                <div class="dropdown">--}}
+{{--                    <button class="btn" style="background:none;" href="#">--}}
+{{--                      <img style="margin-right:-30px;"src="{{asset('').session('language_image')}}" width="17px" />--}}
+{{--                    </button>--}}
+{{--                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">--}}
+{{--                     {{	session('language_name')}}--}}
+{{--                    </button>--}}
+{{--                    <ul class="dropdown-menu">--}}
+{{--                      @foreach($languages as $language)--}}
+{{--                      <li  @if(session('locale')==$language->code) style="background:lightgrey;" @endif>--}}
+{{--                        <button  onclick="myFunction1({{$language->languages_id}})" class="btn" style="background:none;" href="#">--}}
+{{--                          <img style="margin-left:10px; margin-right:10px;"src="{{asset('').$language->image_path}}" width="17px" />--}}
+{{--                          <span>{{$language->name}}</span>--}}
+{{--                        </button>--}}
+{{--                      </li>--}}
+{{--                      @endforeach--}}
+{{--                    </ul>--}}
+{{--                  </div>--}}
+
+                      <ul class="fm-top-right-menu">
+                          @foreach($languages as $language)
+                              <li class="nav-item p-0" @if(session('locale')==$language->code) style="background-color: #f89e20;" @elseif((session('locale')== null) && ('en'==$language->code)) style="background-color: #f89e20;" @else style="background:lightgrey;" @endif>
+                                  <button  onclick="myFunction1({{$language->languages_id}})" class="btn" style="background:none;color: #ffffff;" href="#">
+                                      <span>{{$language->name}}</span>
+                                  </button>
+                              </li>
+                          @endforeach
+                      </ul>
                   @include('web.common.scripts.changeLanguage')
                   @endif
 
