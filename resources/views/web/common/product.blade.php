@@ -45,7 +45,7 @@
 </style>
 <div class="product pr-border" >
     <article>
-        
+
         <div class="thumb">
             <div class="icons mobile-icons d-lg-none d-xl-none">
                 <div class="icon-liked">
@@ -59,7 +59,7 @@
             </div>
             <a href="{{ URL::to('/product-detail/'.$products->products_slug)}}"><img class="img-fluid" src="{{asset('').$products->image_path}}" alt="{{$products->image_alt_tag ? $products->image_alt_tag :$products->products_name}}">
             </a>
-            
+
         </div>
         <?php
         $default_currency = DB::table('currencies')->where('is_default',1)->first();
