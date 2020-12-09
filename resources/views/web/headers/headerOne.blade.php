@@ -68,208 +68,160 @@
                     </li>
                 </ul>
              </div>
-             <div class="col-12 col-lg-4">
+             <div class="col-12 col-lg-2">
                  <ul class="fm-top-middle-menu">
-                    <li style="margin-top:13px;"><a href="https://bengalfish.com.bd/">Home |</a>  </li>
-                    <li style="margin-top:13px;"><a href="https://bengalfish.com.bd/shop">Shop | </a> </li>
+{{--                    <li style="margin-top:13px;"><a href="https://bengalfish.com.bd/">Home |</a>  </li>--}}
+{{--                    <li style="margin-top:13px;"><a href="https://bengalfish.com.bd/shop">Shop | </a> </li>--}}
+                    <li>
+                      <div class="navbar-lang">
+                        @if(count($languages) > 1)
+{{--                        <div class="dropdown">--}}
+{{--                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">--}}
+{{--                                <i class="fa fa-language " style="color: #fff; font-size: 1.9rem" aria-hidden="true"></i>--}}
+{{--                            </button>--}}
+{{--                            <ul class="dropdown-menu">--}}
+{{--                              @foreach($languages as $language)--}}
+{{--                              <li  @if(session('locale')==$language->code) style="" @endif>--}}
+{{--                                <button  onclick="myFunction1({{$language->languages_id}})" class="btn" style="background:none;" href="#">--}}
+{{--                                  <img style="margin-left:10px; margin-right:10px;"src="{{asset('').$language->image_path}}" width="17px" />--}}
+{{--                                  <span>{{$language->name}}</span>--}}
+{{--                                </button>--}}
+{{--                              </li>--}}
+{{--                              @endforeach--}}
+{{--                            </ul>--}}
+{{--                          </div>--}}
+                          @include('web.common.scripts.changeLanguage')
+                          @endif
+                          @if(count($currencies) > 1)
+{{--                          <div class="dropdown">--}}
+{{--                              <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">--}}
 
-
-                      <li>
-                  <div class="navbar-lang">
-
-                    @if(count($languages) > 1)
-                    <div class="dropdown">
-
-                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-    {{--                     <img src="{{asset('').session('language_image')}}" width="17px" />--}}
-    {{--                     {{	session('language_name')}}--}}
-                            <i class="fa fa-language " style="color: #fff; font-size: 1.9rem" aria-hidden="true"></i>
-                        </button>
-                        <ul class="dropdown-menu">
-                          @foreach($languages as $language)
-                          <li  @if(session('locale')==$language->code) style="" @endif>
-                            <button  onclick="myFunction1({{$language->languages_id}})" class="btn" style="background:none;" href="#">
-                              <img style="margin-left:10px; margin-right:10px;"src="{{asset('').$language->image_path}}" width="17px" />
-                              <span>{{$language->name}}</span>
-                            </button>
-                          </li>
-                          @endforeach
-                        </ul>
-                      </div>
-                      @include('web.common.scripts.changeLanguage')
-                      @endif
-                      @if(count($currencies) > 1)
-                      <div class="dropdown">
-
-                          <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-
-                            @if(session('symbol_left') != null)
-                            <span >{{session('symbol_left')}}</span>
-                            @else
-                            <span >{{session('symbol_right')}}</span>
+{{--                                @if(session('symbol_left') != null)--}}
+{{--                                <span >{{session('symbol_left')}}</span>--}}
+{{--                                @else--}}
+{{--                                <span >{{session('symbol_right')}}</span>--}}
+{{--                                @endif--}}
+{{--                               {{session('currency_code')}}--}}
+{{--                              </button>--}}
+{{--                              <ul class="dropdown-menu">--}}
+{{--                                @foreach($currencies as $currency)--}}
+{{--                                <li  @if(session('currency_title')==$currency->code) style="" @endif>--}}
+{{--                                  <button  onclick="myFunction2({{$currency->id}})" class="btn" style="background:none;" href="#">--}}
+{{--                                    @if($currency->symbol_left != null)--}}
+{{--                                    <span style="margin-left:10px; margin-right:10px;">{{$currency->symbol_left}}</span>--}}
+{{--                                    <span>{{$currency->code}}</span>--}}
+{{--                                    @else--}}
+{{--                                    <span style="margin-left:10px; margin-right:10px;">{{$currency->symbol_right}}</span>--}}
+{{--                                    <span>{{$currency->code}}</span>--}}
+{{--                                    @endif--}}
+{{--                                  </button>--}}
+{{--                                </li>--}}
+{{--                                @endforeach--}}
+{{--                              </ul>--}}
+{{--                            </div>--}}
+                            @include('web.common.scripts.changeCurrency')
                             @endif
-                           {{session('currency_code')}}
-
-
-                          </button>
-                          <ul class="dropdown-menu">
-                            @foreach($currencies as $currency)
-                            <li  @if(session('currency_title')==$currency->code) style="" @endif>
-                              <button  onclick="myFunction2({{$currency->id}})" class="btn" style="background:none;" href="#">
-                                @if($currency->symbol_left != null)
-                                <span style="margin-left:10px; margin-right:10px;">{{$currency->symbol_left}}</span>
-                                <span>{{$currency->code}}</span>
-                                @else
-                                <span style="margin-left:10px; margin-right:10px;">{{$currency->symbol_right}}</span>
-                                <span>{{$currency->code}}</span>
-                                @endif
-                              </button>
-                            </li>
-                            @endforeach
-                          </ul>
-                        </div>
-                        @include('web.common.scripts.changeCurrency')
-                        @endif
-                  </div>
-              </li>
-                </ul>
+                      </div>
+                    </li>
+                 </ul>
              </div>
-             <div class="col-12 col-lg-3">
+             <div class="col-12 col-lg-5">
                  <ul class="fm-top-right-menu">
-	<li class="cart-header dropdown head-cart-content d-none d-md-block mt-2" style="width: 300px;">
-                <?php $qunatity=0; ?>
-                                @foreach($result['commonContent']['cart'] as $cart_data)
-                                	<?php $qunatity += $cart_data->customers_basket_quantity; ?>
-                                @endforeach
-
-                                <a href="#" id="dropdownMenuButton" class="dropdown-toggle"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="badge badge-secondary">{{ $qunatity }}</span>
-                                    <i class="fa fa-cart-arrow-down" aria-hidden="true"></i>
-                                    <!--<img class="img-fluid" src="{{asset('').'public/images/shopping_cart.png'}}" alt="icon">-->
-
-                                    <span class="block">
-{{--                                    	<span class="title">@lang('website.My Cart')</span>--}}
-                                        @if(count($result['commonContent']['cart'])>0)
-                                            <span class="items">{{ count($result['commonContent']['cart']) }}&nbsp;@lang('website.items')</span>
-                                        @else
-                                            <span class="items">(0)&nbsp;@lang('website.item')</span>
-                                        @endif
-                                    </span>
-                                </a>
-
+{{--	                <li class="cart-header dropdown head-cart-content d-none d-md-block mt-2" style="width: 300px;">--}}
+	                <li class="cart-header dropdown head-cart-content d-none d-md-block mt-2">
+                        <?php $qunatity=0; ?>
+                        @foreach($result['commonContent']['cart'] as $cart_data)
+                            <?php $qunatity += $cart_data->customers_basket_quantity; ?>
+                        @endforeach
+                        <a href="#" id="dropdownMenuButton" class="dropdown-toggle"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="badge badge-secondary">{{ $qunatity }}</span>
+                            <i class="fa fa-cart-arrow-down" aria-hidden="true"></i>
+                            <span class="block">
                                 @if(count($result['commonContent']['cart'])>0)
-                                @php
-                                $default_currency = DB::table('currencies')->where('is_default',1)->first();
-                                if($default_currency->id == Session::get('currency_id')){
-
-                                  $currency_value = 1;
-                                }else{
-                                  $session_currency = DB::table('currencies')->where('id',Session::get('currency_id'))->first();
-
-                                  $currency_value = $session_currency->value;
-                                }
-                                @endphp
-                                <div class="shopping-cart shopping-cart-empty dropdown-menu dropdown-menu-right" aria-labelledby="dropdownCartButton_9">
-
-
-
-
-                                    <table class="table">
-
-                                      <tbody>
-                                        <?php
-                                            $total_amount=0;
-                                            $qunatity=0;
-                                        ?>
-                                        @foreach($result['commonContent']['cart'] as $cart_data)
-
-                                        <?php
-                					             	$total_amount += $cart_data->final_price*$cart_data->customers_basket_quantity;
-                					            	$qunatity 	  += $cart_data->customers_basket_quantity; ?>
-                                        <tr>
-                                          <td class="text-center">
-                                              <a href="{{ URL::to('/deleteCart?id='.$cart_data->customers_basket_id)}}" class="icon" style="color:black" ><i class="fa fa-times" aria-hidden="true"></i></a>
-                                          </td>
-                                          <td>
-                                              <div class="item-thumb">
-                                            	<div class="image">
-                                                	<img class="img-fluid" src="{{asset('').$cart_data->image}}" alt="{{$cart_data->products_name}}" width="60px"/>
-                                                </div>
-                                               </div>
-                                            </td>
-                                          <td colspan="2"><h6 class="item-name" style="font-family: 'Roboto Condensed'">{{strtoupper($cart_data->products_name)}}</h6></td>
-                                          <td><span class="item-quantity">@lang('website.Qty')&nbsp;:&nbsp;{{$cart_data->customers_basket_quantity}}</span></td>
-                                          <td><span class="item-price">{{Session::get('symbol_left')}}{{$cart_data->final_price*$cart_data->customers_basket_quantity*$currency_value}}{{Session::get('symbol_right')}}</span></td>
-
-                                        </tr>
-                                        <!--<li>-->
-
-                                        <!--    <div class="item-detail">-->
-                                        <!--      <h6 class="item-name" style="font-family: 'Roboto Condensed'">{{strtoupper($cart_data->products_name)}}</h6>-->
-                                        <!--      <span class="item-quantity">@lang('website.Qty')&nbsp;:&nbsp;{{$cart_data->customers_basket_quantity}}</span>-->
-                                        <!--      <span class="item-price">{{Session::get('symbol_left')}}{{$cart_data->final_price*$cart_data->customers_basket_quantity*$currency_value}}{{Session::get('symbol_right')}}</span>-->
-                                        <!--   </div>-->
-                                        <!--</li>-->
-                                        @endforeach
-                                        <tr>
-                                          <td>
-                                              <p>@lang('website.items')<span>{{ $qunatity }}</span></p>
-
-                                          </td>
-                                          <td>
-                                              <p>@lang('website.SubTotal')<span>{{Session::get('symbol_left')}}{{ $total_amount*$currency_value }}{{Session::get('symbol_right')}}</span></p>
-
-                                          </td>
-                                          <td>
-                                              <!--<a class="btn btn-dark" href="{{ URL::to('/viewcart')}}">@lang('website.View Cart')</a>-->
-                                              <a class="btn btn-dark" href="{{ URL::to('/viewcart')}}">Cart</a>
-                                          </td>
-                                          <td>
-                                              <a class="btn btn-secondary" href="{{ URL::to('/checkout')}}">@lang('website.Checkout')</a>
-                                          </td>
-                                        </tr>
-                                   <!-- <li>-->
-                                   <!--   <div class="tt-summary">-->
-                                   <!--   	  <p>@lang('website.items')<span>{{ $qunatity }}</span></p>-->
-                                   <!--     	<p>@lang('website.SubTotal')<span>{{Session::get('symbol_left')}}{{ $total_amount*$currency_value }}{{Session::get('symbol_right')}}</span></p>-->
-                                   <!--   </div>-->
-                                   <!-- </li>-->
-                                   <!-- <li>-->
-                                   <!--   <div class="buttons">-->
-                                   <!--       <a class="btn btn-dark" href="{{ URL::to('/viewcart')}}">@lang('website.View Cart')</a>-->
-                                   <!--       <a class="btn btn-secondary" href="{{ URL::to('/checkout')}}">@lang('website.Checkout')</a>-->
-                                   <!--   </div>-->
-                                   <!--</li>-->
-                                 </tbody>
-                                    </table>
-
-                                </div>
-
-                				@else
-
-                                <div class="shopping-cart shopping-cart-empty dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                                    <ul class="shopping-cart-items">
-                                        <li>@lang('website.You have no items in your shopping cart')</li>
-                                    </ul>
-                                </div>
+                                    <span class="items">{{ count($result['commonContent']['cart']) }}&nbsp;@lang('website.items')</span>
+                                @else
+                                    <span class="items">(0)&nbsp;@lang('website.item')</span>
                                 @endif
+                            </span>
+                        </a>
 
-              </li>
-              <?php if(auth()->guard('customer')->check()){ ?>
+                        @if(count($result['commonContent']['cart'])>0)
+                            @php
+                            $default_currency = DB::table('currencies')->where('is_default',1)->first();
+                            if($default_currency->id == Session::get('currency_id')){
+
+                              $currency_value = 1;
+                            }else{
+                              $session_currency = DB::table('currencies')->where('id',Session::get('currency_id'))->first();
+
+                              $currency_value = $session_currency->value;
+                            }
+                            @endphp
+                            <div class="shopping-cart shopping-cart-empty dropdown-menu dropdown-menu-right" aria-labelledby="dropdownCartButton_9" style="min-width: 300px;">
+                                <table class="table">
+                                  <tbody>
+                                    <?php
+                                        $total_amount=0;
+                                        $qunatity=0;
+                                    ?>
+                                    @foreach($result['commonContent']['cart'] as $cart_data)
+                                    <?php
+                                        $total_amount += $cart_data->final_price*$cart_data->customers_basket_quantity;
+                                        $qunatity 	  += $cart_data->customers_basket_quantity; ?>
+                                    <tr>
+                                      <td class="text-center">
+                                          <a href="{{ URL::to('/deleteCart?id='.$cart_data->customers_basket_id)}}" class="icon" style="color:black" ><i class="fa fa-times" aria-hidden="true"></i></a>
+                                      </td>
+                                      <td>
+                                          <div class="item-thumb">
+                                            <div class="image">
+                                                <img class="img-fluid" src="{{asset('').$cart_data->image}}" alt="{{$cart_data->products_name}}" width="60px"/>
+                                            </div>
+                                           </div>
+                                        </td>
+                                      <td colspan="2"><h6 class="item-name" style="font-family: 'Roboto Condensed'">{{strtoupper($cart_data->products_name)}}</h6></td>
+                                      <td><span class="item-quantity">@lang('website.Qty')&nbsp;:&nbsp;{{$cart_data->customers_basket_quantity}}</span></td>
+                                      <td><span class="item-price">{{Session::get('symbol_left')}}{{$cart_data->final_price*$cart_data->customers_basket_quantity*$currency_value}}{{Session::get('symbol_right')}}</span></td>
+
+                                    </tr>
+                                    @endforeach
+                                    <tr>
+                                      <td>
+                                          <p>@lang('website.items')<span>{{ $qunatity }}</span></p>
+
+                                      </td>
+                                      <td>
+                                          <p>@lang('website.SubTotal')<span>{{Session::get('symbol_left')}}{{ $total_amount*$currency_value }}{{Session::get('symbol_right')}}</span></p>
+
+                                      </td>
+                                      <td>
+                                          <a class="btn btn-dark" href="{{ URL::to('/viewcart')}}">Cart</a>
+                                      </td>
+                                      <td>
+                                          <a class="btn btn-secondary" href="{{ URL::to('/checkout')}}">@lang('website.Checkout')</a>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                            </div>
+                        @else
+                            <div class="shopping-cart shopping-cart-empty dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                <ul class="shopping-cart-items">
+                                    <li>@lang('website.You have no items in your shopping cart')</li>
+                                </ul>
+                            </div>
+                        @endif
+                    </li>
+                    <?php if(auth()->guard('customer')->check()){ ?>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           <span style="color: #00bfff; font-size: 16px;"><?php if(auth()->guard('customer')->check()){ ?>@lang('website.Welcome')&nbsp;! {{auth()->guard('customer')->user()->first_name}} <?php }?> </span>
                         </a>
                         @php
-                        /*echo '<pre>';
-                        print_r($result);
-                        echo '</pre>';
-                        die();*/
-                        //$customer = auth()->guard('customer')->user();
                         $liked_products = \Illuminate\Support\Facades\DB::table('liked_products')->where('liked_customers_id',auth()->guard('customer')->user()->id)->get();
                         @endphp
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="background-color:black">
-                            <a class="dropdown-item" href="{{url('profile')}}" class="nav-link">@lang('website.Profile')</a>
+                          <a class="dropdown-item" href="{{url('profile')}}" class="nav-link">@lang('website.Profile')</a>
                           <a class="dropdown-item" href="{{url('wishlist')}}" class="nav-link">@lang('website.Wishlist') (<span id="liked_count">{{$liked_products->count()}}</span>)</a>
                           <a class="dropdown-item" href="{{url('compare')}}" class="nav-link">@lang('website.Compare')&nbsp;(<span id="compare">{{$count}}</span>)</a>
                           <a class="dropdown-item" href="{{url('orders')}}" class="nav-link">@lang('website.Orders')</a>
@@ -277,19 +229,21 @@
                           <a class="dropdown-item" href="{{url('logout')}}" class="nav-link padding-r0">@lang('website.Logout')</a>
                         </div>
                     </li>
-{{--                      <li class="nav-item"> <a href="{{url('profile')}}" class="nav-link">@lang('website.Profile')</a> </li>--}}
-{{--                      <li class="nav-item"> <a href="{{url('wishlist')}}" class="nav-link">@lang('website.Wishlist')</a> </li>--}}
-{{--                      <li class="nav-item"> <a href="{{url('compare')}}" class="nav-link">@lang('website.Compare')&nbsp;(<span id="compare">{{$count}}</span>)</a> </li>--}}
-{{--                      <li class="nav-item"> <a href="{{url('orders')}}" class="nav-link">@lang('website.Orders')</a> </li>--}}
-{{--                      <li class="nav-item"> <a href="{{url('shipping-address')}}" class="nav-link">@lang('website.Shipping Address')</a> </li>--}}
-{{--                      <li class="nav-item"> <a href="{{url('logout')}}" class="nav-link padding-r0">@lang('website.Logout')</a> </li>--}}
-                      <?php }else{ ?>
-                        <li class="nav-item p-0" style="background-color: #f89e20;padding: 4px 18px;"> <a href="{{ URL::to('/login')}}" class="nav-link -before"><i class="fa fa-lock" aria-hidden="true"></i>&nbsp;@lang('website.Login/Register')</a> </li>
-
-
-                      <?php } ?>
-
-</ul>
+                    <?php }else{ ?>
+                    <li class="nav-item p-0" style="background-color: #f89e20;padding: 4px 18px;">
+                        <a href="{{ URL::to('/login')}}" class="nav-link -before">
+                            <i class="fa fa-lock" aria-hidden="true"></i>&nbsp;@lang('website.Login/Register')
+                        </a>
+                    </li>
+                    @foreach($languages as $language)
+                         <li class="nav-item p-0" style="background-color: #f89e20;">
+                             <button  onclick="myFunction1({{$language->languages_id}})" class="btn" style="background:none;color: #ffffff;" href="#">
+                                 <span>{{$language->name}}</span>
+                             </button>
+                         </li>
+                    @endforeach
+                    <?php } ?>
+                 </ul>
              </div>
         </div>
 <!-- ------------------------------------------------------End Row 01 ---------------------------------------------- -->
@@ -312,8 +266,8 @@
                 </a>
             </div>
              @include('web.common.HeaderCategories')
-             <div class="col-12 col-lg-5">
-<nav id="navbar_0_2" class="navbar navbar-expand-md navbar-dark navbar-0">
+             <div class="col-12 col-lg-6">
+                <nav id="navbar_0_2" class="navbar navbar-expand-md navbar-dark navbar-0">
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav">
                         <!--<li class="nav-item">-->
@@ -326,6 +280,12 @@
                         <!--    <a class="nav-link" href="#">Contact Us</a>-->
                         <!--</li>-->
 
+                        <li class="nav-item">
+                            <a class="nav-link pr-0 mr-1" href="https://bengalfish.com.bd/">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link pr-0 mr-1" href="https://bengalfish.com.bd/shop">Shop</a>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link pr-0 mr-1" href="{{url('news')}}">Blog</a>
                         </li>
@@ -345,10 +305,8 @@
                         @endif
                     </ul>
                 </div>
-                <?php  ?>
 
-                <?php  ?>
-              <div class="navbar-collapse" style="font-family: Roboto Condensed;">
+                <div class="navbar-collapse" style="font-family: Roboto Condensed;">
                 <ul class="navbar-nav">
                     <li class="nav-item">
                         <div class="nav-avatar nav-link">
@@ -366,37 +324,29 @@
                           </div>
 
                         </div>
-                      </li>
-
+                    </li>
                 </ul>
               </div>
             </nav>
           </div>
-          <div class="col-12 col-lg-5">
+          <div class="col-12 col-lg-4">
             <form class="form-inline" action="{{ URL::to('/check_search')}}" method="get">
               <div class="search">
                   <div class="select-control">
                       <select class="form-control" name="category">
-
-                       @php    productCategories(); @endphp
+                        @php productCategories(); @endphp
                       </select>
-                    </div>
-                    <input type="search"  name="search" placeholder="@lang('website.Search entire store here')..." value="{{ app('request')->input('search') }}" aria-label="Search">
-                <button class="btn btn-secondary" type="submit">
-                <i class="fa fa-search"></i></button>
+                  </div>
+                  <input type="search"  name="search" placeholder="@lang('website.Search entire store here')..." value="{{ app('request')->input('search') }}" aria-label="Search">
+                  <button class="btn btn-secondary" type="submit">
+                    <i class="fa fa-search"></i>
+                  </button>
               </div>
             </form>
           </div>
-
-
-
-
         </div>
       </div>
     </div>
-
-
-
     <?php  ?>
     <?php /* ?>
     <div class="header-navbar logo-nav bg-menu-bar">
@@ -456,7 +406,6 @@
       </div>
     </div>
     <?php */ ?>
-
 
         <?php
         $all_recursivecategories = listofrecursivecategories();

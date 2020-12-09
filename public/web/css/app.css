@@ -12798,7 +12798,8 @@ h1 {
   position: relative;
   border-right: 1px solid #dee2e6;
   /*width: 286px;*/
-  width: 160px;
+  /*width: 160px;*/
+  width: 140px;
   height: 34px;
 }
 

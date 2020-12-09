@@ -729,7 +729,7 @@
                                               $string = substr($products->products_date_added, 0, strpos($products->products_date_added, ' '));
                                               $date=date_create($string);
                                               date_add($date,date_interval_create_from_date_string($web_setting[20]->value." days"));
-                                              
+
                                               $after_date = date_format($date,"Y-m-d");
 
                                               if($after_date>=$current_date){
