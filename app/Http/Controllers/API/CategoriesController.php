@@ -167,6 +167,48 @@ class CategoriesController extends Controller
 
     }
 
+//    public function categoryByRelatedProduct(Request $request)
+//    {
+//        $categories = DB::table('products_to_categories')
+//            ->join('products', 'products_to_categories.products_id', '=', 'products.products_id')
+//            ->join('products_description', 'products_to_categories.products_id', '=', 'products_description.products_id')
+//            ->join('image_categories', 'products.products_image', '=', 'image_categories.image_id')
+//            ->where('products_to_categories.categories_id',$request->category_id)
+//            ->where('language_id',1)
+//            ->where('image_categories.image_type', 'ACTUAL')
+//            ->select('products_to_categories.*','products.*','products_description.*','image_categories.path as image_path')
+//            ->inRandomOrder()
+//            ->limit(5) // here is yours limit
+//            ->get();
+//
+//
+//        $category = [];
+//        foreach($categories as $data){
+//
+//            $product_image = $this->custom_live_base_url().'/'.$data->image_path;
+//            //$product_image = $this->custom_localhost_base_url().$data->image_path;
+//
+//            $nested_data['categories_id'] = $data->categories_id;
+//            $nested_data['products_id'] = $data->products_id;
+//            $nested_data['products_name'] = $data->products_name;
+//            $nested_data['products_slug'] = $data->products_slug;
+//            $nested_data['products_description'] = $data->products_description;
+//            $nested_data['products_price'] = $data->products_price;
+//            $nested_data['products_weight'] = $data->products_weight;
+//            $nested_data['products_weight_unit'] = $data->products_weight_unit;
+//            $nested_data['products_status'] = $data->products_status;
+//            $nested_data['products_ordered'] = $data->products_ordered;
+//            $nested_data['products_liked'] = $data->products_liked;
+//            $nested_data['is_feature'] = $data->is_feature;
+//            $nested_data['products_min_order'] = $data->products_min_order;
+//            $nested_data['image_path'] = $product_image;
+//            $category[] = $nested_data;
+//        }
+//
+//        return response()->json(['success'=>true,'response'=>$category], $this->successStatus);
+//
+//    }
+
     public function categoryByRelatedProduct(Request $request)
     {
         $categories = DB::table('products_to_categories')
@@ -178,7 +220,7 @@ class CategoriesController extends Controller
             ->where('image_categories.image_type', 'ACTUAL')
             ->select('products_to_categories.*','products.*','products_description.*','image_categories.path as image_path')
             ->inRandomOrder()
-            ->limit(5) // here is yours limit
+            ->limit(5)
             ->get();
 
 
