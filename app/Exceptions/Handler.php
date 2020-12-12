@@ -47,12 +47,12 @@ class Handler extends ExceptionHandler
     public function render($request, Exception $exception)
     {
 
-      if(app()->environment() === 'production') {
-          return redirect('not_allowed');
-      } else {
-          return parent::render($request, $exception);
-      }
+//      if(app()->environment() === 'production') {
+//          return redirect('not_allowed');
+//      } else {
+//          return parent::render($request, $exception);
+//      }
 
-        //return parent::render($request, $exception);
+        return parent::render($request, $exception);
     }
 }

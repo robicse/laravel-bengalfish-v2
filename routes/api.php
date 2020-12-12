@@ -24,6 +24,8 @@ Route::post('user/order/details', 'API\UserController@order_details');
 Route::post('user/order/cancel', 'API\UserController@order_cancel');
 Route::post('user/order_sum_amount', 'API\UserController@order_sum_amount');
 Route::post('user/coupon', 'API\UserController@coupon');
+Route::post('user/coupon/product_categories', 'API\UserController@coupon_by_product_categories');
+Route::post('user/coupon/product_ids', 'API\UserController@coupon_by_product_ids');
 
 Route::get('category', 'API\CategoriesController@category');
 Route::post('subcategory', 'API\CategoriesController@subcategory');

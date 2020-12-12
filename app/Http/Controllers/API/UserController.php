@@ -551,4 +551,40 @@ class UserController extends Controller
         return response()->json(['success'=>true,'response' => $coupons], $this-> successStatus);
     }
 
+    public function coupon_by_product_categories(Request $request)
+    {
+        $arr = [
+            $request->product_categories
+        ];
+
+        $coupons = DB::table("coupons")
+            ->where('code',$request->code)
+            ->whereIn('product_categories', $arr)
+            ->select('code','description','discount_type','amount','expiry_date','product_ids','product_categories')
+            ->latest()
+            ->first();
+        //dd($coupons);
+
+
+        return response()->json(['success'=>true,'response' => $coupons], $this-> successStatus);
+    }
+
+    public function coupon_by_product_ids(Request $request)
+    {
+        $arr = [
+            $request->product_ids
+        ];
+
+        $coupons = DB::table("coupons")
+            ->where('code',$request->code)
+            ->whereIn('product_ids', $arr)
+            ->select('code','description','discount_type','amount','expiry_date','product_ids','product_categories')
+            ->latest()
+            ->first();
+        //dd($coupons);
+
+
+        return response()->json(['success'=>true,'response' => $coupons], $this-> successStatus);
+    }
+
 }
