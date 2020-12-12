@@ -52,6 +52,21 @@ class Coupon extends Model
 
     }
 
+    public function custom_categories(){
+
+        $categories = DB::table('categories')
+            ->LeftJoin('categories_description', 'categories_description.categories_id', '=', 'categories.categories_id')
+            ->select('categories_name', 'categories.categories_id')
+            ->where('categories.parent_id', '=', '0')
+            ->where('categories_description.language_id', '=', 1)
+            ->get();
+
+
+        return $categories;
+
+
+    }
+
     public  function coupon($code){
 
         $couponInfo = DB::table('coupons')->where('code','=', $code)->get();
@@ -92,13 +107,27 @@ class Coupon extends Model
         return $coupon_id;
     }*/
 
-    public function addcoupon($code,$description,$discount_type,$amount,$expiry_date){
+//    public function addcoupon($code,$description,$discount_type,$amount,$expiry_date){
+//        $coupon_id = DB::table('coupons')->insertGetId([
+//            'code'  	 				 =>   $code,
+//            'created_at'				 =>   date('Y-m-d H:i:s'),
+//            'description'				 =>   $description,
+//            'discount_type'	 			 =>   $discount_type,
+//            'amount'	 	 			 =>   $amount,
+//            'expiry_date'				 =>	  $expiry_date
+//        ]);
+//        return $coupon_id;
+//    }
+
+    public function addcoupon($code,$description,$discount_type,$amount,$product_ids,$product_categories,$expiry_date){
         $coupon_id = DB::table('coupons')->insertGetId([
             'code'  	 				 =>   $code,
             'created_at'				 =>   date('Y-m-d H:i:s'),
             'description'				 =>   $description,
             'discount_type'	 			 =>   $discount_type,
             'amount'	 	 			 =>   $amount,
+            'product_ids'	 	 		 =>   $product_ids,
+            'product_categories'	 	 =>   $product_categories,
             'expiry_date'				 =>	  $expiry_date
         ]);
         return $coupon_id;
@@ -187,7 +216,20 @@ class Coupon extends Model
 
      }*/
 
-    public function couponupdate($coupans_id,$code,$description,$discount_type, $amount,$expiry_date){
+//    public function couponupdate($coupans_id,$code,$description,$discount_type, $amount,$expiry_date){
+//        //insert record
+//        $coupon_id = DB::table('coupons')->where('coupans_id', '=', $coupans_id)->update([
+//            'code'  	 				 =>   $code,
+//            'updated_at'				 =>   date('Y-m-d H:i:s'),
+//            'description'				 =>   $description,
+//            'discount_type'	 			 =>   $discount_type,
+//            'amount'	 	 			 =>   $amount,
+//            'expiry_date'				 =>	  $expiry_date
+//        ]);
+//        return $coupon_id;
+//    }
+
+    public function couponupdate($coupans_id,$code,$description,$discount_type, $amount,$product_ids,$product_categories,$expiry_date){
         //insert record
         $coupon_id = DB::table('coupons')->where('coupans_id', '=', $coupans_id)->update([
             'code'  	 				 =>   $code,
@@ -195,6 +237,8 @@ class Coupon extends Model
             'description'				 =>   $description,
             'discount_type'	 			 =>   $discount_type,
             'amount'	 	 			 =>   $amount,
+            'product_ids'	 	 		 =>   $product_ids,
+            'product_categories'		 =>   $product_categories,
             'expiry_date'				 =>	  $expiry_date
         ]);
         return $coupon_id;

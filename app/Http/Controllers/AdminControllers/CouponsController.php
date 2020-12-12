@@ -99,6 +99,11 @@ public function __construct(Coupon $coupon,Setting $setting)
         $result = array();
         $message = array();
         $result['message'] = $message;
+        $products = $this->Coupon->cutomers();
+        $result['products'] = $products;
+        $categories = $this->Coupon->custom_categories();
+        $result['categories'] = $categories;
+        //dd($categories);
         return view("admin.coupons.add", $title)->with('result', $result);
     }
 
@@ -236,6 +241,19 @@ public function __construct(Coupon $coupon,Setting $setting)
         $discount_type = $request->discount_type;
         $amount = $request->amount;
 
+        //include products
+        if($request->product_ids !== null){
+            $product_ids = implode(',',$request->product_ids);
+        }else{
+            $product_ids = '';
+        }
+
+        if($request->product_categories !==null){
+            $product_categories = implode(',',$request->product_categories);
+        }else{
+            $product_categories = '';
+        }
+
         $date = str_replace('/', '-', $request->expiry_date);
         $expiry_date = date('Y-m-d', strtotime($date));
 
@@ -263,7 +281,8 @@ public function __construct(Coupon $coupon,Setting $setting)
             }else{
 
                 //insert record
-                $coupon_id = $this->Coupon->addcoupon($code,$description,$discount_type,$amount,$expiry_date);
+                //$coupon_id = $this->Coupon->addcoupon($code,$description,$discount_type,$amount,$expiry_date);
+                $coupon_id = $this->Coupon->addcoupon($code,$description,$discount_type,$amount,$product_ids,$product_categories,$expiry_date);
 
                 return redirect('admin/coupons/add')->with('success', Lang::get("labels.CouponAddedMessage"));
             }
@@ -298,6 +317,10 @@ public function __construct(Coupon $coupon,Setting $setting)
         //coupon
         $coupon = $this->Coupon->getcoupon($id);
         $result['coupon'] = $coupon;
+        $products = $this->Coupon->cutomers();
+        $result['products'] = $products;
+        $categories = $this->Coupon->custom_categories();
+        $result['categories'] = $categories;
         return view("admin.coupons.edit", $title)->with('result', $result);
     }
 
@@ -409,6 +432,19 @@ public function __construct(Coupon $coupon,Setting $setting)
         $date = str_replace('/', '-', $request->expiry_date);
         $expiry_date = date('Y-m-d', strtotime($date));
 
+        //include products
+        if(!empty($request->product_ids)){
+            $product_ids = implode(',',$request->product_ids);
+        }else{
+            $product_ids = '';
+        }
+
+        if(!empty($request->product_categories)){
+            $product_categories = implode(',',$request->product_categories);
+        }else{
+            $product_categories = '';
+        }
+
         $validator = Validator::make(
             array(
                 'code'    => $request->code,
@@ -430,7 +466,8 @@ public function __construct(Coupon $coupon,Setting $setting)
                 return redirect()->back()->withErrors(Lang::get("labels.EnterCoupon"))->withInput();
             }else{
                 //insert record
-                $coupon_id = $this->Coupon->couponupdate($coupans_id,$code,$description,$discount_type, $amount,$expiry_date);
+                //$coupon_id = $this->Coupon->couponupdate($coupans_id,$code,$description,$discount_type, $amount,$expiry_date);
+                $coupon_id = $this->Coupon->couponupdate($coupans_id,$code,$description,$discount_type, $amount,$product_ids,$product_categories,$expiry_date);
 
                 $message = Lang::get("labels.CouponUpdatedMessage");
                 return redirect()->back()->withErrors([$message]);

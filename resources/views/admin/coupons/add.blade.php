@@ -104,6 +104,30 @@
                                             </div>
 
                                             <div class="form-group">
+                                                <label for="name" class="col-sm-2 col-md-3 control-label">{{ trans('labels.Products') }}</label>
+                                                <div class="col-sm-10 col-md-4 couponProdcuts">
+                                                    <select name="product_ids[]" multiple class="form-control select2 ">
+                                                        @foreach($result['products'] as $products)
+                                                            <option value="{{ $products->products_id }}">{{ $products->products_name }} {{ $products->products_model }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    <span class="help-block" style="font-weight: normal;font-size: 11px;margin-bottom: 0;">{{ trans('labels.CouponProductsUsed') }}</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="name" class="col-sm-2 col-md-3 control-label">{{ trans('labels.IncludeCategories') }}</label>
+                                                <div class="col-sm-10 col-md-4">
+                                                    <select name="product_categories[]" multiple class="form-control select2">
+                                                        @foreach($result['categories'] as $categories)
+                                                            <option value="{{ $categories->categories_id }}">{{ $categories->categories_name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    <span class="help-block" style="font-weight: normal;font-size: 11px;margin-bottom: 0;">{{ trans('labels.IncludeCategoriesText') }}</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
                                                 <label for="name" class="col-sm-2 col-md-3 control-label">{{ trans('labels.CouponExpiryDate') }}</label>
                                                 <div class="col-sm-10 col-md-4">
                                                     {!! Form::text('expiry_date',  '', array('class'=>'form-control field-validate datepicker', 'id'=>'datepicker', 'readonly'=>'readonly'))!!}

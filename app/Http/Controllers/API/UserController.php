@@ -520,4 +520,35 @@ class UserController extends Controller
         return response()->json(['success'=>true,'order_id' => $orders_id], $this-> successStatus);
     }
 
+    public function order_sum_amount(Request $request)
+    {
+        $authorization = $request->header('Auth');
+        if(empty($authorization)){
+            return response()->json(['success'=>false,'response'=>'Unauthorised'], 401);
+        }else{
+            $user=User::find($request->user_id);
+            if($user->api_token!=$authorization){
+                return response()->json(['success'=>false,'response'=>'Unauthorised'], 401);
+            }
+        }
+
+        $orders = DB::table("orders")->where('customers_id',$request->user_id)->get()->sum('order_price');
+
+
+        return response()->json(['success'=>true,'response' => $orders], $this-> successStatus);
+    }
+
+    public function coupon(Request $request)
+    {
+
+        $coupons = DB::table("coupons")
+            ->where('code',$request->code)
+            ->select('code','description','discount_type','amount','expiry_date','product_ids','product_categories')
+            ->latest()
+            ->first();
+
+
+        return response()->json(['success'=>true,'response' => $coupons], $this-> successStatus);
+    }
+
 }

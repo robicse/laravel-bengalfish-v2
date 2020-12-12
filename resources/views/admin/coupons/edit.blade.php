@@ -113,6 +113,30 @@
                                                 </div>
                                             </div>
 
+                                            <div class="form-group">
+                                                <label for="name" class="col-sm-2 col-md-3 control-label">{{ trans('labels.Products') }}</label>
+                                                <div class="col-sm-10 col-md-4 couponProdcuts">
+                                                    <select name="product_ids[]" multiple class="form-control select2">
+                                                        @foreach($result['products'] as $products)
+                                                            <option value="{{ $products->products_id }}" @if(in_array($products->products_id, explode(',', $result['coupon'][0]->product_ids))) selected @endif>{{ $products->products_name }} {{ $products->products_model }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    <span class="help-block" style="font-weight: normal;font-size: 11px;margin-bottom: 0;">{{ trans('labels.CouponProductsUsed') }}</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="name" class="col-sm-2 col-md-3 control-label">{{ trans('labels.IncludeCategories') }}</label>
+                                                <div class="col-sm-10 col-md-4">
+                                                    <select name="product_categories[]" multiple class="form-control select2">
+                                                        @foreach($result['categories'] as $categories)
+                                                            <option value="{{ $categories->categories_id }}" @if(in_array($categories->categories_id, explode(',', $result['coupon'][0]->product_categories))) selected @endif>{{ $categories->categories_name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    <span class="help-block" style="font-weight: normal;font-size: 11px;margin-bottom: 0;">{{ trans('labels.IncludeCategoriesText') }}</span>
+                                                </div>
+                                            </div>
+
                                             <!-- /.box-body -->
                                             <div class="box-footer text-center">
                                                 <button type="submit" class="btn btn-primary">{{ trans('labels.Submit') }}</button>
