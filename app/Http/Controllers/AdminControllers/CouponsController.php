@@ -24,16 +24,16 @@ public function __construct(Coupon $coupon,Setting $setting)
 
     public function display(Request $request){
 
-        $arr = [
-            165
-        ];
-    $coupons = DB::table("coupons")
-            ->where('code','123')
-            ->whereIn('product_ids', $arr)
-            ->select('code','description','discount_type','amount','expiry_date','product_ids','product_categories')
-            ->latest()
-            ->first();
-        dd($coupons);
+//        $arr = [
+//            165
+//        ];
+//        $coupons = DB::table("coupons")
+//            ->where('code','123')
+//            ->whereIn('product_ids', $arr)
+//            ->select('code','description','discount_type','amount','expiry_date','product_ids','product_categories')
+//            ->latest()
+//            ->first();
+//        dd($coupons);
 
             $title = array('pageTitle' => Lang::get("labels.ListingCoupons"));
             $result = array();
