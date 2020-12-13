@@ -10,6 +10,7 @@
         font-size: 13px;
         font-family:Roboto Condensed ;
         color: #7c838a;
+        text-align: center;
     }
     .product article .title a{
         font-size: 19px;
