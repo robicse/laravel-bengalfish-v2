@@ -11840,7 +11840,7 @@ h1 {
 .product-2x article .thumb {
   position: absolute;
   right: 15px;
-  bottom: 66px;
+  /*bottom: 66px;*/
   height: auto;
   /*width: 35%;*/
   width: 50%;
@@ -11867,8 +11867,9 @@ h1 {
   text-decoration: none;
   font-family: Roboto Condensed;
   font-weight: bold;
-  font-size: 45px;
+  font-size: 26px;
   margin-top: 7px;
+  max-width: 240px;
 }
 
 .product-2x article .price {

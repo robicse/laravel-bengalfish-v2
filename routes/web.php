@@ -61,7 +61,8 @@ Route::group(['namespace' => 'Web','middleware' => $middleware], function () {
     Route::get('/delete-address/{id}', 'ShippingAddressController@deleteAddress')->middleware('Customer');
     Route::post('/ajaxZones', 'ShippingAddressController@ajaxZones');
     //news section
-    Route::get('/news', 'NewsController@news');
+    //Route::get('/news', 'NewsController@news');
+    Route::get('/blogs', 'NewsController@news');
     Route::get('/news-detail/{slug}', 'NewsController@newsDetail');
     Route::post('/loadMoreNews', 'NewsController@loadMoreNews');
     Route::get('/page', 'IndexController@page');

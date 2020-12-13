@@ -283,13 +283,14 @@
                         <!--</li>-->
 
                         <li class="nav-item">
-                            <a class="nav-link pr-0 mr-1" href="https://bengalfish.com.bd/">Home</a>
+                            <a class="nav-link pr-0 mr-1" href="{{url('/')}}">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link pr-0 mr-1" href="https://bengalfish.com.bd/shop">Shop</a>
+                            <a class="nav-link pr-0 mr-1" href="{{url('shop')}}">Shop</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link pr-0 mr-1" href="{{url('news')}}">Blog</a>
+{{--                            <a class="nav-link pr-0 mr-1" href="{{url('news')}}">Blog</a>--}}
+                            <a class="nav-link pr-0 mr-1" href="{{url('blogs')}}">Blog</a>
                         </li>
 
                         @php

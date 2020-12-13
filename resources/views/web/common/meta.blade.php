@@ -17,6 +17,7 @@
     }
 
 @endphp
+
 @if($first_segment == '')
     <title><?=stripslashes($result['setting'][118]->value)?> : <?=stripslashes($result['setting'][18]->value)?></title>
 @elseif($first_segment != '')
