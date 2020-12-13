@@ -70,7 +70,7 @@ class CategoriesController extends Controller
 
             $image_path = DB::table('image_categories')->where('image_id',$category->image_id)->pluck('path')->first();
 
-            $category_image = $this->custom_live_base_url().'/'.$image_path;
+            //$category_image = $this->custom_live_base_url().'/'.$image_path;
             //$category_image = $this->custom_localhost_base_url().$image_path;
 
             $data[] = array(
@@ -81,7 +81,8 @@ class CategoriesController extends Controller
                 //'cat_slogan' => $category->cat_slogan,
                 //'position_sequence' => $category->position_sequence,
                 'categories_status' => $category->categories_status,
-                'categories_image' => $category_image,
+                //'categories_image' => $category_image,
+                'categories_image' => $image_path,
             );
         }
 
@@ -106,7 +107,7 @@ class CategoriesController extends Controller
 
             $image_path = DB::table('image_categories')->where('image_id',$category->image_id)->pluck('path')->first();
 
-            $category_image = $this->custom_live_base_url().'/'.$image_path;
+            //$category_image = $this->custom_live_base_url().'/'.$image_path;
             //$category_image = $this->custom_localhost_base_url().$image_path;
 
             $data[] = array(
@@ -117,7 +118,8 @@ class CategoriesController extends Controller
                 //'cat_slogan' => $category->cat_slogan,
                 //'position_sequence' => $category->position_sequence,
                 'categories_status' => $category->categories_status,
-                'categories_image' => $category_image,
+                //'categories_image' => $category_image,
+                'categories_image' => $image_path,
             );
         }
 
@@ -143,7 +145,7 @@ class CategoriesController extends Controller
         $category = [];
         foreach($categories as $data){
 
-            $product_image = $this->custom_live_base_url().'/'.$data->image_path;
+            //$product_image = $this->custom_live_base_url().'/'.$data->image_path;
             //$product_image = $this->custom_localhost_base_url().$data->image_path;
 
             $nested_data['categories_id'] = $data->categories_id;
@@ -159,7 +161,8 @@ class CategoriesController extends Controller
             $nested_data['products_liked'] = $data->products_liked;
             $nested_data['is_feature'] = $data->is_feature;
             $nested_data['products_min_order'] = $data->products_min_order;
-            $nested_data['image_path'] = $product_image;
+            //$nested_data['image_path'] = $product_image;
+            $nested_data['image_path'] = $data->image_path;
             $category[] = $nested_data;
         }
 
@@ -227,7 +230,7 @@ class CategoriesController extends Controller
         $category = [];
         foreach($categories as $data){
 
-            $product_image = $this->custom_live_base_url().'/'.$data->image_path;
+            //$product_image = $this->custom_live_base_url().'/'.$data->image_path;
             //$product_image = $this->custom_localhost_base_url().$data->image_path;
 
             $nested_data['categories_id'] = $data->categories_id;
@@ -243,7 +246,8 @@ class CategoriesController extends Controller
             $nested_data['products_liked'] = $data->products_liked;
             $nested_data['is_feature'] = $data->is_feature;
             $nested_data['products_min_order'] = $data->products_min_order;
-            $nested_data['image_path'] = $product_image;
+            //$nested_data['image_path'] = $product_image;
+            $nested_data['image_path'] = $data->image_path;
             $category[] = $nested_data;
         }
 
@@ -283,10 +287,11 @@ class CategoriesController extends Controller
 
         $image = [];
         foreach($images as $data){
-            $product_image = $this->custom_live_base_url().'/'.$data->product_image;
+            //$product_image = $this->custom_live_base_url().'/'.$data->product_image;
             //$product_image = $this->custom_localhost_base_url().$data->product_image;
 
-            $nested_data['product_image'] = $product_image;
+            //$nested_data['product_image'] = $product_image;
+            $nested_data['product_image'] = $data->product_image;
 
             $image[] = $nested_data;
         }

@@ -18,6 +18,11 @@ Route::post('user/shipping-address/edit', 'API\UserController@shipping_address_e
 Route::post('user/shipping-address/delete', 'API\UserController@shipping_address_delete');
 Route::post('user/shipping-address/get', 'API\UserController@shipping_address_get');
 
+Route::post('user/billing-address/post', 'API\UserController@billing_address_post');
+Route::post('user/billing-address/edit', 'API\UserController@billing_address_edit');
+Route::post('user/billing-address/delete', 'API\UserController@billing_address_delete');
+Route::post('user/billing-address/get', 'API\UserController@billing_address_get');
+
 Route::post('user/place-order', 'API\UserController@place_order');
 Route::post('user/order', 'API\UserController@order');
 Route::post('user/order/details', 'API\UserController@order_details');
@@ -26,6 +31,7 @@ Route::post('user/order_sum_amount', 'API\UserController@order_sum_amount');
 Route::post('user/coupon', 'API\UserController@coupon');
 Route::post('user/coupon/product_categories', 'API\UserController@coupon_by_product_categories');
 Route::post('user/coupon/product_ids', 'API\UserController@coupon_by_product_ids');
+Route::get('user/coupon/list', 'API\UserController@coupon_list');
 
 Route::get('category', 'API\CategoriesController@category');
 Route::post('subcategory', 'API\CategoriesController@subcategory');

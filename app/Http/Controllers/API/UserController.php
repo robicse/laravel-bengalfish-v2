@@ -276,6 +276,113 @@ class UserController extends Controller
         return response()->json(['success'=>true,'response' => $shipping_address], $this-> successStatus);
     }
 
+    public function billing_address_post(Request $request)
+    {
+        $authorization = $request->header('Auth');
+        if(empty($authorization)){
+            return response()->json(['success'=>false,'response'=>'Unauthorised'], 401);
+        }else{
+            $user=User::find($request->user_id);
+            if($user->api_token!=$authorization){
+                return response()->json(['success'=>false,'response'=>'Unauthorised'], 401);
+            }
+        }
+
+        $address_book_billing_data = array(
+            'user_id' => $request->user_id,
+            'customers_id' => $request->user_id,
+            'entry_firstname' => $request->entry_firstname,
+            'entry_lastname' => $request->entry_lastname,
+            'entry_street_address' => $request->entry_street_address,
+            'entry_city' => $request->entry_city,
+            'entry_postcode' => $request->entry_postcode,
+            'entry_phone' => $request->entry_phone,
+            'entry_zone_id' => 182,
+            'entry_country_id' => 18,
+        );
+        $address_book_billing_id = DB::table('address_book_billing')->insertGetId($address_book_billing_data);
+
+        DB::table('user_to_address_billing')->insert(
+            ['user_id' => $request->user_id, 'address_book_billing_id' => $address_book_billing_id,'is_default' => 0 ]
+        );
+        return response()->json(['success'=>true,'response' => $address_book_billing_data], $this-> successStatus);
+    }
+
+    public function billing_address_get(Request $request)
+    {
+        $authorization = $request->header('Auth');
+        if(empty($authorization)){
+            return response()->json(['success'=>false,'response'=>'Unauthorised'], 401);
+        }else{
+            $user=User::find($request->user_id);
+            if($user->api_token!=$authorization){
+                return response()->json(['success'=>false,'response'=>'Unauthorised'], 401);
+            }
+        }
+
+        $shipping_address_billing = DB::table('user_to_address_billing')
+            ->join('address_book_billing', 'user_to_address_billing.address_book_billing_id', '=', 'address_book_billing.address_book_billing_id')
+            ->where('user_to_address_billing.user_id', $request->user_id)
+            ->select('address_book_billing.address_book_billing_id','address_book_billing.user_id','address_book_billing.entry_firstname','address_book_billing.entry_lastname','address_book_billing.entry_street_address','address_book_billing.entry_postcode','address_book_billing.entry_city','address_book_billing.entry_phone')
+            ->get();
+
+        return response()->json(['success'=>true,'response' => $shipping_address_billing], $this-> successStatus);
+    }
+
+    public function billing_address_edit(Request $request)
+    {
+        $authorization = $request->header('Auth');
+        if(empty($authorization)){
+            return response()->json(['success'=>false,'response'=>'Unauthorised'], 401);
+        }else{
+            $user=User::find($request->user_id);
+            if($user->api_token!=$authorization){
+                return response()->json(['success'=>false,'response'=>'Unauthorised'], 401);
+            }
+        }
+
+        $address_book_billing_data = array(
+            'user_id' => $request->user_id,
+            'customers_id' => $request->user_id,
+            'entry_firstname' => $request->entry_firstname,
+            'entry_lastname' => $request->entry_lastname,
+            'entry_street_address' => $request->entry_street_address,
+            'entry_city' => $request->entry_city,
+            'entry_postcode' => $request->entry_postcode,
+            'entry_phone' => $request->entry_phone,
+            //'entry_zone_id' => 182,
+            //'entry_country_id' => 18,
+        );
+
+        DB::table('address_book_billing')
+            ->where('address_book_billing_id', $request->address_book_billing_id)
+            ->update($address_book_billing_data);
+
+        return response()->json(['success'=>true,'response' => $address_book_billing_data], $this-> successStatus);
+    }
+
+    public function billing_address_delete(Request $request)
+    {
+        $authorization = $request->header('Auth');
+        if(empty($authorization)){
+            return response()->json(['success'=>false,'response'=>'Unauthorised'], 401);
+        }else{
+            $user=User::find($request->user_id);
+            if($user->api_token!=$authorization){
+                return response()->json(['success'=>false,'response'=>'Unauthorised'], 401);
+            }
+        }
+
+        DB::table('address_book_billing')
+            ->where('address_book_billing_id', $request->address_book_billing_id)
+            ->delete();
+
+        DB::table('user_to_address_billing')->where('address_book_billing_id', $request->address_book_billing_id)
+            ->delete();
+
+        return response()->json(['success'=>true,'response' => 'Deleted'], $this-> successStatus);
+    }
+
     public function profile_update(Request $request)
     {
         //dd($request->all());
@@ -582,6 +689,18 @@ class UserController extends Controller
             ->latest()
             ->first();
         //dd($coupons);
+
+
+        return response()->json(['success'=>true,'response' => $coupons], $this-> successStatus);
+    }
+
+    public function coupon_list()
+    {
+
+        $coupons = DB::table("coupons")
+            ->select('coupans_id','code','description','discount_type','amount','expiry_date','product_ids','product_categories')
+            ->latest()
+            ->get();
 
 
         return response()->json(['success'=>true,'response' => $coupons], $this-> successStatus);
