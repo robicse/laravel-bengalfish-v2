@@ -421,7 +421,8 @@ class UserController extends Controller
 
         $orders=Order::where('customers_id',$request->user_id)
             ->select('orders_id','customers_id','customers_name','customers_street_address','customers_city','customers_postcode','email','delivery_phone','delivery_name','delivery_street_address','delivery_city','delivery_postcode','billing_name','billing_street_address','billing_city','billing_postcode','billing_phone','payment_method','order_price','shipping_cost','shipping_method','coupon_amount','free_shipping')
-            ->get();
+            ->latest('orders_id')
+            ->first();
 
         //unset unnecessary field
         unset($orders['customers_company']);
@@ -492,6 +493,7 @@ class UserController extends Controller
 //        }
         //return response()->json(['success'=>true,'response'=>$cart_items], 401);
 //        return response()->json(['success'=>true,'response'=>$products_name], 401);
+//        return response()->json(['success'=>true,'response'=>'come here'], 401);
 
         $authorization = $request->header('Auth');
         if(empty($authorization)){
@@ -504,35 +506,26 @@ class UserController extends Controller
         }
 
         $orders_id = DB::table('orders')->insertGetId(
-            ['customers_id' => $request->user_id,
+            [
+                'customers_id' => $request->user_id,
                 'customers_name' => $request->delivery_firstname . ' ' . $request->delivery_lastname,
                 'customers_street_address' => $request->delivery_street_address,
-//                'customers_suburb' => $request->delivery_suburb,
                 'customers_city' => $request->delivery_city,
-//                'customers_postcode' => $request->delivery_postcode,
                 'customers_state' => $request->delivery_state,
                 'customers_country' => "Bangladesh",
-                //'customers_telephone' => $request->customers_telephone,
                 'email' => $request->email,
-                // 'customers_address_format_id' => $delivery_address_format_id,
 
                 'delivery_name' => $request->delivery_firstname . ' ' . $request->delivery_lastname,
                 'delivery_street_address' => $request->delivery_street_address,
-//                'delivery_suburb' => $request->delivery_suburb,
                 'delivery_city' => $request->delivery_city,
-//                'delivery_postcode' => $request->delivery_postcode,
                 'delivery_state' => $request->delivery_state,
                 'delivery_country' => "Bangladesh",
-                // 'delivery_address_format_id' => $delivery_address_format_id,
 
                 'billing_name' => $request->billing_firstname . ' ' . $request->billing_lastname,
                 'billing_street_address' => $request->billing_street_address,
-//                'billing_suburb' => $billing_suburb,
                 'billing_city' => $request->billing_city,
-//                'billing_postcode' => $request->billing_postcode,
                 'billing_state' => $request->billing_state,
                 'billing_country' => "Bangladesh",
-                //'billing_address_format_id' => $billing_address_format_id,
 
                 'payment_method' => $request->payment_method_name,
                 'last_modified' => date("Y-m-d h:i:s"),
@@ -540,91 +533,50 @@ class UserController extends Controller
                 'order_price' => $request->total_order_price,
                 'shipping_cost' => $request->shipping_cost,
                 'shipping_method' => "flateRate",
-                // 'orders_status' => $orders_status,
-                //'orders_date_finished'  => $orders_date_finished,
-//                'currency' => $currency,
-//                'order_information' => json_encode($order_information),
-//                'coupon_code' => $request->coupon_code,
-//                'coupon_amount' => $coupon_amount,
-//                'total_tax' => $total_tax,
                 'ordered_source' => '1',
                 'delivery_phone' => $request->delivery_phone,
-                'billing_phone' => $request->delivery_phone,
+
             ]);
 
+        $order_insert_id = $orders_id;
+
         //orders status history
-        $orders_history_id = DB::table('orders_status_history')->insertGetId(
-            ['orders_id' => $orders_id,
+        DB::table('orders_status_history')->insertGetId(
+            [
+                'orders_id' => $orders_id,
                 'orders_status_id' => 1,
                 'date_added' => date("Y-m-d h:i:s"),
                 'customer_notified' => '1',
             ]);
-//        dd($request->cart);
 
 
-
-
-        $cart_items = json_decode($request->cart);
-
-        foreach ($cart_items as $products) {
-            //get products info
-            //dd($products['products_id']);
+        foreach ($request->cart as $products) {
             $orders_products_id = DB::table('orders_products')->insertGetId(
                 [
                     'orders_id' => $orders_id,
-                    'products_id' => $products->products_id,
-                    'products_name' => $products->products_name,
-                    'products_price' => $products->price,
-                    'final_price' => $products->final_price * $products->customers_basket_quantity,
-                    'products_quantity' => $products->customers_basket_quantity,
+                    'products_id' => $products['products_id'],
+                    'products_name' => $products['products_name'],
+                    'products_price' => $products['price'],
+                    'final_price' => $products['final_price'] * $products['customers_basket_quantity'],
+                    'products_quantity' => $products['customers_basket_quantity'],
                 ]);
             $inventory_ref_id = DB::table('inventory')->insertGetId([
-                'products_id' => $products->products_id,
+                'products_id' => $products['products_id'],
                 'reference_code' => '',
-                'stock' => $products->customers_basket_quantity,
+                'stock' => $products['customers_basket_quantity'],
                 'admin_id' => 0,
                 'added_date' => time(),
                 'purchase_price' => 0,
                 'stock_type' => 'out',
             ]);
 
-
-//            if($request->payment_method_name == 'sslcommerz')
-//            {
-//                return redirect('/checkout/ssl/pay');
-//            }
-
-//            if (Session::get('guest_checkout') == 1) {
-//                DB::table('customers_basket')->where('session_id', Session::getId())->where('products_id', $products->products_id)->update(['is_order' => '1']);
-//
-//            } else {
-//                DB::table('customers_basket')->where('user_id', $customers_id)->where('products_id', $products->products_id)->update(['is_order' => '1']);
-//            }
-
-//            if (!empty($products->attributes) and count($products->attributes)>0) {
-//
-//                foreach ($products->attributes as $attribute) {
-//                    DB::table('orders_products_attributes')->insert(
-//                        [
-//                            'orders_id' => $orders_id,
-//                            'products_id' => $products->products_id,
-//                            'orders_products_id' => $orders_products_id,
-//                            'products_options' => $attribute->attribute_name,
-//                            'products_options_values' => $attribute->attribute_value,
-//                            'options_values_price' => $attribute->values_price,
-//                            'price_prefix' => $attribute->prefix,
-//                        ]);
-//
-//                    DB::table('inventory_detail')->insert([
-//                        'inventory_ref_id' => $inventory_ref_id,
-//                        'products_id' => $products->products_id,
-//                        'attribute_id' => $attribute->products_attributes_id,
-//                    ]);
-//                }
-//            }
-
         }
-        return response()->json(['success'=>true,'order_id' => $orders_id], $this-> successStatus);
+
+        if($order_insert_id){
+            return response()->json(['success'=>true,'order_id' => $order_insert_id], $this-> successStatus);
+        }else{
+            return response()->json(['success'=>true,'order_id' => false], $this-> failStatus);
+        }
     }
 
     public function order_sum_amount(Request $request)

@@ -1,4 +1,26 @@
 <?php
+
+/* artisan command */
+Route::get('/clear-cache', function() {
+    $exitCode = Artisan::call('cache:clear');
+    return 'cache clear';
+});
+Route::get('/config-cache', function() {
+    $exitCode = Artisan::call('config:cache');
+    return 'config:cache';
+});
+Route::get('/view-cache', function() {
+    $exitCode = Artisan::call('view:cache');
+    return 'view:cache';
+});
+Route::get('/view-clear', function() {
+    $exitCode = Artisan::call('view:clear');
+    return 'view:clear';
+});
+/* artisan command */
+
+
+
 if(file_exists(storage_path('installed'))){
     $check = DB::table('settings')->where('id', 94)->first();
     if($check->value == 'Maintenance'){
@@ -11,6 +33,11 @@ if(file_exists(storage_path('installed'))){
 else{
     $middleware = ['installer'];
 }
+
+
+
+
+
 Route::get('/maintance','Web\IndexController@maintance');
 
 Route::group(['namespace' => 'Web','middleware' => ['installer']], function () {

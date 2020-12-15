@@ -1,4 +1,24 @@
 <?php
+
+/* artisan command */
+Route::get('/clear-cache', function() {
+    $exitCode = Artisan::call('cache:clear');
+    return 'cache clear';
+});
+Route::get('/config-cache', function() {
+    $exitCode = Artisan::call('config:cache');
+    return 'config:cache';
+});
+Route::get('/view-cache', function() {
+    $exitCode = Artisan::call('view:cache');
+    return 'view:cache';
+});
+Route::get('/view-clear', function() {
+    $exitCode = Artisan::call('view:clear');
+    return 'view:clear';
+});
+/* artisan command */
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
