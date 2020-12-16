@@ -281,12 +281,12 @@ jQuery(document).ready(function() {
                                                      $currency_value = $session_currency->value;
                                                    }
                                                    @endphp
-                                                 {{--<input class="shipping_data" id="{{$method_name}}" type="radio" name="shipping_method" value="{{$services['shipping_method']}}" shipping_price="{{$services['rate']}}"  method_name="{{$method_name}}" @if(!empty(session('shipping_detail')) and !empty(session('shipping_detail')) > 0)
-                                                 @if(session('shipping_detail')->mehtod_name == $method_name) checked @endif
-                                                 @elseif($shipping_methods['is_default']==1) checked @endif
-                                                 >--}}
-                                                     <input class="shipping_data" id="{{$method_name}}" required type="radio" name="shipping_method" value="{{$services['shipping_method']}}" shipping_price="{{$services['rate']}}"  method_name="{{$method_name}}">
-                                                  <label for="{{$method_name}}">{{$services['name']}} --- {{Session::get('symbol_left')}}{{$services['rate']* $currency_value}}{{Session::get('symbol_right')}}</label>
+                                                     {{--<input class="shipping_data" id="{{$method_name}}" type="radio" name="shipping_method" value="{{$services['shipping_method']}}" shipping_price="{{$services['rate']}}"  method_name="{{$method_name}}" @if(!empty(session('shipping_detail')) and !empty(session('shipping_detail')) > 0)
+                                                     @if(session('shipping_detail')->mehtod_name == $method_name) checked @endif
+                                                     @elseif($shipping_methods['is_default']==1) checked @endif
+                                                     >--}}
+                                                   <input class="shipping_data" id="{{$method_name}}" required type="radio" name="shipping_method" value="{{$services['shipping_method']}}" shipping_price="{{$services['rate']}}"  method_name="{{$method_name}}">
+                                                   <label for="{{$method_name}}">{{$services['name']}} --- {{Session::get('symbol_left')}}{{$services['rate']* $currency_value}}{{Session::get('symbol_right')}}</label>
                                                  </li>
                                              @endforeach
                                          </ul>
@@ -630,11 +630,11 @@ jQuery(document).ready(function() {
                <td align="right">{{Session::get('symbol_left')}}{{$tax_rate*$currency_value}}{{Session::get('symbol_right')}}</td>
 
              </tr>--}}
-             <tr>
-                 <th scope="row">@lang('website.Shipping Cost')</th>
-                 <td align="right">{{Session::get('symbol_left')}}{{$shipping_price*$currency_value}}{{Session::get('symbol_right')}}</td>
+{{--             <tr>--}}
+{{--                 <th scope="row">@lang('website.Shipping Cost')</th>--}}
+{{--                 <td align="right">{{Session::get('symbol_left')}}{{$shipping_price*$currency_value}}{{Session::get('symbol_right')}}</td>--}}
 
-               </tr>
+{{--               </tr>--}}
            <tr class="item-price">
              <th scope="row">@lang('website.Total')</th>
              <td align="right" >{{Session::get('symbol_left')}}{{number_format((float)$total_price+0, 2, '.', '')+0*$currency_value}}{{Session::get('symbol_right')}}</td>

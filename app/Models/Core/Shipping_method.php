@@ -51,6 +51,7 @@ class Shipping_method extends Model
     public function shipingMethod(){
         $shipping_methods = DB::table('shipping_methods')
             ->leftJoin('shipping_description','shipping_description.table_name','=','shipping_methods.table_name')
+            ->where('shipping_methods.status',1)
             ->where('shipping_description.language_id','1')
             ->Where('shipping_methods.methods_type_link','freeShipping')
             ->orWhere('shipping_methods.methods_type_link','flateRate')

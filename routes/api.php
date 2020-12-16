@@ -37,6 +37,7 @@ Route::post('user/shipping-address/post', 'API\UserController@shipping_address_p
 Route::post('user/shipping-address/edit', 'API\UserController@shipping_address_edit');
 Route::post('user/shipping-address/delete', 'API\UserController@shipping_address_delete');
 Route::post('user/shipping-address/get', 'API\UserController@shipping_address_get');
+Route::get('user/shipping-cost', 'API\UserController@get_shipping_cost');
 
 Route::post('user/billing-address/post', 'API\UserController@billing_address_post');
 Route::post('user/billing-address/edit', 'API\UserController@billing_address_edit');

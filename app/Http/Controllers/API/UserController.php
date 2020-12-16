@@ -276,6 +276,28 @@ class UserController extends Controller
         return response()->json(['success'=>true,'response' => $shipping_address], $this-> successStatus);
     }
 
+    public function get_shipping_cost(Request $request)
+    {
+//        $authorization = $request->header('Auth');
+//        if (empty($authorization)) {
+//            return response()->json(['success' => false, 'response' => 'Unauthorised'], 401);
+//        } else {
+//            $user = User::find($request->user_id);
+//            if ($user->api_token != $authorization) {
+//                return response()->json(['success' => false, 'response' => 'Unauthorised'], 401);
+//            }
+//        }
+
+        $shipping_cost = DB::table('flate_rate')->pluck('flate_rate')->first();
+        if($shipping_cost){
+            return response()->json(['success'=>true,'response' => $shipping_cost], $this-> successStatus);
+        }else{
+            return response()->json(['success'=>true,'response' => ''], $this-> failStatus);
+        }
+
+
+    }
+
     public function billing_address_post(Request $request)
     {
         $authorization = $request->header('Auth');
@@ -530,6 +552,8 @@ class UserController extends Controller
                 'payment_method' => $request->payment_method_name,
                 'last_modified' => date("Y-m-d h:i:s"),
                 'date_purchased' => date("Y-m-d h:i:s"),
+                'coupon_code' => $request->coupon_code,
+                'coupon_amount' => $request->coupon_amount,
                 'order_price' => $request->total_order_price,
                 'shipping_cost' => $request->shipping_cost,
                 'shipping_method' => "flateRate",
