@@ -24,11 +24,30 @@ use Intervention\Image\Facades\Image;
 class UserController extends Controller
 {
     public $successStatus = 200;
-    public $failStatus = 401;
+    public $authStatus = 401;
+    public $failStatus = 402;
+    public $ExistsStatus = 403;
+    public $validationStatus = 404;
 
 
     public function login(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'phone' => 'required',
+            'password' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            $response = [
+                'success' => false,
+                'data' => 'Validation Error.',
+                'message' => $validator->errors()
+            ];
+
+            return response()->json($response, $this-> validationStatus);
+        }
+
+
 //        $credentials = [
 //            'email' => $request->email,
 //            'password' => $request->password,
@@ -55,22 +74,39 @@ class UserController extends Controller
             $success['user'] =  $user;
             return response()->json(['success'=>true,'response' => $success], $this-> successStatus);
         }else{
-            return response()->json(['success'=>false,'response'=>'Unauthorised'], 401);
+            return response()->json(['success'=>false,'response'=>'Unauthorised'], $this-> authStatus);
         }
     }
 
     public function register(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'firstName' => 'required',
+            'phone' => 'required',
+            'email' => 'required',
+            'gender' => 'required',
+            'password' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            $response = [
+                'success' => false,
+                'data' => 'Validation Error.',
+                'message' => $validator->errors()
+            ];
+
+            return response()->json($response, $this-> validationStatus);
+        }
 
         $checkmail=User::where('email',$request->email)->first();
         if(!empty($checkmail)){
-            return response()->json(['success'=>false,'response' =>'Email Already Exist'], 403);
+            return response()->json(['success'=>false,'response' =>'Email Already Exist'], $this-> ExistsStatus);
         }
         $checkPhone=User::where('phone',$request->phone)->first();
         if(!empty($checkPhone)){
-            return response()->json(['success'=>false,'response' =>'Phone Already Exist'], 403);
+            return response()->json(['success'=>false,'response' =>'Phone Already Exist'], $this-> ExistsStatus);
         }
+
         $userReg = new User();
         $userReg->first_name = $request->firstName;
         //$userReg->last_name = $request->lastName;
@@ -89,31 +125,20 @@ class UserController extends Controller
             $customers = DB::table('users')->where('id', $userReg->id)->get();
             $myVar = new AlertController();
             $myVar->createUserAlert($customers);
+
+            $success['user'] =  $userReg;
+            return response()->json(['success'=>true,'response' =>$userReg], $this-> successStatus);
+        }else{
+            return response()->json(['success'=>false,'response'=>'No Inserted!'], $this-> failStatus);
         }
 
-
-//        $verification = VerificationCode::where('phone',$user->phone)->first();
-//        if (!empty($verification)){
-//            $verification->delete();
-//        }
-//        $verCode = new VerificationCode();
-//        $verCode->phone = $user->phone;
-//        $verCode->code = mt_rand(1111,9999);
-//        $verCode->status = 0;
-//        $verCode->save();
-//        $text = "<#> Dear ".$user->name.", Your Priyojon OTP is: ".$verCode->code." /bCe8bIGKEiT";
-//        UserInfo::smsAPI("0".$verCode->phone,$text);
-
-//        $success['token'] =  $userReg->createToken('ohmistiry')-> accessToken;
-        $success['user'] =  $userReg;
-        return response()->json(['success'=>true,'response' =>$userReg], $this-> successStatus);
     }
 
     public function details(Request $request)
     {
         $authorization = $request->header('Auth');
         if(empty($authorization)){
-            return response()->json(['success'=>false,'response'=>'Unauthorised'], 401);
+            return response()->json(['success'=>false,'response'=>'Unauthorised'], $this-> authStatus);
         }else{
             $user=User::find($request->user_id);
 
@@ -125,22 +150,21 @@ class UserController extends Controller
             unset($user['updated_at']);
 
             if($user->api_token!=$authorization){
-                return response()->json(['success'=>false,'response'=>'Unauthorised'], 401);
+                return response()->json(['success'=>false,'response'=>'Unauthorised'], $this-> authStatus);
             }
+            return response()->json(['success'=>false,'response'=>$user], $this-> successStatus);
         }
-
-        return response()->json(['success'=>true,'response' => $user], $this-> successStatus);
     }
 
     public function password_reset(Request $request)
     {
         $authorization = $request->header('Auth');
         if(empty($authorization)){
-            return response()->json(['success'=>false,'response'=>'Unauthorised'], 401);
+            return response()->json(['success'=>false,'response'=>'Unauthorised'], $this-> authStatus);
         }else{
             $user=User::find($request->user_id);
             if($user->api_token!=$authorization){
-                return response()->json(['success'=>false,'response'=>'Unauthorised'], 401);
+                return response()->json(['success'=>false,'response'=>'Unauthorised'], $this-> authStatus);
             }
         }
 
@@ -150,27 +174,26 @@ class UserController extends Controller
             $new_pass=Hash::make($rand_pass);
             $user->password=$new_pass;
             $user->api_token = Str::random(60);
-            $user->update();
-            return response()->json(['success'=>true,'response' => $user,'api_token' => $user->api_token], $this-> successStatus);
+            $update = $user->update();
+            if($update){
+                return response()->json(['success'=>true,'response' => $user,'api_token' => $user->api_token], $this-> successStatus);
+            }else{
+                return response()->json(['success'=>true,'response' => $user,'api_token' => 'No Reset Password'], $this-> failStatus);
+            }
         }else{
-            //dd("un");
-            return response()->json(['success'=>false,'response' => 'current password do not matched'], 401);
+            return response()->json(['success'=>false,'response' => 'current password do not matched'], $this-> failStatus);
         }
-
-
-
-
     }
 
     public function shipping_address_post(Request $request)
     {
         $authorization = $request->header('Auth');
         if(empty($authorization)){
-            return response()->json(['success'=>false,'response'=>'Unauthorised'], 401);
+            return response()->json(['success'=>false,'response'=>'Unauthorised'], $this-> authStatus);
         }else{
             $user=User::find($request->user_id);
             if($user->api_token!=$authorization){
-                return response()->json(['success'=>false,'response'=>'Unauthorised'], 401);
+                return response()->json(['success'=>false,'response'=>'Unauthorised'], $this-> authStatus);
             }
         }
 
@@ -189,21 +212,26 @@ class UserController extends Controller
         $address_book_id = DB::table('address_book')->insertGetId($address_book_data);
 
         //dd($address_book_id);
-        $add=DB::table('user_to_address')->insert(
+        $add = DB::table('user_to_address')->insert(
             ['user_id' => $request->user_id, 'address_book_id' => $address_book_id,'is_default' => 0 ]
         );
-        return response()->json(['success'=>true,'response' => $address_book_data], $this-> successStatus);
+
+        if($address_book_id && $add){
+            return response()->json(['success'=>true,'response' => $address_book_data], $this-> successStatus);
+        }else{
+            return response()->json(['success'=>false,'response' => 'No Inserted Address Book'], $this-> failStatus);
+        }
     }
 
     public function shipping_address_edit(Request $request)
     {
         $authorization = $request->header('Auth');
         if(empty($authorization)){
-            return response()->json(['success'=>false,'response'=>'Unauthorised'], 401);
+            return response()->json(['success'=>false,'response'=>'Unauthorised'], $this-> authStatus);
         }else{
             $user=User::find($request->user_id);
             if($user->api_token!=$authorization){
-                return response()->json(['success'=>false,'response'=>'Unauthorised'], 401);
+                return response()->json(['success'=>false,'response'=>'Unauthorised'], $this-> authStatus);
             }
         }
 
@@ -224,18 +252,22 @@ class UserController extends Controller
             ->where('address_book_id', $request->address_book_id)
             ->update($address_book_data);
 
-        return response()->json(['success'=>true,'response' => $address_book_data], $this-> successStatus);
+        if($address_book_id){
+            return response()->json(['success'=>true,'response' => $address_book_data], $this-> successStatus);
+        }else{
+            return response()->json(['success'=>false,'response' => 'No Updated Address Book'], $this-> failStatus);
+        }
     }
 
     public function shipping_address_delete(Request $request)
     {
         $authorization = $request->header('Auth');
         if(empty($authorization)){
-            return response()->json(['success'=>false,'response'=>'Unauthorised'], 401);
+            return response()->json(['success'=>false,'response'=>'Unauthorised'], $this-> authStatus);
         }else{
             $user=User::find($request->user_id);
             if($user->api_token!=$authorization){
-                return response()->json(['success'=>false,'response'=>'Unauthorised'], 401);
+                return response()->json(['success'=>false,'response'=>'Unauthorised'], $this-> authStatus);
             }
         }
 
@@ -243,21 +275,25 @@ class UserController extends Controller
             ->where('address_book_id', $request->address_book_id)
             ->delete();
 
-        $add=DB::table('user_to_address')->where('address_book_id', $request->address_book_id)
+        $add = DB::table('user_to_address')->where('address_book_id', $request->address_book_id)
             ->delete();
 
-        return response()->json(['success'=>true,'response' => 'Deleted'], $this-> successStatus);
+        if($address_book_id && $add){
+            return response()->json(['success'=>true,'response' => 'Deleted'], $this-> successStatus);
+        }else{
+            return response()->json(['success'=>false,'response' => 'No Updated Address Book'], $this-> failStatus);
+        }
     }
 
     public function shipping_address_get(Request $request)
     {
         $authorization = $request->header('Auth');
         if(empty($authorization)){
-            return response()->json(['success'=>false,'response'=>'Unauthorised'], 401);
+            return response()->json(['success'=>false,'response'=>'Unauthorised'], $this-> authStatus);
         }else{
             $user=User::find($request->user_id);
             if($user->api_token!=$authorization){
-                return response()->json(['success'=>false,'response'=>'Unauthorised'], 401);
+                return response()->json(['success'=>false,'response'=>'Unauthorised'], $this-> authStatus);
             }
         }
 
@@ -273,18 +309,22 @@ class UserController extends Controller
             ->select('address_book.address_book_id','address_book.user_id','address_book.entry_firstname','address_book.entry_lastname','address_book.entry_street_address','address_book.entry_postcode','address_book.entry_city','address_book.entry_phone')
             ->get();
 
-        return response()->json(['success'=>true,'response' => $shipping_address], $this-> successStatus);
+        if($shipping_address){
+            return response()->json(['success'=>true,'response' => $shipping_address], $this-> successStatus);
+        }else{
+            return response()->json(['success'=>false,'response' => 'No Information Using This User'], $this-> failStatus);
+        }
     }
 
     public function get_shipping_cost(Request $request)
     {
 //        $authorization = $request->header('Auth');
 //        if (empty($authorization)) {
-//            return response()->json(['success' => false, 'response' => 'Unauthorised'], 401);
+//            return response()->json(['success' => false, 'response' => 'Unauthorised'], $this-> failStatus);
 //        } else {
 //            $user = User::find($request->user_id);
 //            if ($user->api_token != $authorization) {
-//                return response()->json(['success' => false, 'response' => 'Unauthorised'], 401);
+//                return response()->json(['success' => false, 'response' => 'Unauthorised'], $this-> failStatus);
 //            }
 //        }
 
@@ -292,7 +332,7 @@ class UserController extends Controller
         if($shipping_cost){
             return response()->json(['success'=>true,'response' => $shipping_cost], $this-> successStatus);
         }else{
-            return response()->json(['success'=>true,'response' => ''], $this-> failStatus);
+            return response()->json(['success'=>false,'response' => 'No Shipping Cost Found.'], $this-> failStatus);
         }
 
 
@@ -302,11 +342,11 @@ class UserController extends Controller
     {
         $authorization = $request->header('Auth');
         if(empty($authorization)){
-            return response()->json(['success'=>false,'response'=>'Unauthorised'], 401);
+            return response()->json(['success'=>false,'response'=>'Unauthorised'], $this-> authStatus);
         }else{
             $user=User::find($request->user_id);
             if($user->api_token!=$authorization){
-                return response()->json(['success'=>false,'response'=>'Unauthorised'], 401);
+                return response()->json(['success'=>false,'response'=>'Unauthorised'], $this-> authStatus);
             }
         }
 
@@ -324,21 +364,26 @@ class UserController extends Controller
         );
         $address_book_billing_id = DB::table('address_book_billing')->insertGetId($address_book_billing_data);
 
-        DB::table('user_to_address_billing')->insert(
+        $billing_address = DB::table('user_to_address_billing')->insert(
             ['user_id' => $request->user_id, 'address_book_billing_id' => $address_book_billing_id,'is_default' => 0 ]
         );
-        return response()->json(['success'=>true,'response' => $address_book_billing_data], $this-> successStatus);
+
+        if($address_book_billing_id && $billing_address){
+            return response()->json(['success'=>true,'response' => $address_book_billing_data], $this-> successStatus);
+        }else{
+            return response()->json(['success'=>false,'response' => 'No Inserted Billing Address'], $this-> failStatus);
+        }
     }
 
     public function billing_address_get(Request $request)
     {
         $authorization = $request->header('Auth');
         if(empty($authorization)){
-            return response()->json(['success'=>false,'response'=>'Unauthorised'], 401);
+            return response()->json(['success'=>false,'response'=>'Unauthorised'], $this-> authStatus);
         }else{
             $user=User::find($request->user_id);
             if($user->api_token!=$authorization){
-                return response()->json(['success'=>false,'response'=>'Unauthorised'], 401);
+                return response()->json(['success'=>false,'response'=>'Unauthorised'], $this-> authStatus);
             }
         }
 
@@ -348,18 +393,22 @@ class UserController extends Controller
             ->select('address_book_billing.address_book_billing_id','address_book_billing.user_id','address_book_billing.entry_firstname','address_book_billing.entry_lastname','address_book_billing.entry_street_address','address_book_billing.entry_postcode','address_book_billing.entry_city','address_book_billing.entry_phone')
             ->get();
 
-        return response()->json(['success'=>true,'response' => $shipping_address_billing], $this-> successStatus);
+        if($shipping_address_billing){
+            return response()->json(['success'=>true,'response' => $shipping_address_billing], $this-> successStatus);
+        }else{
+            return response()->json(['success'=>false,'response' => 'No Get Shipping Address'], $this-> failStatus);
+        }
     }
 
     public function billing_address_edit(Request $request)
     {
         $authorization = $request->header('Auth');
         if(empty($authorization)){
-            return response()->json(['success'=>false,'response'=>'Unauthorised'], 401);
+            return response()->json(['success'=>false,'response'=>'Unauthorised'], $this-> authStatus);
         }else{
             $user=User::find($request->user_id);
             if($user->api_token!=$authorization){
-                return response()->json(['success'=>false,'response'=>'Unauthorised'], 401);
+                return response()->json(['success'=>false,'response'=>'Unauthorised'], $this-> authStatus);
             }
         }
 
@@ -376,33 +425,41 @@ class UserController extends Controller
             //'entry_country_id' => 18,
         );
 
-        DB::table('address_book_billing')
+        $update = DB::table('address_book_billing')
             ->where('address_book_billing_id', $request->address_book_billing_id)
             ->update($address_book_billing_data);
 
-        return response()->json(['success'=>true,'response' => $address_book_billing_data], $this-> successStatus);
+        if($update){
+            return response()->json(['success'=>true,'response' => $address_book_billing_data], $this-> successStatus);
+        }else{
+            return response()->json(['success'=>false,'response' => 'NO Updated Billing Address'], $this-> failStatus);
+        }
     }
 
     public function billing_address_delete(Request $request)
     {
         $authorization = $request->header('Auth');
         if(empty($authorization)){
-            return response()->json(['success'=>false,'response'=>'Unauthorised'], 401);
+            return response()->json(['success'=>false,'response'=>'Unauthorised'], $this-> authStatus);
         }else{
             $user=User::find($request->user_id);
             if($user->api_token!=$authorization){
-                return response()->json(['success'=>false,'response'=>'Unauthorised'], 401);
+                return response()->json(['success'=>false,'response'=>'Unauthorised'], $this-> authStatus);
             }
         }
 
-        DB::table('address_book_billing')
+        $delete_address_book_billing = DB::table('address_book_billing')
             ->where('address_book_billing_id', $request->address_book_billing_id)
             ->delete();
 
-        DB::table('user_to_address_billing')->where('address_book_billing_id', $request->address_book_billing_id)
+        $delete_user_to_address_billing = DB::table('user_to_address_billing')->where('address_book_billing_id', $request->address_book_billing_id)
             ->delete();
 
-        return response()->json(['success'=>true,'response' => 'Deleted'], $this-> successStatus);
+        if($delete_address_book_billing && $delete_user_to_address_billing){
+            return response()->json(['success'=>true,'response' => 'Deleted'], $this-> successStatus);
+        }else{
+            return response()->json(['success'=>false,'response' => 'No Updated Billing Address'], $this-> failStatus);
+        }
     }
 
     public function profile_update(Request $request)
@@ -410,11 +467,11 @@ class UserController extends Controller
         //dd($request->all());
         $authorization = $request->header('Auth');
         if(empty($authorization)){
-            return response()->json(['success'=>false,'response'=>'Unauthorised'], 401);
+            return response()->json(['success'=>false,'response'=>'Unauthorised'], $this-> authStatus);
         }else{
             $user=User::find($request->user_id);
             if($user->api_token!=$authorization){
-                return response()->json(['success'=>false,'response'=>'Unauthorised'], 401);
+                return response()->json(['success'=>false,'response'=>'Unauthorised'], $this-> authStatus);
             }
         }
 
@@ -424,20 +481,24 @@ class UserController extends Controller
         $user->gender = $request->gender;
         $user->phone = $request->phone;
         $user->dob = $request->dob;
-        $user->update();
+        $update =$user->update();
 
-        return response()->json(['success'=>true,'response' => $user], $this-> successStatus);
+        if($user){
+            return response()->json(['success'=>true,'response' => $user], $this-> successStatus);
+        }else{
+            return response()->json(['success'=>false,'response' => 'No Profile Updated'], $this-> failStatus);
+        }
     }
 
     public function order(Request $request)
     {
         $authorization = $request->header('Auth');
         if(empty($authorization)){
-            return response()->json(['success'=>false,'response'=>'Unauthorised'], 401);
+            return response()->json(['success'=>false,'response'=>'Unauthorised'], $this-> authStatus);
         }else{
             $user=User::find($request->user_id);
             if($user->api_token!=$authorization){
-                return response()->json(['success'=>false,'response'=>'Unauthorised'], 401);
+                return response()->json(['success'=>false,'response'=>'Unauthorised'], $this-> authStatus);
             }
         }
 
@@ -449,19 +510,22 @@ class UserController extends Controller
         //unset unnecessary field
         unset($orders['customers_company']);
 
-
-        return response()->json(['success'=>true,'response' => $orders], $this-> successStatus);
+        if($orders){
+            return response()->json(['success'=>true,'response' => $orders], $this-> successStatus);
+        }else{
+            return response()->json(['success'=>false,'response' => 'No Order Found.'], $this-> failStatus);
+        }
     }
 
     public function order_details(Request $request)
     {
         $authorization = $request->header('Auth');
         if(empty($authorization)){
-            return response()->json(['success'=>false,'response'=>'Unauthorised'], 401);
+            return response()->json(['success'=>false,'response'=>'Unauthorised'], $this-> authStatus);
         }else{
             $user=User::find($request->user_id);
             if($user->api_token!=$authorization){
-                return response()->json(['success'=>false,'response'=>'Unauthorised'], 401);
+                return response()->json(['success'=>false,'response'=>'Unauthorised'], $this-> authStatus);
             }
         }
 
@@ -479,18 +543,22 @@ class UserController extends Controller
             ->latest('orders_status_history.orders_status_history_id')
             ->first();
 
-        return response()->json(['success'=>true,'response' => $order_details,'order_status' => $orders_status], $this-> successStatus);
+        if($order_details && $orders_status){
+            return response()->json(['success'=>true,'response' => $order_details,'order_status' => $orders_status], $this-> successStatus);
+        }else{
+            return response()->json(['success'=>false,'response' => 'No Data Found'], $this-> failStatus);
+        }
     }
 
     public function order_cancel(Request $request)
     {
         $authorization = $request->header('Auth');
         if(empty($authorization)){
-            return response()->json(['success'=>false,'response'=>'Unauthorised'], 401);
+            return response()->json(['success'=>false,'response'=>'Unauthorised'], $this-> authStatus);
         }else{
             $user=User::find($request->user_id);
             if($user->api_token!=$authorization){
-                return response()->json(['success'=>false,'response'=>'Unauthorised'], 401);
+                return response()->json(['success'=>false,'response'=>'Unauthorised'], $this-> authStatus);
             }
         }
 
@@ -502,28 +570,31 @@ class UserController extends Controller
                 'comments' => null,
             ]);
 
-
-        return response()->json(['success'=>true,'response' => 'canceled'], $this-> successStatus);
+        if($orders_history_id){
+            return response()->json(['success'=>true,'response' => 'canceled'], $this-> successStatus);
+        }else {
+            return response()->json(['success'=>true,'response' => 'No Canceled'], $this-> failStatus);
+        }
     }
     public function place_order(Request $request)
     {
         //dd($request->all());
-        //return response()->json(['success'=>true,'response'=>$request->cart], 401);
+        //return response()->json(['success'=>true,'response'=>$request->cart], $this-> failStatus);
 //        $cart_items = json_decode($request->cart);
 //        foreach($cart_items as $product){
 //            $products_name = $product->products_name;
 //        }
-        //return response()->json(['success'=>true,'response'=>$cart_items], 401);
-//        return response()->json(['success'=>true,'response'=>$products_name], 401);
-//        return response()->json(['success'=>true,'response'=>'come here'], 401);
+        //return response()->json(['success'=>true,'response'=>$cart_items], $this-> failStatus);
+//        return response()->json(['success'=>true,'response'=>$products_name], $this-> failStatus);
+//        return response()->json(['success'=>true,'response'=>'come here'], $this-> failStatus);
 
         $authorization = $request->header('Auth');
         if(empty($authorization)){
-            return response()->json(['success'=>false,'response'=>'Unauthorised'], 401);
+            return response()->json(['success'=>false,'response'=>'Unauthorised'], $this-> authStatus);
         }else{
             $user=User::find($request->user_id);
             if($user->api_token!=$authorization){
-                return response()->json(['success'=>false,'response'=>'Unauthorised'], 401);
+                return response()->json(['success'=>false,'response'=>'Unauthorised'], $this-> authStatus);
             }
         }
 
@@ -599,7 +670,7 @@ class UserController extends Controller
         if($order_insert_id){
             return response()->json(['success'=>true,'order_id' => $order_insert_id], $this-> successStatus);
         }else{
-            return response()->json(['success'=>true,'order_id' => false], $this-> failStatus);
+            return response()->json(['success'=>false,'order_id' => 'No Order Placed'], $this-> failStatus);
         }
     }
 
@@ -607,18 +678,21 @@ class UserController extends Controller
     {
         $authorization = $request->header('Auth');
         if(empty($authorization)){
-            return response()->json(['success'=>false,'response'=>'Unauthorised'], 401);
+            return response()->json(['success'=>false,'response'=>'Unauthorised'], $this-> authStatus);
         }else{
             $user=User::find($request->user_id);
             if($user->api_token!=$authorization){
-                return response()->json(['success'=>false,'response'=>'Unauthorised'], 401);
+                return response()->json(['success'=>false,'response'=>'Unauthorised'], $this-> authStatus);
             }
         }
 
         $orders = DB::table("orders")->where('customers_id',$request->user_id)->get()->sum('order_price');
 
-
-        return response()->json(['success'=>true,'response' => $orders], $this-> successStatus);
+        if($orders){
+            return response()->json(['success'=>true,'response' => $orders], $this-> successStatus);
+        }else{
+            return response()->json(['success'=>false,'response' => 'No Order Found'], $this-> failStatus);
+        }
     }
 
     public function coupon(Request $request)
@@ -630,8 +704,11 @@ class UserController extends Controller
             ->latest()
             ->first();
 
-
-        return response()->json(['success'=>true,'response' => $coupons], $this-> successStatus);
+        if($coupons){
+            return response()->json(['success'=>true,'response' => $coupons], $this-> successStatus);
+        }else{
+            return response()->json(['success'=>false,'response' => 'No Coupon Found'], $this-> failStatus);
+        }
     }
 
     public function coupon_by_product_categories(Request $request)
@@ -649,7 +726,11 @@ class UserController extends Controller
         //dd($coupons);
 
 
-        return response()->json(['success'=>true,'response' => $coupons], $this-> successStatus);
+        if($coupons){
+            return response()->json(['success'=>true,'response' => $coupons], $this-> successStatus);
+        }else{
+            return response()->json(['success'=>false,'response' => 'No Coupon Found'], $this-> failStatus);
+        }
     }
 
     public function coupon_by_product_ids(Request $request)
@@ -667,7 +748,11 @@ class UserController extends Controller
         //dd($coupons);
 
 
-        return response()->json(['success'=>true,'response' => $coupons], $this-> successStatus);
+        if($coupons){
+            return response()->json(['success'=>true,'response' => $coupons], $this-> successStatus);
+        }else{
+            return response()->json(['success'=>false,'response' => 'No Coupon Found'], $this-> failStatus);
+        }
     }
 
     public function coupon_list()
@@ -679,7 +764,11 @@ class UserController extends Controller
             ->get();
 
 
-        return response()->json(['success'=>true,'response' => $coupons], $this-> successStatus);
+        if($coupons){
+            return response()->json(['success'=>true,'response' => $coupons], $this-> successStatus);
+        }else{
+            return response()->json(['success'=>false,'response' => 'No Coupon Found'], $this-> failStatus);
+        }
     }
 
 }
