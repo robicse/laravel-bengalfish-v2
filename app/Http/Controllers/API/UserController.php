@@ -33,7 +33,7 @@ class UserController extends Controller
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'phone' => 'required',
+            'email' => 'required',
             'password' => 'required',
         ]);
 
