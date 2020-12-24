@@ -172,7 +172,7 @@ class CategoriesController extends Controller
             $category[] = $nested_data;
         }
 
-        if(count($data) > 0){
+        if($category){
             return response()->json(['success'=>true,'response'=>$category], $this->successStatus);
         }else{
             return response()->json(['success'=>false,'response'=>'No Data Found Using This Category.'], $this->failStatus);
@@ -230,7 +230,7 @@ class CategoriesController extends Controller
             ->join('image_categories', 'products.products_image', '=', 'image_categories.image_id')
             ->where('products_to_categories.categories_id',$request->category_id)
             ->where('language_id',1)
-            ->where('image_categories.image_type', 'ACTUAL')
+            //->where('image_categories.image_type', 'ACTUAL')
             ->select('products_to_categories.*','products.*','products_description.*','image_categories.path as image_path')
             ->inRandomOrder()
             ->limit(5)
@@ -261,7 +261,7 @@ class CategoriesController extends Controller
             $category[] = $nested_data;
         }
 
-        if(count($data) > 0){
+        if($category){
             return response()->json(['success'=>true,'response'=>$category], $this->successStatus);
         }else{
             return response()->json(['success'=>false,'response'=>'No Data Found Using This Category.'], $this->failStatus);
@@ -310,7 +310,7 @@ class CategoriesController extends Controller
         }
 
 
-        if((count($image) > 0) && $product){
+        if($image && $product){
             return response()->json(['success'=>true,'product'=>$product_info,'image'=>$image], $this->successStatus);
         }else{
             return response()->json(['success'=>false,'response'=>'No Data Found.'], $this->failStatus);
