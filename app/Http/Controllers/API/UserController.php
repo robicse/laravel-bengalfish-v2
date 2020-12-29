@@ -505,7 +505,7 @@ class UserController extends Controller
         $orders=Order::where('customers_id',$request->user_id)
             ->select('orders_id','customers_id','customers_name','customers_street_address','customers_city','customers_postcode','email','delivery_phone','delivery_name','delivery_street_address','delivery_city','delivery_postcode','billing_name','billing_street_address','billing_city','billing_postcode','billing_phone','payment_method','order_price','shipping_cost','shipping_method','coupon_amount','free_shipping')
             ->latest('orders_id')
-            ->first();
+            ->get();
 
         //unset unnecessary field
         unset($orders['customers_company']);
