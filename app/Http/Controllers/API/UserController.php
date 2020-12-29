@@ -562,6 +562,10 @@ class UserController extends Controller
             }
         }
 
+        if($request->orders_status_id != 3){
+            return response()->json(['success'=>true,'response' => 'Your Order not Pending Status'], $this-> failStatus);
+        }
+
         $orders_history_id = DB::table('orders_status_history')->insertGetId(
             ['orders_id' => $request->orders_id,
                 'orders_status_id' => $request->orders_status_id,
@@ -573,7 +577,7 @@ class UserController extends Controller
         if($orders_history_id){
             return response()->json(['success'=>true,'response' => 'canceled'], $this-> successStatus);
         }else {
-            return response()->json(['success'=>true,'response' => 'No Canceled'], $this-> failStatus);
+            return response()->json(['success'=>false,'response' => 'No Canceled'], $this-> failStatus);
         }
     }
     public function place_order(Request $request)
