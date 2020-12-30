@@ -382,8 +382,8 @@
                         <div class="tab-list">
                             <div class="nav nav-pills" role="tablist">
                               <a style="font-family: 'Roboto Condensed'"  class="nav-link nav-item nav-index active show" href="#description" id="description-tab" data-toggle="pill" role="tab">Description</a>
-{{--                              <a class="nav-link nav-item nav-index" href="#review" id="review-tab" data-toggle="pill" role="tab" >Reviews</a>--}}
-{{--                              <a class="nav-link nav-item nav-index" href="#rate" id="rate-tab" data-toggle="pill" role="tab" >Rate</a>--}}
+                              <a class="nav-link nav-item nav-index" href="#review" id="review-tab" data-toggle="pill" role="tab" >Reviews</a>
+                              <a class="nav-link nav-item nav-index" href="#rate" id="rate-tab" data-toggle="pill" role="tab" >Rate</a>
 
                             </div>
                             <div class="tab-content">
@@ -418,58 +418,58 @@
                                                </div>
                                                </div>
                                               <div class="col-sm-8">
-                                                         <div class="row rating-desc" >
+                                                 <div class="row rating-desc" >
 
-                                                                <div class="col-xs-8 col-md-12" style="display: flex;justify-content: start;">
-                                                                    <div class="progress progress-striped">
-                                                                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="20"
-                                                                            aria-valuemin="0" aria-valuemax="100" style="width: {{$result['detail']['product_data'][0]->five_ratio}}%">
-                                                                            <span class="sr-only">80%</span><p style="margin-left:4px; margin-top:19px;">5</p>
-                                                                        </div>
-                                                                    </div>
+                                                        <div class="col-xs-8 col-md-12" style="display: flex;justify-content: start;">
+                                                            <div class="progress progress-striped">
+                                                                <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="20"
+                                                                    aria-valuemin="0" aria-valuemax="100" style="width: {{$result['detail']['product_data'][0]->five_ratio}}%">
+                                                                    <span class="sr-only">80%</span><p style="margin-left:4px; margin-top:19px;">5</p>
                                                                 </div>
-                                                                <!-- end 5 -->
+                                                            </div>
+                                                        </div>
+                                                        <!-- end 5 -->
 
-                                                                <div class="col-xs-8 col-md-12" style="display: flex;justify-content: start;">
-                                                                    <div class="progress">
-                                                                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="20"
-                                                                            aria-valuemin="0" aria-valuemax="100" style="width: {{$result['detail']['product_data'][0]->four_ratio}}%">
-                                                                            <span class="sr-only">60%</span><p style="margin-left:4px; margin-top:19px;">4</p>
-                                                                        </div>
-                                                                    </div>
+                                                        <div class="col-xs-8 col-md-12" style="display: flex;justify-content: start;">
+                                                            <div class="progress">
+                                                                <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="20"
+                                                                    aria-valuemin="0" aria-valuemax="100" style="width: {{$result['detail']['product_data'][0]->four_ratio}}%">
+                                                                    <span class="sr-only">60%</span><p style="margin-left:4px; margin-top:19px;">4</p>
                                                                 </div>
-                                                                <!-- end 4 -->
+                                                            </div>
+                                                        </div>
+                                                        <!-- end 4 -->
 
-                                                              <div class="col-xs-8 col-md-12" style="display: flex;justify-content: start;">
-                                                                    <div class="progress">
-                                                                        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20"
-                                                                            aria-valuemin="0" aria-valuemax="100" style="width: {{$result['detail']['product_data'][0]->three_ratio}}%">
-                                                                            <span class="sr-only">40%</span><p style="margin-left:4px; margin-top:19px;">3</p>
-                                                                        </div>
-                                                                    </div>
+                                                      <div class="col-xs-8 col-md-12" style="display: flex;justify-content: start;">
+                                                            <div class="progress">
+                                                                <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20"
+                                                                    aria-valuemin="0" aria-valuemax="100" style="width: {{$result['detail']['product_data'][0]->three_ratio}}%">
+                                                                    <span class="sr-only">40%</span><p style="margin-left:4px; margin-top:19px;">3</p>
                                                                 </div>
-                                                                <!-- end 3 -->
+                                                            </div>
+                                                        </div>
+                                                        <!-- end 3 -->
 
-                                                              <div class="col-xs-8 col-md-12" style="display: flex;justify-content: start;">
-                                                                    <div class="progress">
-                                                                        <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="20"
-                                                                            aria-valuemin="0" aria-valuemax="100" style="width: {{$result['detail']['product_data'][0]->two_ratio}}%">
-                                                                            <span class="sr-only">20%</span><p style="margin-left:4px; margin-top:19px;">2</p>
-                                                                        </div>
-                                                                    </div>
+                                                      <div class="col-xs-8 col-md-12" style="display: flex;justify-content: start;">
+                                                            <div class="progress">
+                                                                <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="20"
+                                                                    aria-valuemin="0" aria-valuemax="100" style="width: {{$result['detail']['product_data'][0]->two_ratio}}%">
+                                                                    <span class="sr-only">20%</span><p style="margin-left:4px; margin-top:19px;">2</p>
                                                                 </div>
-                                                                <!-- end 2 -->
+                                                            </div>
+                                                        </div>
+                                                        <!-- end 2 -->
 
-                                                                <div class="col-xs-8 col-md-12" style="display: flex;justify-content: start;">
-                                                                    <div class="progress">
-                                                                        <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="80"
-                                                                            aria-valuemin="0" aria-valuemax="100" style="width: {{$result['detail']['product_data'][0]->one_ratio}}%">
-                                                                            <span class="sr-only">15%</span><p style="margin-left:4px; margin-top:19px;">1</p>
-                                                                        </div>
-                                                                    </div>
+                                                        <div class="col-xs-8 col-md-12" style="display: flex;justify-content: start;">
+                                                            <div class="progress">
+                                                                <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="80"
+                                                                    aria-valuemin="0" aria-valuemax="100" style="width: {{$result['detail']['product_data'][0]->one_ratio}}%">
+                                                                    <span class="sr-only">15%</span><p style="margin-left:4px; margin-top:19px;">1</p>
                                                                 </div>
-                                                                <!-- end 1 -->
-                                                          </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- end 1 -->
+                                                  </div>
                                               </div>
                                               <div class="col-md-2">
                                               </div>

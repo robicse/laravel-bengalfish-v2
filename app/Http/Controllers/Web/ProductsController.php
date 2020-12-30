@@ -62,7 +62,7 @@ class ProductsController extends Controller
 			DB::table('reviews_description')
 			  ->insert([
 					'review_id' => $id,
-					'language_id' => Session::get('language_id'),
+					'languages_id' => Session::get('language_id'),
 					'reviews_text' => $request->comments
  				]);
 			return 'done';
