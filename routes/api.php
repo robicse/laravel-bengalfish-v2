@@ -54,6 +54,10 @@ Route::post('user/coupon/product_categories', 'API\UserController@coupon_by_prod
 Route::post('user/coupon/product_ids', 'API\UserController@coupon_by_product_ids');
 Route::get('user/coupon/list', 'API\UserController@coupon_list');
 
+Route::post('user/add-rating-review', 'API\UserController@addRatingReview');
+//Route::post('user/rating-review-details', 'API\UserController@ratingReviewDetails');
+Route::post('user/product-rating-review-details', 'API\UserController@productRatingReviewDetails');
+
 Route::get('category', 'API\CategoriesController@category');
 Route::post('subcategory', 'API\CategoriesController@subcategory');
 

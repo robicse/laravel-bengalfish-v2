@@ -162,7 +162,8 @@ class UserController extends Controller
         if(empty($authorization)){
             return response()->json(['success'=>false,'response'=>'Unauthorised'], $this-> authStatus);
         }else{
-            $user=User::find($request->user_id);
+            //$user=User::find($request->user_id);
+            $user=User::where('password',Hash::make($request->old_password));
             if($user->api_token!=$authorization){
                 return response()->json(['success'=>false,'response'=>'Unauthorised'], $this-> authStatus);
             }
@@ -772,6 +773,89 @@ class UserController extends Controller
             return response()->json(['success'=>true,'response' => $coupons], $this-> successStatus);
         }else{
             return response()->json(['success'=>false,'response' => 'No Coupon Found'], $this-> failStatus);
+        }
+    }
+
+    public function addRatingReview(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'products_id' => 'required',
+            'rating' => 'required',
+            'customers_id' => 'required',
+            'customers_name' => 'required',
+            'comments' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            $response = [
+                'success' => false,
+                'data' => 'Validation Error.',
+                'message' => $validator->errors()
+            ];
+
+            return response()->json($response, $this->validationStatus);
+        }
+
+        $check = DB::table('reviews')
+            ->where('customers_id',$request->customers_id)
+            ->where('products_id',$request->products_id)
+            ->first();
+
+        if($check){
+            return response()->json(['success'=>true,'response' => 'Already You Have Commented!'], $this-> successStatus);
+        }
+
+        $id = DB::table('reviews')->insertGetId([
+            'products_id' => $request->products_id,
+            'reviews_rating' => $request->rating,
+            'customers_id' => $request->customers_id,
+            'customers_name' => $request->customers_name,
+            'created_at' =>  time()
+        ]);
+
+        DB::table('reviews_description')
+            ->insert([
+                'review_id' => $id,
+                'languages_id' => 1,
+                'reviews_text' => $request->comments
+            ]);
+        if($id){
+            return response()->json(['success'=>true,'products_id' => $request->products_id], $this-> successStatus);
+        }else{
+            return response()->json(['success'=>false,'response' => 'No Reviews Added!'], $this-> failStatus);
+        }
+    }
+
+    /*public function ratingReviewDetails(Request $request)
+    {
+        $reviews = DB::table("reviews")
+            ->join('reviews_description','reviews.reviews_id','reviews_description.review_id')
+            ->select('reviews.customers_name','reviews.reviews_rating','reviews.reviews_status','reviews.reviews_read','reviews_description.reviews_text')
+            ->where('reviews.reviews_id',$request->review_id)
+            ->first();
+
+
+        if($reviews){
+            return response()->json(['success'=>true,'response' => $reviews], $this-> successStatus);
+        }else{
+            return response()->json(['success'=>false,'response' => 'No Reviews Found'], $this-> failStatus);
+        }
+    }*/
+
+    public function productRatingReviewDetails(Request $request)
+    {
+        $reviews = DB::table("reviews")
+            ->join('reviews_description','reviews.reviews_id','reviews_description.review_id')
+            ->select('reviews.customers_name','reviews.reviews_rating','reviews.reviews_status','reviews.reviews_read','reviews_description.reviews_text')
+            ->where('reviews.products_id',$request->products_id)
+            ->latest()
+            ->get();
+
+
+        if($reviews){
+            return response()->json(['success'=>true,'response' => $reviews], $this-> successStatus);
+        }else{
+            return response()->json(['success'=>false,'response' => 'No Reviews Found'], $this-> failStatus);
         }
     }
 
