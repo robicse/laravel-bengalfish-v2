@@ -476,12 +476,23 @@ class UserController extends Controller
             }
         }
 
+        $extensions = array('gif','jpg','jpeg','png');
+        if($request->hasFile('picture') and in_array($request->picture->extension(), $extensions)){
+            $image = $request->picture;
+            $fileName = time().'.'.$image->getClientOriginalName();
+            $image->move('resources/assets/images/user_profile/', $fileName);
+            $customers_picture = 'resources/assets/images/user_profile/'.$fileName;
+        }	else{
+            $customers_picture = $request->customers_old_picture;;
+        }
+
         $user=User::find($request->user_id);
         $user->first_name = $request->first_name;
         $user->last_name = $request->last_name;
         $user->gender = $request->gender;
         $user->phone = $request->phone;
         $user->dob = $request->dob;
+        $user->avatar = $customers_picture;
         $update =$user->update();
 
         if($user){

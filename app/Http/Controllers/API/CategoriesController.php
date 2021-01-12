@@ -286,7 +286,8 @@ class CategoriesController extends Controller
 
         $product_info['products_name'] = $product->products_name;
         $product_info['products_slug'] = $product->products_slug;
-        $product_info['products_description'] = $product->products_description;
+        //$product_info['products_description'] = $product->products_description;
+        $product_info['products_description'] = stripslashes($product->products_description);
         $product_info['products_price'] = $product->products_price;
         $product_info['products_weight'] = $product->products_weight;
         $product_info['products_weight_unit'] = $product->products_weight_unit;
