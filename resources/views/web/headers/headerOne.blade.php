@@ -61,7 +61,7 @@
         <div class="row align-items-center">
              <div class="col-12 col-lg-5">
                  <ul class="fm-top-contact-list">
-                    <li><i class="fas fa-phone"></i> <span>09613 850 850, 01311-1540014</span>
+                    <li><i class="fas fa-phone"></i> <span>09613-850 850, 01311-1540014</span>
                     </li>
                     <li><i class="fas fa-envelope"></i> <span><a href="mailto:info@bengalfish.com.bd"> info@bengalfish.com.bd</a>
                         </span>
