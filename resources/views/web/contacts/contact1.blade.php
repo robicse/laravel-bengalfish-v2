@@ -85,20 +85,21 @@
                   </h2>
                   <hr style="margin-bottom: 0;">
                 </div>
-                <div id="map" style="height:400px; margin:15px auto;">
+{{--                <div id="map" style="height:400px; margin:15px auto;">--}}
 
-                </div>
-                <script>
-                  var map;
-                  function initMap() {
-                    map = new google.maps.Map(document.getElementById('map'), {
-                        center: {lat: 23.762949, lng: 90.343967},
-                      zoom: 8
-                    });
-                  }
-                </script>
-                <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"
-                async defer></script>
+{{--                </div>--}}
+{{--                <script>--}}
+{{--                  var map;--}}
+{{--                  function initMap() {--}}
+{{--                    map = new google.maps.Map(document.getElementById('map'), {--}}
+{{--                        center: {lat: 23.763693826552153, lng: 90.34292433179678},--}}
+{{--                      zoom: 8--}}
+{{--                    });--}}
+{{--                  }--}}
+{{--                </script>--}}
+{{--                <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"--}}
+{{--                async defer></script>--}}
+              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3651.581782214634!2d90.34090811429714!3d23.762288694240443!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755bf7c1bb897ef%3A0x6208be131c0a629b!2sBengal%20Fish%20Bangladesh%20-%20Best%20Fish%20Market%20Online!5e0!3m2!1sen!2sbd!4v1611178684987!5m2!1sen!2sbd" width="470" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
                 <p>
                     {{$result['commonContent']['setting'][112]->value}}
                 </p>

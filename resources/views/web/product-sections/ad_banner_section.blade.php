@@ -6,7 +6,9 @@
             <div class="row">
                 <figure class="banner-image">
                     <a href="{{ $homeBanners->banners_url}}">
-                      <img src="{{asset('').$homeBanners->path}}" width="100%" alt="Fullscreen Banner">
+                      @if($homeBanners->path)
+                        <img src="{{asset('').$homeBanners->path}}" width="100%" alt="Fullscreen Banner">
+                      @endif
                     </a>
                   </figure>
             </div>

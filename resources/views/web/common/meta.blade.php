@@ -19,11 +19,11 @@
 @endphp
 
 @if($first_segment == '')
-    <title><?=stripslashes($result['setting'][118]->value)?> : <?=stripslashes($result['setting'][18]->value)?></title>
+    <title><?=stripslashes($result['setting'][118]->value)?> <?=stripslashes($result['setting'][18]->value)?></title>
 @elseif($first_segment != '')
-    <title>@yield('dynamic_title') : <?=stripslashes($result['setting'][18]->value)?></title>
+    <title>@yield('dynamic_title') <?=stripslashes($result['setting'][18]->value)?></title>
 @elseif($first_segment == 'product-detail' && $second_segment != '')
-    <title>@yield('dynamic_title') : <?=$meta_title?></title>
+    <title>@yield('dynamic_title') <?=$meta_title?></title>
 @endif
 
 @if(!empty($result['setting'][86]->value))

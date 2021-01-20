@@ -1,9 +1,9 @@
 @extends('web.layout')
 @section('dynamic_title')
-    {{$result['pages'][0]->meta_title ? $result['pages'][0]->meta_title : 'test 1'}}
+    {{$result['pages'][0]->meta_title ? $result['pages'][0]->meta_title : ''}}
 @endsection
 @section('dynamic_description')
-    {{$result['pages'][0]->meta_description ? $result['pages'][0]->meta_description : 'test 2'}}
+    {{$result['pages'][0]->meta_description ? $result['pages'][0]->meta_description : ''}}
 @endsection
 @section('content')
 

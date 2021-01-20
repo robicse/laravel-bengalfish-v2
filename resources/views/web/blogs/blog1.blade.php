@@ -10,21 +10,23 @@
   					 @if($result['news']['success']==1)
   					 @foreach($result['news']['news_data'] as $key=>$news_data)
   						 <div class="col-12 col-sm-12 col-md-6">
-  								 <div class="blog">
-  									 <div class="blog-thumbnail">
-  										 <img class="img-thumbnail" src="{{asset('').$news_data->image_path}}" width="100%">
-  										 @if($news_data->is_feature==1)
-  										 <div class="badge badge-primary"><span>@lang('website.Featured')</span></div>
-  										 @endif
-  									 </div>
+                             <div class="blog">
+                                 <div class="blog-thumbnail">
+                                     @if($news_data->image_path)
+                                     <img class="img-thumbnail" src="{{asset('').$news_data->image_path}}" width="100%">
+                                     @endif
+                                     @if($news_data->is_feature==1)
+                                     <div class="badge badge-primary"><span>@lang('website.Featured')</span></div>
+                                     @endif
+                                 </div>
 
-                     <a href="{{ URL::to('/news-detail/'.$news_data->news_slug)}}">
-  									 <h6 class="blog-title">{{$news_data->news_name}}</h6>
-                     </a>
-  											 <p>
-  													{!! $news_data->news_description !!}
-  											 </p>
-  								 </div>
+                                 <a href="{{ URL::to('/news-detail/'.$news_data->news_slug)}}">
+                                                 <h6 class="blog-title">{{$news_data->news_name}}</h6>
+                                 </a>
+                                 <p>
+                                        {!! $news_data->news_description !!}
+                                 </p>
+                             </div>
   						 </div>
   					 @endforeach
   					 @endif
