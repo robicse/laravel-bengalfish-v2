@@ -113,7 +113,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="form-group">
+                                            <div class="form-group" style="display: none">
                                                 <label for="name" class="col-sm-2 col-md-3 control-label">{{ trans('labels.Products') }}</label>
                                                 <div class="col-sm-10 col-md-4 couponProdcuts">
                                                     <select name="product_ids[]" multiple class="form-control select2">
@@ -125,7 +125,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="form-group">
+                                            <div class="form-group" style="display: none">
                                                 <label for="name" class="col-sm-2 col-md-3 control-label">{{ trans('labels.IncludeCategories') }}</label>
                                                 <div class="col-sm-10 col-md-4">
                                                     <select name="product_categories[]" multiple class="form-control select2">
