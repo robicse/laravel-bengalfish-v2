@@ -162,10 +162,10 @@ class UserController extends Controller
         if(empty($authorization)){
             return response()->json(['success'=>false,'response'=>'Unauthorised'], $this-> authStatus);
         }else{
-            //$user=User::find($request->user_id);
-            $user=User::where('password',Hash::make($request->old_password));
+            $user=User::find($request->user_id);
+            //$user=User::where('password',Hash::make($request->old_password));
             if($user->api_token!=$authorization){
-                return response()->json(['success'=>false,'response'=>'Unauthorised'], $this-> authStatus);
+                return response()->json(['success'=>false,'response'=>'User Not Found Using This User Id.'], $this-> authStatus);
             }
         }
 
