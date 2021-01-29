@@ -721,7 +721,19 @@ class UserController extends Controller
             ->first();
 
         if($coupons){
-            return response()->json(['success'=>true,'response' => $coupons], $this-> successStatus);
+            //$code=$coupons->code;
+            //$discount_type=$coupons->discount_type;
+            //$amount=$coupons->amount;
+            $expiry_date=$coupons->expiry_date;
+            $current_date=date('Y-m-d 00:00:00');
+            $response['code']=$coupons->code;
+            $response['discount_type']=$coupons->discount_type;
+            $response['amount']=$coupons->amount;
+            if($current_date < $expiry_date){
+                return response()->json(['success'=>true,'response' => $response], $this-> successStatus);
+            }else{
+                return response()->json(['success'=>false,'response' => 'Coupon Already Expired!'], $this-> failStatus);
+            }
         }else{
             return response()->json(['success'=>false,'response' => 'No Coupon Found'], $this-> failStatus);
         }
