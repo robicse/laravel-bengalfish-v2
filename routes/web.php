@@ -38,7 +38,7 @@ else{
 
 
 
-Route::get('/maintance','Web\IndexController@maintance');
+//Route::get('/maintance','Web\IndexController@maintance');
 
 Route::group(['namespace' => 'Web','middleware' => ['installer']], function () {
     Route::get('/login', 'CustomersController@login');
