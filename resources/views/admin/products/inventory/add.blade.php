@@ -103,21 +103,21 @@
 
                                                                  <div class="form-group">
                                                                     <label for="name" class="col-sm-2 col-md-4 control-label">
-                                                                        {{ trans('labels.Current Stock') }}                             	 
+                                                                        {{ trans('labels.Current Stock') }}
                                                                     </label>
                                                                     <div class="col-sm-10 col-md-8">
                                                                         <p id="current_stocks" style="width:100%">{{$result['stocks']}}</p><br>
-                                                                                                    
+
                                                                     </div>
                                                                 </div>
-                                                                
+
                                                                 <div class="form-group">
                                                                     <label for="name" class="col-sm-2 col-md-4 control-label">
-                                                                        {{ trans('labels.Total Purchase Price') }}                              	 
+                                                                        {{ trans('labels.Total Purchase Price') }}
                                                                     </label>
                                                                     <div class="col-sm-10 col-md-8">
                                                                         <p class="purchase_price_content" style="width:100%">{{ $result['currency'][19]->value }}<span id="total_purchases">{{$result['purchase_price']}}</span></p><br>
-                                                                                                    
+
                                                                     </div>
                                                                 </div>
 

@@ -115,7 +115,7 @@
                                         <div class="row">
                                             <div class="col-xs-12 col-md-6">
                                                 <div class="form-group">
-                                                    <label for="name" class="col-sm-2 col-md-3 control-label">{{ trans('labels.ProductsPrice') }}<span style="color:red;">*</span></label>
+                                                    <label for="name" class="col-sm-2 col-md-3 control-label">Selling Price<span style="color:red;">*</span></label>
                                                     <div class="col-sm-10 col-md-8">
                                                         {!! Form::text('products_price', '', array('class'=>'form-control number-validate', 'id'=>'products_price')) !!}
                                                         <span class="help-block" style="font-weight: normal;font-size: 11px;margin-bottom: 0;">

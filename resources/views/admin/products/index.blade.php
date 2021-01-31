@@ -112,7 +112,7 @@
                                                         @if(!empty($product->manufacturers_name))
                                                             <strong>{{ trans('labels.Manufacturer') }}:</strong> {{ $product->manufacturers_name }}<br>
                                                         @endif
-                                                        <strong>{{ trans('labels.Price') }}: </strong>     {{ $results['currency'][19]->value }}{{ $product->products_price }}<br>
+                                                        <strong>Selling Price: </strong>     {{ $results['currency'][19]->value }}{{ $product->products_price }}<br>
                                                         <strong>{{ trans('labels.Weight') }}: </strong>  {{ $product->products_weight }}{{ $product->products_weight_unit }}<br>
                                                         <strong>{{ trans('labels.Viewed') }}: </strong>  {{ $product->products_viewed }}<br>
                                                         @if(!empty($product->specials_id))

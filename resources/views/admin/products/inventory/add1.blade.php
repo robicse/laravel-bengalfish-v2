@@ -107,7 +107,8 @@
                                                                     </label>
                                                                     <div class="col-sm-10 col-md-8">
                                                                         <p id="current_stocks" style="width:100%">0</p><br>
-
+                                                                        <span class="help-block" style="font-weight: normal;font-size: 11px;margin-bottom: 0;">
+                                                                            Last Available Current Stock</span>
                                                                     </div>
                                                                 </div>
 
@@ -117,7 +118,8 @@
                                                                     </label>
                                                                     <div class="col-sm-10 col-md-8">
                                                                         <p class="purchase_price_content" style="width:100%">{{ $result['currency'][19]->value }}<span id="total_purchases">0</span></p><br>
-
+                                                                        <span class="help-block" style="font-weight: normal;font-size: 11px;margin-bottom: 0;">
+                                                                            Last Available Total Price</span>
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group">
@@ -130,11 +132,11 @@
                                                                 </div>
 
                                                                 <div class="form-group">
-                                                                    <label for="name" class="col-sm-2 col-md-4 control-label">{{ trans('labels.Purchase Price') }}<span style="color:red;">*</span></label>
+                                                                    <label for="name" class="col-sm-2 col-md-4 control-label">Purchase Price Multiply Stock Qty<span style="color:red;">*</span></label>
                                                                     <div class="col-sm-10 col-md-8">
                                                                         <input type="text" name="purchase_price" value="" class="form-control number-validate">
                                                                         <span class="help-block" style="font-weight: normal;font-size: 11px;margin-bottom: 0;">
-                                                                            {{ trans('labels.Purchase Price Text') }}</span>
+                                                                            Enter purchase price with multiplication enter stock qty.</span>
                                                                     </div>
                                                                 </div>
 
