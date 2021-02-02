@@ -136,7 +136,7 @@ class AlertController extends Controller
 						return view('errors.not_install');
 					}
 			}
-			
+
 			Mail::send('/mail/orderEmail', ['ordersData' => $ordersData], function($m) use ($ordersData){
 					$m->to( "livefish.dhaka@gmail.com" )->subject(Lang::get("labels.Ecommerce App: An order has been placed"))->getSwiftMessage()
 					->getHeaders()
