@@ -2,8 +2,8 @@
 namespace App\Http\Controllers\API;
 
 # For Live
-define("SSLCZ_STORE_ID", "prote5f65b04074cd6");
-define("SSLCZ_STORE_PASSWD", "prote5f65b04074cd6@ssl");
+define("SSLCZ_STORE_ID", "bengalfishcombdlive");
+define("SSLCZ_STORE_PASSWD", "5E23FC613287318389");
 
 # For SANDBOX
 //define("SSLCZ_STORE_ID", "taxol5c7cf3257d623");
@@ -11,7 +11,7 @@ define("SSLCZ_STORE_PASSWD", "prote5f65b04074cd6@ssl");
 
 # IF SANDBOX TRUE, THEN IT WILL CONNECT WITH SSLCOMMERZ SANDBOX (TEST) SYSTEM
 # For Live
-define("SSLCZ_IS_SANDBOX", true);
+define("SSLCZ_IS_SANDBOX", false);
 
 # For SANDBOX
 //define("SSLCZ_IS_SANDBOX", true);
