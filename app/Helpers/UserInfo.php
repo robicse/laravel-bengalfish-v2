@@ -30,8 +30,8 @@ class UserInfo
         //$api = "https://api.mobireach.com.bd/SendTextMessage?Username=taxman&Password=Abcd@2020&From=TaxManBD&To=".$receiver_number."&Message=". urlencode($sms_text);
         //https://api.mobireach.com.bd/SendTextMessage?Username=bengalfish&Password=Windows@55&From=BENGAL FISH&To=8801725930131&Message=testmessage
 
-        //$api = "https://api.mobireach.com.bd/SendTextMessage?Username=bengalfish&Password=Windows@55&From=".urlencode('BENGAL FISH')."&To=".$receiver_number."&Message=". urlencode($sms_text);
-        $api ="http://isms.zaman-it.com/smsapi?api_key=C20000365d831ca2c90451.06457950&type=text&contacts=".$receiver_number."&senderid=8809612451614&msg=".urlencode($sms_text);
+        $api = "https://api.mobireach.com.bd/SendTextMessage?Username=bengalfish&Password=Aa921191@7&From=".urlencode('BENGAL FISH')."&To=".$receiver_number."&Message=". urlencode($sms_text);
+        //$api ="http://isms.zaman-it.com/smsapi?api_key=C20000365d831ca2c90451.06457950&type=text&contacts=".$receiver_number."&senderid=8809612451614&msg=".urlencode($sms_text);
 
 
 
