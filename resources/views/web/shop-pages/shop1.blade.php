@@ -75,7 +75,7 @@
             @if(!empty($result['categories']))
              @foreach($result['categories'] as $category)
              <a class=" main-manu"  @if(array_key_exists("childs",$category)) href="#{{$category->slug}}" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="men-cloth" @else href="{{url('shop/category').'/'.$category->slug}}" @endif>
-               <img class="img-fuild" src="{{asset($category->image_path)}}">
+{{--               @if($category->image_path)<img class="img-fuild" src="{{asset($category->image_path)}}">@endif--}}
                   {{$category->categories_name}} <span><i class="fas fa-minus"></i></span>
 
              </a>
