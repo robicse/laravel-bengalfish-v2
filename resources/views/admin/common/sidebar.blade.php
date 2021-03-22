@@ -149,6 +149,10 @@
                 <a href="{{ URL::to('admin/customer_reward_point_category/display')}}" ><i class="fa fa-tablet" aria-hidden="true"></i> <span>Customer Reward Point Category</span></a>
             </li>
 
+            <li class="treeview {{ Request::is('admin/withdraw_category/display') ? 'active' : '' }}">
+                <a href="{{ URL::to('admin/withdraw_category/display')}}" ><i class="fa fa-tablet" aria-hidden="true"></i> <span>Withdraw Category</span></a>
+            </li>
+
       <?php /* ?>
       @if($check->notifications_view == 1)
       <li class="treeview {{ Request::is('admin/devices/display') ? 'active' : '' }} {{ Request::is('admin/devices/viewdevices/*') ? 'active' : '' }} {{ Request::is('admin/devices/notifications') ? 'active' : '' }}">

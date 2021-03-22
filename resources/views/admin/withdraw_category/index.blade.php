@@ -3,10 +3,10 @@
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
-            <h1>  Customer Reward Point Category </h1>
+            <h1> Withdraw Category </h1>
             <ol class="breadcrumb">
                 <li><a href="{{ URL::to('admin/dashboard/this_month')}}"><i class="fa fa-dashboard"></i> {{ trans('labels.breadcrumb_dashboard') }}</a></li>
-                <li class="active"> Customer Reward Point Category</li>
+                <li class="active"> Withdraw Category</li>
             </ol>
         </section>
 
@@ -20,7 +20,7 @@
                 <div class="col-md-12">
                     <div class="box">
                         <div class="box-header">
-                            <h3 class="box-title">{{ trans('labels.ListingAllCoupons') }} </h3>
+                            <h3 class="box-title">Withdraw Category Lists </h3>
 
                             <div class="col-lg-6 form-inline" id="contact-form">
 
@@ -47,7 +47,7 @@
 
 
 {{--                            <div class="box-tools pull-right">--}}
-{{--                                <a href="{{ URL::to('admin/customer_reward_point_category/add')}}" type="button" class="btn btn-block btn-primary">{{ trans('labels.AddNew') }}</a>--}}
+{{--                                <a href="{{ URL::to('admin/withdraw_category/add')}}" type="button" class="btn btn-block btn-primary">{{ trans('labels.AddNew') }}</a>--}}
 {{--                            </div>--}}
                         </div>
 
@@ -71,27 +71,23 @@
                                         <thead>
                                         <tr>
                                             <th>Id</th>
-                                            <th>Name</th>
-                                            <th>From Point</th>
-                                            <th>To Point</th>
-                                            <th>Get Point</th>
-                                            <th>On Amount</th>
+                                            <th>One Point To TK</th>
+                                            <th>Minimum Withdraw Point</th>
+                                            <th>Per Month Withdraw Point Limit</th>
 {{--                                            <th>{{ trans('labels.Action') }}</th>--}}
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        @if($customerRewardPointCategories !== null)
-                                            @foreach ($customerRewardPointCategories as $key=>$customerRewardPointCategory)
+                                        @if($withdrawCategories !== null)
+                                            @foreach ($withdrawCategories as $key=>$withdrawCategory)
 
                                                 <tr>
-                                                    <td>{{ $customerRewardPointCategory->id }}</td>
-                                                    <td>{{ $customerRewardPointCategory->name }}</td>
-                                                    <td>{{ $customerRewardPointCategory->from_point }}</td>
-                                                    <td>{{ $customerRewardPointCategory->to_point }}</td>
-                                                    <td>{{ $customerRewardPointCategory->get_point }}</td>
-                                                    <td>{{ $customerRewardPointCategory->on_amount }}</td>
+                                                    <td>{{ $withdrawCategory->id }}</td>
+                                                    <td>{{ $withdrawCategory->one_point_to_tk }}</td>
+                                                    <td>{{ $withdrawCategory->minimum_withdraw_point }}</td>
+                                                    <td>{{ $withdrawCategory->per_month_withdraw_point_limit }}</td>
 {{--                                                    <td>--}}
-{{--                                                        <a data-toggle="tooltip" data-placement="bottom" title="{{ trans('labels.Edit') }}" href="{{ url('admin/customer_reward_point_category/edit')}}/{{$customerRewardPointCategory->id}}" class="badge bg-light-blue"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>--}}
+{{--                                                        <a data-toggle="tooltip" data-placement="bottom" title="{{ trans('labels.Edit') }}" href="{{ url('admin/withdraw_category/edit')}}/{{$withdrawCategory->id}}" class="badge bg-light-blue"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>--}}
 {{--                                                        <a data-toggle="tooltip" data-placement="bottom" title="{{ trans('labels.Delete') }}" id="deleteCoupans_id" coupans_id ="{{ $customerRewardPointCategory->id }}" class="badge bg-red"><i class="fa fa-trash" aria-hidden="true"></i></a>--}}
 {{--                                                    </td>--}}
                                                 </tr>
@@ -104,7 +100,7 @@
                                         </tbody>
                                     </table>
                                     <div class="col-xs-12 text-right">
-                                        {!! $customerRewardPointCategories->appends(\Request::except('page'))->render() !!}
+                                        {!! $withdrawCategories->appends(\Request::except('page'))->render() !!}
 
                                     </div>
                                 </div>
@@ -125,7 +121,7 @@
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             <h4 class="modal-title" id="deleteCoupanModalLabel">{{ trans('labels.DeleteCoupon') }}</h4>
                         </div>
-                        {!! Form::open(array('url' =>'admin/customer_reward_point_category/delete', 'name'=>'deleteCoupan', 'id'=>'deleteCoupan', 'method'=>'post', 'class' => 'form-horizontal', 'enctype'=>'multipart/form-data')) !!}
+                        {!! Form::open(array('url' =>'admin/withdraw_category/delete', 'name'=>'deleteCoupan', 'id'=>'deleteCoupan', 'method'=>'post', 'class' => 'form-horizontal', 'enctype'=>'multipart/form-data')) !!}
                         {!! Form::hidden('action',  'delete', array('class'=>'form-control')) !!}
                         {!! Form::hidden('id',  '', array('class'=>'form-control', 'id'=>'coupans_id')) !!}
                         <div class="modal-body">

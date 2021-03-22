@@ -329,11 +329,8 @@ Route::group(['middleware' => ['installer']], function()
         Route::get('/filter', 'CouponsController@filter')->middleware('view_coupon');
     });
 
-    //
-//    Route::group(['prefix'=>'admin','middleware' => 'auth','namespace' => 'AdminControllers'], function () {
-//        //Route::get('/display', 'CouponsController@display')->middleware('view_coupon');
-//        Route::resource('customer_reward_point_category','CustomerRewardPointCategoryController');
-//    });
+
+
     Route::group(['prefix'=>'admin/customer_reward_point_category','middleware' => 'auth','namespace' => 'AdminControllers'], function () {
         Route::get('/display', 'CustomerRewardPointCategoryController@display');
         Route::get('/add', 'CustomerRewardPointCategoryController@add');
@@ -342,6 +339,16 @@ Route::group(['middleware' => ['installer']], function()
         Route::post('/update', 'CustomerRewardPointCategoryController@update');
         Route::post('/delete', 'CustomerRewardPointCategoryController@delete');
         Route::get('/filter', 'CustomerRewardPointCategoryController@filter');
+    });
+
+    Route::group(['prefix'=>'admin/withdraw_category','middleware' => 'auth','namespace' => 'AdminControllers'], function () {
+        Route::get('/display', 'WithdrawCategoryController@display');
+        Route::get('/add', 'WithdrawCategoryController@add');
+        Route::post('/insert', 'WithdrawCategoryController@insert');
+        Route::get('/edit/{id}', 'WithdrawCategoryController@edit');
+        Route::post('/update', 'WithdrawCategoryController@update');
+        Route::post('/delete', 'WithdrawCategoryController@delete');
+        Route::get('/filter', 'WithdrawCategoryController@filter');
     });
 
 

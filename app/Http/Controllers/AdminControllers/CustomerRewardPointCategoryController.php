@@ -37,17 +37,6 @@ class CustomerRewardPointCategoryController extends Controller
         return view("admin.customer_reward_point_category.index", $title)->with('result', $result)->with('customerRewardPointCategories',$customerRewardPointCategories);
     }
 
-//    public function index()
-//    {
-//        $customerRewardPointCategories = CustomerRewardPointCategory::latest('id')->get();
-//        return view("admin.customer_reward_point_category.index", compact('customerRewardPointCategories'));
-//    }
-
-//    public function create()
-//    {
-//        //
-//    }
-
     public function add(Request $request){
 
         $title = array('pageTitle' => 'Add Customer Reward Point Category');
@@ -57,11 +46,6 @@ class CustomerRewardPointCategoryController extends Controller
 
         return view("admin.customer_reward_point_category.add", $title)->with('result', $result);
     }
-
-//    public function store(Request $request)
-//    {
-//        //
-//    }
 
     public function insert(Request $request){
         //dd($request->all());
@@ -105,16 +89,11 @@ class CustomerRewardPointCategoryController extends Controller
                 //insert record
                 $insert_id = $this->CustomerRewardPointCategory->addCustomerRewardPointCategory($name,$from_point,$to_point,$get_point,$on_amount);
                 if($insert_id){
-                    return redirect('admin/customer_reward_point_category/add')->with('success', 'Successfully Added Customer Reward Point Category');
+                    return redirect('admin/customer_reward_point_category/display')->with('success', 'Successfully Added Customer Reward Point Category');
                 }
             }
         }
 
-    }
-
-    public function show($id)
-    {
-        //
     }
 
     public function edit($id)
@@ -130,9 +109,8 @@ class CustomerRewardPointCategoryController extends Controller
         return view("admin.customer_reward_point_category.edit", $title)->with('result', $result);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        dd($request->all());
         $id = $request->id;
         $name = $request->name;
         $from_point = $request->from_point;
@@ -141,15 +119,6 @@ class CustomerRewardPointCategoryController extends Controller
         $on_amount = $request->on_amount;
 
 
-//        $validator = Validator::make(
-//            array(
-//                'name'    => 'required',
-//                'from_point'    => 'required',
-//                'to_point'    => 'required',
-//                'get_point'    => 'required',
-//                'on_amount'    => 'required'
-//            )
-//        );
         $validator = Validator::make(
             array(
                 'name'    => $request->name,
@@ -158,7 +127,7 @@ class CustomerRewardPointCategoryController extends Controller
                 'name'    => 'required',
             )
         );
-        dd($request->all());
+
         //check validation
         if($validator->fails()){
             return redirect()->back()->withErrors($validator)->withInput();
@@ -167,21 +136,24 @@ class CustomerRewardPointCategoryController extends Controller
             //check coupon already exist
             $customerRewardPointCategory = $this->CustomerRewardPointCategory->customerRewardPointCategory($name);
 
-            if(count($customerRewardPointCategory)>0) {
+            if(count($customerRewardPointCategory)>1) {
                 return redirect()->back()->withErrors('Customer Reward Point Category Name Already Exists!')->withInput();
             }else{
-
                 //update record
                 $update_id = $this->CustomerRewardPointCategory->updateCustomerRewardPointCategory($id,$name,$from_point,$to_point,$get_point,$on_amount);
-                if($update_id){
-                    return redirect('admin/customer_reward_point_category/add')->with('success', 'Successfully Added Customer Reward Point Category');
-                }
+                return redirect('admin/customer_reward_point_category/display')->with('success', 'Successfully Added Customer Reward Point Category');
             }
         }
     }
 
-    public function destroy($id)
-    {
-        //
+
+    public function delete(Request $request){
+
+        //$deletecoupon = DB::table('coupons')->where('coupans_id', '=', $request->id)->delete();
+        DB::table('customer_reward_point_categories')->where('id', '=', $request->id)->update([
+            'status' => 0
+        ]);
+        return redirect()->back()->withErrors(['Customer Reward Point Category Soft Deleted']);
+
     }
 }

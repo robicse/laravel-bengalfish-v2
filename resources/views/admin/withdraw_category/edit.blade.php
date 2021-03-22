@@ -63,51 +63,33 @@
 {{--                                            {!! Form::open(array('url' =>'admin/customer_reward_point_category/update', 'method'=>'post', 'class' => 'form-horizontal form-validate', 'enctype'=>'multipart/form-data')) !!}--}}
 {{--                                            {!! Form::hidden('id',  $result['customer_reward_point_category']->id)!!}--}}
 
-                                            {!! Form::open(array('url' =>'admin/customer_reward_point_category/update', 'method'=>'post', 'class' => 'form-horizontal form-validate', 'enctype'=>'multipart/form-data')) !!}
-                                            {!! Form::hidden('id',  $result['customer_reward_point_category']->id)!!}
+                                            {!! Form::open(array('url' =>'admin/withdraw_category/update', 'method'=>'post', 'class' => 'form-horizontal form-validate', 'enctype'=>'multipart/form-data')) !!}
+                                            {!! Form::hidden('id',  $result['withdraw_category']->id)!!}
 
                                             <div class="form-group">
-                                                <label for="name" class="col-sm-2 col-md-3 control-label">Name</label>
+                                                <label for="name" class="col-sm-2 col-md-3 control-label">One Point To TK</label>
                                                 <div class="col-sm-10 col-md-4">
-                                                    {!! Form::text('name',  $result['customer_reward_point_category']->name, array('class'=>'form-control field-validate', 'id'=>'name'))!!}
-                                                    <span class="help-block" style="font-weight: normal;font-size: 11px;margin-bottom: 0;">Name</span>
-                                                    <span class="help-block hidden">Name</span>
+                                                    {!! Form::text('one_point_to_tk',  $result['withdraw_category']->one_point_to_tk, array('class'=>'form-control field-validate', 'id'=>'one_point_to_tk'))!!}
+                                                    <span class="help-block" style="font-weight: normal;font-size: 11px;margin-bottom: 0;">One Point To TK</span>
+                                                    <span class="help-block hidden">One Point To TK</span>
                                                 </div>
                                             </div>
 
                                             <div class="form-group">
-                                                <label for="name" class="col-sm-2 col-md-3 control-label">From Point</label>
+                                                <label for="name" class="col-sm-2 col-md-3 control-label">Minimum Withdraw Point</label>
                                                 <div class="col-sm-10 col-md-4">
-                                                    {!! Form::text('from_point',  $result['customer_reward_point_category']->from_point, array('class'=>'form-control field-validate', 'id'=>'from_point'))!!}
-                                                    <span class="help-block" style="font-weight: normal;font-size: 11px;margin-bottom: 0;">From Point</span>
-                                                    <span class="help-block hidden">From Point</span>
+                                                    {!! Form::text('minimum_withdraw_point',  $result['withdraw_category']->minimum_withdraw_point, array('class'=>'form-control field-validate', 'id'=>'minimum_withdraw_point'))!!}
+                                                    <span class="help-block" style="font-weight: normal;font-size: 11px;margin-bottom: 0;">Minimum Withdraw Point</span>
+                                                    <span class="help-block hidden">Minimum Withdraw Point</span>
                                                 </div>
                                             </div>
 
                                             <div class="form-group">
-                                                <label for="name" class="col-sm-2 col-md-3 control-label">To Point</label>
+                                                <label for="name" class="col-sm-2 col-md-3 control-label">Per Month Withdraw Point Limit</label>
                                                 <div class="col-sm-10 col-md-4">
-                                                    {!! Form::text('to_point',  $result['customer_reward_point_category']->to_point, array('class'=>'form-control field-validate', 'id'=>'to_point'))!!}
-                                                    <span class="help-block" style="font-weight: normal;font-size: 11px;margin-bottom: 0;">To Point</span>
-                                                    <span class="help-block hidden">To Point</span>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label for="name" class="col-sm-2 col-md-3 control-label">Get Point</label>
-                                                <div class="col-sm-10 col-md-4">
-                                                    {!! Form::text('get_point',  $result['customer_reward_point_category']->get_point, array('class'=>'form-control field-validate', 'id'=>'get_point'))!!}
-                                                    <span class="help-block" style="font-weight: normal;font-size: 11px;margin-bottom: 0;">Get Point</span>
-                                                    <span class="help-block hidden">Get Point</span>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label for="name" class="col-sm-2 col-md-3 control-label">On Amount</label>
-                                                <div class="col-sm-10 col-md-4">
-                                                    {!! Form::text('on_amount',  $result['customer_reward_point_category']->on_amount, array('class'=>'form-control field-validate', 'id'=>'on_amount'))!!}
-                                                    <span class="help-block" style="font-weight: normal;font-size: 11px;margin-bottom: 0;">On Amount</span>
-                                                    <span class="help-block hidden">On Amount</span>
+                                                    {!! Form::text('per_month_withdraw_point_limit',  $result['withdraw_category']->per_month_withdraw_point_limit, array('class'=>'form-control field-validate', 'id'=>'per_month_withdraw_point_limit'))!!}
+                                                    <span class="help-block" style="font-weight: normal;font-size: 11px;margin-bottom: 0;">Per Month Withdraw Point Limit</span>
+                                                    <span class="help-block hidden">Per Month Withdraw Point Limit</span>
                                                 </div>
                                             </div>
 
@@ -117,7 +99,7 @@
                                             <div class="box-footer text-center">
 {{--                                                <button type="submit" class="btn btn-primary">{{ trans('labels.Submit') }}</button>--}}
                                                 <button type="submit" class="btn btn-primary">{{ trans('labels.Submit') }}</button>
-                                                <a href="{{ URL::to('admin/customer_reward_point_category/display')}}" type="button" class="btn btn-default">{{ trans('labels.back') }}</a>
+                                                <a href="{{ URL::to('admin/withdraw_category/display')}}" type="button" class="btn btn-default">{{ trans('labels.back') }}</a>
                                             </div>
                                             <!-- /.box-footer -->
                                             {!! Form::close() !!}
