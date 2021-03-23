@@ -25,6 +25,12 @@
 								 @lang('website.Wishlist')
 								</a>
 						</li>
+                    <li class="list-group-item">
+                        <a class="nav-link" href="{{ URL::to('/reward_point')}}">
+                            <i class="fas fa-heart"></i>
+                            Reward Point ({{$reward_point = \Illuminate\Support\Facades\DB::table('users')->where('id',auth()->guard('customer')->user()->id)->pluck('current_reward_point')->first()}})
+                        </a>
+                    </li>
 						<li class="list-group-item">
 								<a class="nav-link" href="{{ URL::to('/orders')}}">
 										<i class="fas fa-shopping-cart"></i>

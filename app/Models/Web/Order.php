@@ -2,10 +2,11 @@
 
 namespace App\Models\Web;
 
+use App\Models\Web\Index;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Session;
-use App\Models\Web\Index;
+
 use App\Models\Web\Languages;
 use App\Models\Web\Products;
 use App\Models\Web\Currency;
@@ -295,6 +296,7 @@ class Order extends Model
 
         }
         else if($payment_method == 'paypal'){
+            $payments_setting = [];
                 $paypal_description = $this->payments_setting_for_paypal();
                 $payment_method = $payments_setting['id']->name;
                 $payment_status='success';
@@ -1017,6 +1019,21 @@ if(count($cart) > 0){
 	}
 
 
+    public function reward_points($request){
+        $index = new Index();
+        $result = array();
 
+        $result['commonContent'] = $index->commonContent();
+
+        //reward_points
+        $reward_points = DB::table('customer_reward_points')
+            ->where('customer_id', Session::get('customers_id'))
+            ->orderBy('id','desc')
+            ->get();
+
+
+        $result['reward_points'] = $reward_points;
+        return $result;
+    }
 
 }

@@ -123,6 +123,8 @@ Route::group(['namespace' => 'Web','middleware' => $middleware], function () {
     Route::post('/apply_coupon', 'CartController@apply_coupon');
     Route::get('/removeCoupon/{id}', 'CartController@removeCoupon')->middleware('Customer');
 
+    Route::get('/reward_point', 'OrdersController@rewardPoint')->middleware('Customer');
+
     /*robeul start*/
     // SSLCOMMERZ Start
     Route::get('/checkout/pay', 'PublicSslCommerzPaymentController@index');

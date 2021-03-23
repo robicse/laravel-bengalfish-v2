@@ -219,9 +219,11 @@
                         </a>
                         @php
                         $liked_products = \Illuminate\Support\Facades\DB::table('liked_products')->where('liked_customers_id',auth()->guard('customer')->user()->id)->get();
+                        $reward_point = \Illuminate\Support\Facades\DB::table('users')->where('id',auth()->guard('customer')->user()->id)->pluck('current_reward_point')->first();
                         @endphp
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="background-color:black">
                           <a class="dropdown-item" href="{{url('profile')}}" class="nav-link">@lang('website.Profile')</a>
+                          <a class="dropdown-item" href="{{url('reward_point')}}" class="nav-link">Reward Point ({{$reward_point}})</a>
                           <a class="dropdown-item" href="{{url('wishlist')}}" class="nav-link">@lang('website.Wishlist') (<span id="liked_count">{{$liked_products->count()}}</span>)</a>
                           <a class="dropdown-item" href="{{url('compare')}}" class="nav-link">@lang('website.Compare')&nbsp;(<span id="compare">{{$count}}</span>)</a>
                           <a class="dropdown-item" href="{{url('orders')}}" class="nav-link">@lang('website.Orders')</a>
@@ -319,7 +321,7 @@
                            if(auth()->guard('customer')->user()->avatar == null){ ?>
                             <img class="img-fluid" src="{{asset('web/images/miscellaneous/avatar.jpg')}}" width="50px">
                           <?php }else{ ?>
-                            <img class="img-fluid" src="{{auth()->guard('customer')->user()->avatar}}">
+                            <img class="img-fluid" src="{{auth()->guard('customer')->user()->avatar}}" width="50px">
                           <?php
                                 }
                              }

@@ -386,7 +386,7 @@ class OrdersController extends Controller
 	public function orders(Request $request){
 		$title = array('pageTitle' => Lang::get("website.My Orders"));
 		$final_theme = $this->theme->theme();
-    $result = $this->order->orders($request);
+        $result = $this->order->orders($request);
 		return view("web.orders", ['title' => $title,'final_theme' => $final_theme])->with('result', $result);
 	}
 
@@ -1098,5 +1098,14 @@ class OrdersController extends Controller
 				return redirect()->back()->with('error', Lang::get("labels.OrderStatusChangedMessage"));
 		}
 	}
+
+    //reward point
+    public function rewardPoint(Request $request){
+        $title = array('pageTitle' => 'Point List');
+        $final_theme = $this->theme->theme();
+        $result = $this->order->reward_points($request);
+
+        return view("web.reward_points", ['title' => $title,'final_theme' => $final_theme])->with('result', $result);
+    }
 
 }
