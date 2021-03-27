@@ -46,6 +46,35 @@ class Customer extends Model
     return $responseData;
   }
 
+  public function withdrawRequestStore($request){
+      $withdraw_category = DB::table('withdraw_categories')->latest()->first();
+
+      $insert_id = DB::table('customer_withdraw_requests')->insert([
+          'customer_id'  => auth()->guard('customer')->user()->id,
+          'available_point'  => $request->available_point,
+          'request_point'  => $request->request_point,
+          'available_amount'  => $request->available_point * $withdraw_category->one_point_to_tk,
+          'request_amount'  => $request->request_point * $withdraw_category->one_point_to_tk,
+          'request_payment_by'  => $request->request_payment_by,
+      ]);
+
+//      if($insert_id){
+//          $customer_data = array(
+//              'current_reward_point'			 =>  $request->request_point,
+//              'current_reward_amount'			 =>  $request->request_point * $withdraw_category->one_point_to_tk,
+//              'current_withdraw_point'			 =>  '',
+//              'current_withdraw_amount'			 =>  ''
+//          );
+//
+//          //update into customer
+//          DB::table('users')->where('id', auth()->guard('customer')->user()->id)->update($customer_data);
+//      }
+
+      $message = "Withdraw Requested has been successfully Inserted.";
+
+      return $message;
+  }
+
   public function updateMyProfile($request){
 
     $customers_id								=	auth()->guard('customer')->user()->id;
@@ -610,4 +639,14 @@ class Customer extends Model
               }
 
 
+
+
+
+    public function withdrawRequestLists(){
+        return DB::table('customer_withdraw_requests')->where('customer_id', auth()->guard('customer')->user()->id)->get();
+    }
+
+    public function userInfo(){
+        return DB::table('users')->where('id', auth()->guard('customer')->user()->id)->first();
+    }
 }

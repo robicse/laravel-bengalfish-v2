@@ -159,6 +159,21 @@ class CustomersController extends Controller
 		return view('web.compare',['result' =>$result,'final_theme'=>$final_theme]);
 	}
 
+    public function withdrawRequest(){
+        $title = array('pageTitle' => 'Withdraw Request');
+        $result['withdrawRequestLists'] = $this->customer->withdrawRequestLists();
+        $result['userInfo'] = $this->customer->userInfo();
+        $result['commonContent'] = $this->index->commonContent();
+        $final_theme = $this->theme->theme();
+        return view('web.withdraw_request', ['result' =>$result,'title' => $title,'final_theme' => $final_theme]);
+    }
+
+    public function withdrawRequestStore(Request $request){
+	    //dd($request->all());
+        $message =  $this->customer->withdrawRequestStore($request);
+        return redirect()->back()->with('success', $message);
+    }
+
 	public function profile(){
 		$title = array('pageTitle' => Lang::get("website.Profile"));
 		$result['commonContent'] = $this->index->commonContent();

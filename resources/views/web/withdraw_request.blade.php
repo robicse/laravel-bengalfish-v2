@@ -14,24 +14,7 @@
                    </nav>
              </div>
          </div>
-         <div class="col-12 media-main">
-             <div class="media">
-                 <img src="{{auth()->guard('customer')->user()->avatar}}" alt="avatar">
-                 <div class="media-body">
-                   <div class="row">
-                     <div class="col-12 col-sm-4 col-md-6">
-                       <h4>{{auth()->guard('customer')->user()->first_name}} {{auth()->guard('customer')->user()->last_name}}<br>
-                         <small>{{auth()->guard('customer')->user()->email}} </small></h4>
-                     </div>
-                     <div class="col-12 col-sm-8 col-md-6 detail">
 
-                       <p>E-mail:<span><a href="#">{{auth()->guard('customer')->user()->email}}</a></span></p>
-                     </div>
-                     </div>
-                 </div>
-
-             </div>
-         </div>
        <div class="col-12 col-lg-3">
            <div class="heading">
                <h2>
@@ -55,7 +38,7 @@
                </li>
                @if($reward_point >= 250)
                    <li class="list-group-item">
-                       <a class="nav-link" href="{{ URL::to('/withdraw_request')}}">
+                       <a class="nav-link" href="{{ URL::to('/reward_point')}}">
                            <i class="fas fa-heart"></i>
                            Withdraw Request
                        </a>
@@ -90,11 +73,11 @@
        <div class="col-12 col-lg-9 ">
            <div class="heading">
                <h2>
-                   @lang('website.Personal Information')
+                   Withdraw Request
                </h2>
                <hr >
              </div>
-             <form name="updateMyProfile" class="align-items-center" enctype="multipart/form-data" action="{{ URL::to('updateMyProfile')}}" method="post">
+             <form name="withdrawRequestStore" class="align-items-center" enctype="multipart/form-data" action="{{ URL::to('withdrawRequestStore')}}" method="post">
                @csrf
                 @if( count($errors) > 0)
                     @foreach($errors->all() as $error)
@@ -148,101 +131,118 @@
                         </button>
                     </div>
                 @endif
-                <div class="form-group row justify-content-center">
-                  <div class="col-12 media-main">
-                      <div class="media">
-                        @if(!empty(auth()->guard('customer')->user()->avatar))
-                            <input type="hidden" name="customers_old_picture" value="{{ auth()->guard('customer')->user()->avatar }}">
-                        @else
-                          <input type="hidden" name="customers_old_picture" value="">
-                        @endif
-                          <img style="margin-bottom:-50px;" src="{{auth()->guard('customer')->user()->avatar}}" alt="avatar">
-                          <div class="media-body"style="margin-left:70px; margin-bottom:-50px;">
-                            <div class="row">
-                              <div class="col-12 col-sm-4 col-md-6">
-                                 <input name="picture" id="userImage" type="file" class="inputFile" onChange="showPreview(this);" /><br>
-                              </div>
-                            </div>
-                          </div>
+{{--                <div class="form-group row justify-content-center">--}}
+{{--                  <div class="col-12 media-main">--}}
+{{--                      <div class="media">--}}
+{{--                        @if(!empty(auth()->guard('customer')->user()->avatar))--}}
+{{--                            <input type="hidden" name="customers_old_picture" value="{{ auth()->guard('customer')->user()->avatar }}">--}}
+{{--                        @else--}}
+{{--                          <input type="hidden" name="customers_old_picture" value="">--}}
+{{--                        @endif--}}
+{{--                          <img style="margin-bottom:-50px;" src="{{auth()->guard('customer')->user()->avatar}}" alt="avatar">--}}
+{{--                          <div class="media-body"style="margin-left:70px; margin-bottom:-50px;">--}}
+{{--                            <div class="row">--}}
+{{--                              <div class="col-12 col-sm-4 col-md-6">--}}
+{{--                                 <input name="picture" id="userImage" type="file" class="inputFile" onChange="showPreview(this);" /><br>--}}
+{{--                              </div>--}}
+{{--                            </div>--}}
+{{--                          </div>--}}
 
-                      </div>
-                  </div>
-                </div>
+{{--                      </div>--}}
+{{--                  </div>--}}
+{{--                </div>--}}
 
                  <div class="form-group row">
-                   <label for="firstName" class="col-sm-2 col-form-label">@lang('website.First Name')</label>
+                   <label for="firstName" class="col-sm-2 col-form-label">Available Point</label>
                    <div class="col-sm-10">
-                     <input type="text" required name="customers_firstname" class="form-control" id="inputName" value="{{ auth()->guard('customer')->user()->first_name }}" placeholder="@lang('website.First Name')">
+                     <input type="text" required name="available_point" class="form-control" id="inputName" value="{{$result['userInfo']->current_reward_point}}">
                    </div>
                  </div>
                  <div class="form-group row">
-                   <label for="lastName" class="col-sm-2 col-form-label">@lang('website.Last Name')</label>
+                   <label for="lastName" class="col-sm-2 col-form-label">Requested Point</label>
                    <div class="col-sm-10">
-                     <input type="text" required name="customers_lastname" placeholder="@lang('website.Last Name')" class="form-control field-validate" id="lastName" value="{{ auth()->guard('customer')->user()->last_name }}">
+                     <input type="text" required name="request_point"  class="form-control field-validate" id="lastName">
                    </div>
                  </div>
                  <div class="form-group row">
                    <label for="gender"  class="col-sm-2 col-form-label">@lang('website.Gender')</label>
                      <div class="col-5 col-sm-5">
                          <div class="select-control">
-                             <select name="gender" required class="form-control" id="exampleSelectGender1" aria-describedby="genderHelp">
-                               <option value="0" @if(auth()->guard('customer')->user()->gender == 0) selected @endif>@lang('website.Male')</option>
-                               <option value="1"  @if(auth()->guard('customer')->user()->gender == 1) selected @endif>@lang('website.Female')</option>
+                             <select name="request_payment_by" required class="form-control" id="request_payment_by" aria-describedby="genderHelp">
+                               <option value="Cash">Cash</option>
+                               <option value="BKash">BKash</option>
+                               <option value="Rocket">Rocket</option>
                               </select>
                          </div>
                      </div>
-                     <div class="col-7 col-sm-5">
-                         <div class="input-group date">
-                           <div class="input-group-prepend">
-                               <span class="input-group-text"><i class="fas fa-phone"></i></span>
-                             </div>
-                             <input name="customers_telephone" type="tel"  placeholder="@lang('website.Phone Number')" value="{{ auth()->guard('customer')->user()->phone }}" class="form-control">
-                           </div>
-                     </div>
 
                    </div>
-                   <div class="form-group row">
-                       <label for="inputPassword" class="col-sm-2 col-form-label">Gender</label>
-                       <div class="col-7 col-sm-5">
-                           <div class="input-group date">
-                               <input readonly name="customers_dob" type="text" data-provide="datepicker" class="form-control" placeholder="@lang('website.Date of Birth')" value="{{ auth()->guard('customer')->user()->dob }}" aria-label="date-picker" aria-describedby="date-picker-addon1">
 
-                               <div class="input-group-prepend">
-                                   <span class="input-group-text" id="date-picker-addon1"><i class="fas fa-calendar-alt"></i></span>
-                                 </div>
-                             </div>
-
-                       </div>
+                 <div class="form-group row" style="display: none">
+                     <label for="number" class="col-sm-2 col-form-label">Number</label>
+                     <div class="col-sm-10">
+                         <input type="text" name="number"  class="form-control field-validate" id="number">
                      </div>
+                 </div>
 
-                   <button type="submit" class="btn btn-primary">@lang('website.Update')</button>
+                   <button type="submit" class="btn btn-primary">Save</button>
              </form>
 
          <!-- ............the end..... -->
-       </div>
-       <div style="margin-top:20px;"class="col-12 col-lg-9 offset-3 ">
-           <div class="heading">
-               <h2>
-                   @lang('website.Change Password')
-               </h2>
-               <hr >
-             </div>
-             <form name="updateMyPassword" class="" enctype="multipart/form-data" action="{{ URL::to('/updateMyPassword')}}" method="post">
-                 @csrf
-                 <div class="form-group row">
-                     <label for="new_password" class="col-sm-4 col-form-label">@lang('website.New Password')</label>
-                     <div class="col-sm-8">
-                         <input name="new_password" type="password" class="form-control" id="new_password" placeholder="@lang('website.New Password')">
-                         <span class="help-block error-content" hidden>@lang('website.Please enter your password and should be at least 6 characters long')</span>
-                     </div>
-                 </div>
-                 <div class="button">
-                     <button type="submit" class="btn btn-dark">@lang('website.Update')</button>
-                 </div>
-             </form>
 
-         <!-- ............the end..... -->
+
+           <div class="col-12 col-lg-3">
+               <div>&nbsp;</div>
+               <h2>Withdraw List</h2>
+               <table class="table order-table">
+
+                   <thead>
+                   <tr class="d-flex">
+{{--                       <th class="col-12 col-md-2">SL</th>--}}
+                       {{--                     <th class="col-12 col-md-2">Date</th>--}}
+                       <th class="col-12 col-md-2">Available Point</th>
+                       <th class="col-12 col-md-2">Requested Point</th>
+                       <th class="col-12 col-md-2">Received Point</th>
+                       <th class="col-12 col-md-2" >Available Amount</th>
+                       <th class="col-12 col-md-2" >Requested Amount</th>
+                       <th class="col-12 col-md-2" >Received Amount</th>
+                       <th class="col-12 col-md-2" >Request Payment By</th>
+                       <th class="col-12 col-md-2" >Request Status</th>
+                       {{--                   <th class="col-12 col-md-2" ></th>--}}
+
+                   </tr>
+                   </thead>
+                   <tbody>
+                   @if(count($result['withdrawRequestLists']) > 0)
+                       @foreach( $result['withdrawRequestLists'] as $withdrawRequestList)
+                           <tr class="d-flex">
+{{--                               <td class="col-12 col-md-2">{{$withdrawRequestList->id}}</td>--}}
+                               {{--                             <td class="col-12 col-md-2">--}}
+                               {{--                                 {{ date('d/m/Y', strtotime($withdrawRequestList->created_at))}}--}}
+                               {{--                             </td>--}}
+                               <td class="col-12 col-md-2">{{$withdrawRequestList->available_point}}</td>
+                               <td class="col-12 col-md-2">{{$withdrawRequestList->request_point}}</td>
+                               <td class="col-12 col-md-2">{{$withdrawRequestList->received_point}}</td>
+                               <td class="col-12 col-md-2">{{$withdrawRequestList->available_amount}}</td>
+                               <td class="col-12 col-md-2">{{$withdrawRequestList->request_amount}}</td>
+                               <td class="col-12 col-md-2">{{$withdrawRequestList->received_amount}}</td>
+                               <td class="col-12 col-md-2">{{$withdrawRequestList->request_payment_by}}</td>
+                               <td class="col-12 col-md-2">{{$withdrawRequestList->request_status}}</td>
+                           </tr>
+                       @endforeach
+                   @else
+                       <tr>
+                           <td colspan="4">No Withdraw Request List is placed yet</td>
+                       </tr>
+                   @endif
+                   </tbody>
+               </table>
+           </div>
+
+
        </div>
+
+
      </div>
    </div>
  </section>

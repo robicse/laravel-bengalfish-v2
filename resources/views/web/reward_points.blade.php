@@ -35,6 +35,14 @@
                      Reward Point ({{$reward_point = \Illuminate\Support\Facades\DB::table('users')->where('id',auth()->guard('customer')->user()->id)->pluck('current_reward_point')->first()}})
                     </a>
                 </li>
+                @if($reward_point >= 250)
+                <li class="list-group-item">
+                    <a class="nav-link" href="{{ URL::to('/withdraw_request')}}">
+                        <i class="fas fa-heart"></i>
+                        Withdraw Request
+                    </a>
+                </li>
+                @endif
                 <li class="list-group-item">
                     <a class="nav-link" href="{{ URL::to('/wishlist')}}">
                         <i class="fas fa-heart"></i>
