@@ -331,6 +331,16 @@ Route::group(['middleware' => ['installer']], function()
 
 
 
+    Route::group(['prefix'=>'admin/customer_reward_point_withdraw','middleware' => 'auth','namespace' => 'AdminControllers'], function () {
+        Route::get('/display', 'CustomerWithdrawRequestController@display');
+        //Route::get('/add', 'CustomerRewardPointCategoryController@add');
+        Route::post('/insert', 'CustomerWithdrawRequestController@insert');
+        //Route::get('/edit/{id}', 'CustomerRewardPointCategoryController@edit');
+        //Route::post('/update', 'CustomerRewardPointCategoryController@update');
+        //Route::post('/delete', 'CustomerRewardPointCategoryController@delete');
+        //Route::get('/filter', 'CustomerRewardPointCategoryController@filter');
+    });
+
     Route::group(['prefix'=>'admin/customer_reward_point_category','middleware' => 'auth','namespace' => 'AdminControllers'], function () {
         Route::get('/display', 'CustomerRewardPointCategoryController@display');
         Route::get('/add', 'CustomerRewardPointCategoryController@add');

@@ -23,7 +23,8 @@ class CreateCustomerWithdrawRequestsTable extends Migration
             $table->decimal('request_amount', 15);
             $table->decimal('received_amount', 15)->nullable();
             $table->string('request_payment_by');
-            $table->enum('request_status',['Pending','Approved','Canceled'])->default('Pending');
+            $table->string('payment_by_number')->nullable();
+            $table->enum('payment_status',['Unpaid','Paid'])->default('Pending');
             $table->text('transaction_id', 65535)->nullable();
             $table->char('currency', 3)->nullable();
             $table->string('transaction_status')->nullable();

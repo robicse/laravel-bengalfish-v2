@@ -27,7 +27,7 @@ class CustomerRewardPointCategoryController extends Controller
 //        $customerRewardPointCategories = CustomerRewardPointCategory::sortable()
 //            ->orderBy('created_at', 'DESC')
 //            ->paginate(7);
-        $customerRewardPointCategories = CustomerRewardPointCategory::orderBy('created_at', 'DESC')
+        $customerRewardPointCategories = CustomerRewardPointCategory::orderBy('id', 'DESC')
             ->paginate(7);
 
         $result['customerRewardPointCategories'] = $customerRewardPointCategories;

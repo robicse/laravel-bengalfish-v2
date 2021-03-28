@@ -56,19 +56,34 @@ class Customer extends Model
           'available_amount'  => $request->available_point * $withdraw_category->one_point_to_tk,
           'request_amount'  => $request->request_point * $withdraw_category->one_point_to_tk,
           'request_payment_by'  => $request->request_payment_by,
+          'payment_by_number'  => $request->payment_by_number,
       ]);
 
-//      if($insert_id){
-//          $customer_data = array(
-//              'current_reward_point'			 =>  $request->request_point,
-//              'current_reward_amount'			 =>  $request->request_point * $withdraw_category->one_point_to_tk,
-//              'current_withdraw_point'			 =>  '',
-//              'current_withdraw_amount'			 =>  ''
-//          );
-//
-//          //update into customer
-//          DB::table('users')->where('id', auth()->guard('customer')->user()->id)->update($customer_data);
-//      }
+      $user_info = DB::table('users')->where('id', auth()->guard('customer')->user()->id)->first();
+      $previous_current_reward_point = $user_info->current_reward_point;
+      $previous_current_reward_amount = $user_info->current_reward_amount;
+
+      $current_reward_point = $previous_current_reward_point - $request->request_point;
+      $current_reward_amount = $previous_current_reward_amount - ($request->request_point * $withdraw_category->one_point_to_tk);
+
+      $membership_category = DB::table('customer_reward_point_categories')
+          ->where('from_point','<=',$current_reward_point)
+          ->where('to_point','>=',$current_reward_point)
+          ->pluck('name')
+          ->first();
+
+      if($insert_id){
+          $customer_data = array(
+              'membership_category'			     =>  $membership_category,
+              'current_reward_point'			 =>  $current_reward_point,
+              'current_reward_amount'			 =>  $current_reward_amount,
+              //'current_withdraw_point'			 =>  '',
+              //'current_withdraw_amount'			 =>  ''
+          );
+
+          //update into customer
+          DB::table('users')->where('id', auth()->guard('customer')->user()->id)->update($customer_data);
+      }
 
       $message = "Withdraw Requested has been successfully Inserted.";
 

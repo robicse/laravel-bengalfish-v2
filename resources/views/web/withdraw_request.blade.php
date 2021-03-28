@@ -77,6 +77,7 @@
                </h2>
                <hr >
              </div>
+             @if($reward_point >= 250)
              <form name="withdrawRequestStore" class="align-items-center" enctype="multipart/form-data" action="{{ URL::to('withdrawRequestStore')}}" method="post">
                @csrf
                 @if( count($errors) > 0)
@@ -165,7 +166,7 @@
                    </div>
                  </div>
                  <div class="form-group row">
-                   <label for="gender"  class="col-sm-2 col-form-label">@lang('website.Gender')</label>
+                   <label for="gender"  class="col-sm-2 col-form-label">Request Payment By</label>
                      <div class="col-5 col-sm-5">
                          <div class="select-control">
                              <select name="request_payment_by" required class="form-control" id="request_payment_by" aria-describedby="genderHelp">
@@ -178,15 +179,16 @@
 
                    </div>
 
-                 <div class="form-group row" style="display: none">
-                     <label for="number" class="col-sm-2 col-form-label">Number</label>
+                 <div class="form-group row" id="payment_by_number" style="display: none">
+                     <label for="payment_by_number" class="col-sm-2 col-form-label">Payment By Number</label>
                      <div class="col-sm-10">
-                         <input type="text" name="number"  class="form-control field-validate" id="number">
+                         <input type="text" name="payment_by_number"  class="form-control field-validate">
                      </div>
                  </div>
 
                    <button type="submit" class="btn btn-primary">Save</button>
              </form>
+             @endif
 
          <!-- ............the end..... -->
 
@@ -207,6 +209,7 @@
                        <th class="col-12 col-md-2" >Requested Amount</th>
                        <th class="col-12 col-md-2" >Received Amount</th>
                        <th class="col-12 col-md-2" >Request Payment By</th>
+{{--                       <th class="col-12 col-md-2" >Payment By Number</th>--}}
                        <th class="col-12 col-md-2" >Request Status</th>
                        {{--                   <th class="col-12 col-md-2" ></th>--}}
 
@@ -226,8 +229,13 @@
                                <td class="col-12 col-md-2">{{$withdrawRequestList->available_amount}}</td>
                                <td class="col-12 col-md-2">{{$withdrawRequestList->request_amount}}</td>
                                <td class="col-12 col-md-2">{{$withdrawRequestList->received_amount}}</td>
-                               <td class="col-12 col-md-2">{{$withdrawRequestList->request_payment_by}}</td>
-                               <td class="col-12 col-md-2">{{$withdrawRequestList->request_status}}</td>
+                               <td class="col-12 col-md-2">
+                                   {{$withdrawRequestList->request_payment_by}}
+                                   @if($withdrawRequestList->payment_by_number)
+                                       ({{$withdrawRequestList->payment_by_number}})
+                                   @endif
+                               </td>
+                               <td class="col-12 col-md-2">{{$withdrawRequestList->payment_status}}</td>
                            </tr>
                        @endforeach
                    @else
@@ -246,4 +254,18 @@
      </div>
    </div>
  </section>
+<script>
+    jQuery(document).on('change', '#request_payment_by', function(e){
+        var request_payment_by = jQuery("#request_payment_by").val();
+        console.log(request_payment_by);
+        if(request_payment_by != 'Cash'){
+            console.log(request_payment_by);
+            jQuery("#payment_by_number").show();
+        }else{
+            console.log(request_payment_by);
+            jQuery("#payment_by_number").hide();
+        }
+    });
+</script>
  @endsection
+
