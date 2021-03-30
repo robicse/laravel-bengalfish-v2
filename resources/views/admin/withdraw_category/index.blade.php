@@ -88,7 +88,7 @@
                                                     <td>{{ $withdrawCategory->per_month_withdraw_point_limit }}</td>
 {{--                                                    <td>--}}
 {{--                                                        <a data-toggle="tooltip" data-placement="bottom" title="{{ trans('labels.Edit') }}" href="{{ url('admin/withdraw_category/edit')}}/{{$withdrawCategory->id}}" class="badge bg-light-blue"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>--}}
-{{--                                                        <a data-toggle="tooltip" data-placement="bottom" title="{{ trans('labels.Delete') }}" id="deleteCoupans_id" coupans_id ="{{ $customerRewardPointCategory->id }}" class="badge bg-red"><i class="fa fa-trash" aria-hidden="true"></i></a>--}}
+{{--                                                        <a data-toggle="tooltip" data-placement="bottom" title="{{ trans('labels.Delete') }}" id="deleteCoupans_id" coupans_id ="{{ $withdrawCategory->id }}" class="badge bg-red"><i class="fa fa-trash" aria-hidden="true"></i></a>--}}
 {{--                                                    </td>--}}
                                                 </tr>
                                             @endforeach

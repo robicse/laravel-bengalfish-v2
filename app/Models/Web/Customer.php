@@ -50,13 +50,15 @@ class Customer extends Model
       $withdraw_category = DB::table('withdraw_categories')->latest()->first();
 
       $insert_id = DB::table('customer_withdraw_requests')->insert([
-          'customer_id'  => auth()->guard('customer')->user()->id,
-          'available_point'  => $request->available_point,
-          'request_point'  => $request->request_point,
-          'available_amount'  => $request->available_point * $withdraw_category->one_point_to_tk,
-          'request_amount'  => $request->request_point * $withdraw_category->one_point_to_tk,
+          'customer_id'         => auth()->guard('customer')->user()->id,
+          'available_point'     => $request->available_point,
+          'request_point'       => $request->request_point,
+          'available_amount'    => $request->available_point * $withdraw_category->one_point_to_tk,
+          'request_amount'      => $request->request_point * $withdraw_category->one_point_to_tk,
           'request_payment_by'  => $request->request_payment_by,
-          'payment_by_number'  => $request->payment_by_number,
+          'payment_by_number'   => $request->payment_by_number,
+          'created_at'	        => date('Y-m-d H:i:s'),
+          'updated_at'	        => date('Y-m-d H:i:s')
       ]);
 
       $user_info = DB::table('users')->where('id', auth()->guard('customer')->user()->id)->first();
@@ -222,7 +224,8 @@ class Customer extends Model
 													'email' => $email,
                           'password' =>  Hash::make($password),
 													'status' => '1',
-													'created_at' =>	 time()
+													'created_at' =>	 date('Y-m-d H:i:s'),
+													'updated_at' =>	 date('Y-m-d H:i:s')
 												]);
 												$customers_id = DB::table('customers')->insertGetId([
 													'user_id' => $customers_id,
@@ -546,7 +549,7 @@ class Customer extends Model
         $email = $request->email;
         $password = $request->password;
         //$token = $request->token;
-        //$date = date('Y-m-d h:i:s');
+        $date = date('Y-m-d H:i:s');
         $profile_photo = 'images/user.png';
 
       //echo "Value is completed";
@@ -590,8 +593,8 @@ class Customer extends Model
                     'email' => $request->email,
                     'password' => Hash::make($password),
                     'api_token' => Str::random(60),
-                    //'created_at' => $date,
-                    //'updated_at' => $date,
+                    'created_at' => $date,
+                    'updated_at' => $date,
                     ])
                    ){
                      $res['insert'] = "true";

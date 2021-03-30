@@ -20,7 +20,9 @@ class CustomerRewardPointCategory extends Model
             'from_point'				 =>   $from_point,
             'to_point'				     =>   $to_point,
             'get_point'	 			     =>   $get_point,
-            'on_amount'	 	 			 =>   $on_amount
+            'on_amount'	 	 			 =>   $on_amount,
+            'created_at'	             =>   date('Y-m-d H:i:s'),
+            'updated_at'	             =>   date('Y-m-d H:i:s')
         ]);
         return $insert_id;
     }
@@ -40,7 +42,8 @@ class CustomerRewardPointCategory extends Model
             'from_point'				 =>   $from_point,
             'to_point'				     =>   $to_point,
             'get_point'	 			     =>   $get_point,
-            'on_amount'	 	 			 =>   $on_amount
+            'on_amount'	 	 			 =>   $on_amount,
+            'updated_at'	             =>   date('Y-m-d H:i:s')
         ]);
         return $update_id;
     }

@@ -118,6 +118,8 @@ class UserController extends Controller
         $userReg->password = Hash::make($request->password);
         $userReg->role_id = 2;
         $userReg->registration_as = 'phone';
+        $userReg->created_at = date('Y-m-d H:i:s');
+        $userReg->updated_at = date('Y-m-d H:i:s');
         $userReg->save();
 
         if($userReg->id){

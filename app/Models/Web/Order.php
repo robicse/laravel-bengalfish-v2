@@ -499,6 +499,8 @@ class Order extends Model
                         'order_price'  =>  $order_price,
                         'get_reward_point' => $get_point,
                         'get_reward_point_amount'  => $one_point_to_tk*$get_point,
+                        'created_at'	             =>   date('Y-m-d H:i:s'),
+                        'updated_at'	             =>   date('Y-m-d H:i:s')
                     ]);
 
 
