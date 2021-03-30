@@ -21,17 +21,17 @@ class WithdrawCategoryController extends Controller
 
     public function display(Request $request){
 
-        $get_customer_reward_point_category_infos = DB::table('customer_reward_point_categories')
-            ->select(
-                'name',
-                'from_point',
-                'to_point',
-                'get_point',
-                'on_amount'
-            )
-            ->where('name',"General Customer")
-            ->first();
-        dd($get_customer_reward_point_category_infos->from_point);
+//        $get_customer_reward_point_category_infos = DB::table('customer_reward_point_categories')
+//            ->select(
+//                'name',
+//                'from_point',
+//                'to_point',
+//                'get_point',
+//                'on_amount'
+//            )
+//            ->where('name',"General Customer")
+//            ->first();
+//        dd($get_customer_reward_point_category_infos->from_point);
         $title = array('pageTitle' => 'List Withdraw Category');
         $result = array();
         $message = array();
