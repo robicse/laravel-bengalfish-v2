@@ -22,7 +22,7 @@
                         <div class="box-header">
                             <h3 class="box-title">{{ trans('labels.ListingAllOrders') }} </h3>
                         </div>
-                    
+
 
                         <!-- /.box-header -->
                         <div class="box-body">
@@ -46,6 +46,8 @@
                                             <th>{{ trans('labels.ID') }}</th>
                                             <th>{{ trans('labels.CustomerName') }}</th>
                                             <th>{{ trans('labels.OrderTotal') }}</th>
+                                            <th>Reward Point</th>
+                                            <th>Reward Point Amount</th>
                                             <th>{{ trans('labels.DatePurchased') }}</th>
                                             <th>{{ trans('labels.Status') }} </th>
                                             <th>{{ trans('labels.Action') }}</th>
@@ -54,10 +56,15 @@
                                         <tbody>
                                         @if(count($listingOrders['orders'])>0)
                                             @foreach ($listingOrders['orders'] as $key=>$orderData)
+                                                @php
+                                                //dd($orderData);
+                                                @endphp
                                                 <tr>
                                                     <td>{{ $orderData->orders_id }}</td>
                                                     <td>{{ $orderData->customers_name }}</td>
                                                     <td>{{ $listingOrders['currency'][19]->value }}{{ $orderData->order_price }}</td>
+                                                    <td>{{ \Illuminate\Support\Facades\DB::table('customer_reward_points')->where('order_id',$orderData->orders_id)->pluck('get_reward_point')->first() }}</td>
+                                                    <td>{{ $listingOrders['currency'][19]->value }}{{ \Illuminate\Support\Facades\DB::table('customer_reward_points')->where('order_id',$orderData->orders_id)->pluck('get_reward_point_amount')->first() }}</td>
                                                     <td>{{ date('d/m/Y', strtotime($orderData->date_purchased)) }}</td>
                                                     <td>
                                                         @if($orderData->orders_status_id==1)
@@ -88,7 +95,7 @@
                                         @endif
                                         </tbody>
                                     </table>
-                                
+
                                 </div>
                             </div>
                         </div>

@@ -84,6 +84,8 @@
                     <th class="col-12 col-md-2">@lang('website.Order ID')</th>
                     <th class="col-12 col-md-2">@lang('website.Order Date')</th>
                     <th class="col-12 col-md-2">@lang('website.Price')</th>
+                    <th class="col-12 col-md-2">Reward Point</th>
+                    <th class="col-12 col-md-2">Reward Point Amount</th>
                     <th class="col-12 col-md-2" >@lang('website.Status')</th>
                     <th class="col-12 col-md-2" ></th>
 
@@ -111,6 +113,17 @@
                     <td class="col-12 col-md-2">
                       {{Session::get('symbol_left')}}{{$orders->order_price*$currency_value}}{{Session::get('symbol_right')}}
                     </td>
+                      <td class="col-12 col-md-2">
+                          {{ \Illuminate\Support\Facades\DB::table('customer_reward_points')->where('order_id',$orders->orders_id)->pluck('get_reward_point')->first() }}
+                      </td>
+                      <td class="col-12 col-md-2">
+                          @php
+                              $get_reward_point_amount = \Illuminate\Support\Facades\DB::table('customer_reward_points')->where('order_id',$orders->orders_id)->pluck('get_reward_point_amount')->first()
+                          @endphp
+                          @if($get_reward_point_amount != NULL)
+                              {{Session::get('symbol_left')}} {{$get_reward_point_amount}}
+                          @endif
+                      </td>
                     <td class="col-12 col-md-2">
                         @if($orders->orders_status_id == '2')
                             <span class="badge badge-success">{{$orders->orders_status}}</span>
