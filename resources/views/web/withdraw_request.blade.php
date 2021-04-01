@@ -45,6 +45,12 @@
                    </li>
                @endif
                <li class="list-group-item">
+                   <a class="nav-link" href="{{ URL::to('/withdraw_request_list')}}">
+                       <i class="fas fa-heart"></i>
+                       Withdraw Request List
+                   </a>
+               </li>
+               <li class="list-group-item">
                    <a class="nav-link" href="{{ URL::to('/wishlist')}}">
                        <i class="fas fa-heart"></i>
                     @lang('website.Wishlist')
@@ -191,61 +197,6 @@
              @endif
 
          <!-- ............the end..... -->
-
-
-           <div class="col-12 col-lg-3">
-               <div>&nbsp;</div>
-               <h2>Withdraw List</h2>
-               <table class="table order-table">
-
-                   <thead>
-                   <tr class="d-flex">
-{{--                       <th class="col-12 col-md-2">SL</th>--}}
-                       {{--                     <th class="col-12 col-md-2">Date</th>--}}
-                       <th class="col-12 col-md-2">Available Point</th>
-                       <th class="col-12 col-md-2">Requested Point</th>
-                       <th class="col-12 col-md-2">Received Point</th>
-                       <th class="col-12 col-md-2" >Available Amount</th>
-                       <th class="col-12 col-md-2" >Requested Amount</th>
-                       <th class="col-12 col-md-2" >Received Amount</th>
-                       <th class="col-12 col-md-2" >Request Payment By</th>
-{{--                       <th class="col-12 col-md-2" >Payment By Number</th>--}}
-                       <th class="col-12 col-md-2" >Request Status</th>
-                       {{--                   <th class="col-12 col-md-2" ></th>--}}
-
-                   </tr>
-                   </thead>
-                   <tbody>
-                   @if(count($result['withdrawRequestLists']) > 0)
-                       @foreach( $result['withdrawRequestLists'] as $withdrawRequestList)
-                           <tr class="d-flex">
-{{--                               <td class="col-12 col-md-2">{{$withdrawRequestList->id}}</td>--}}
-                               {{--                             <td class="col-12 col-md-2">--}}
-                               {{--                                 {{ date('d/m/Y', strtotime($withdrawRequestList->created_at))}}--}}
-                               {{--                             </td>--}}
-                               <td class="col-12 col-md-2">{{$withdrawRequestList->available_point}}</td>
-                               <td class="col-12 col-md-2">{{$withdrawRequestList->request_point}}</td>
-                               <td class="col-12 col-md-2">{{$withdrawRequestList->received_point}}</td>
-                               <td class="col-12 col-md-2">{{$withdrawRequestList->available_amount}}</td>
-                               <td class="col-12 col-md-2">{{$withdrawRequestList->request_amount}}</td>
-                               <td class="col-12 col-md-2">{{$withdrawRequestList->received_amount}}</td>
-                               <td class="col-12 col-md-2">
-                                   {{$withdrawRequestList->request_payment_by}}
-                                   @if($withdrawRequestList->payment_by_number)
-                                       ({{$withdrawRequestList->payment_by_number}})
-                                   @endif
-                               </td>
-                               <td class="col-12 col-md-2">{{$withdrawRequestList->payment_status}}</td>
-                           </tr>
-                       @endforeach
-                   @else
-                       <tr>
-                           <td colspan="4">No Withdraw Request List is placed yet</td>
-                       </tr>
-                   @endif
-                   </tbody>
-               </table>
-           </div>
 
 
        </div>

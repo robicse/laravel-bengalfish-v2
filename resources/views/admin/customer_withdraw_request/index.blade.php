@@ -101,9 +101,11 @@
                                                     </td>
                                                     <td>
                                                         {{ $withdrawRequestList->payment_status }}
-                                                        <a data-toggle="tooltip" data-placement="bottom" title="{{ trans('labels.Delete') }}" id="deleteCoupans_id" coupans_id="{{ $withdrawRequestList->id }}" class="badge bg-red">
-                                                            Pay Now
-                                                        </a>
+                                                        @if($withdrawRequestList->payment_status != 'Paid')
+                                                            <a data-toggle="tooltip" data-placement="bottom" title="{{ trans('labels.Delete') }}" id="deleteCoupans_id" coupans_id="{{ $withdrawRequestList->id }}" class="badge bg-red">
+                                                                Pay Now
+                                                            </a>
+                                                        @endif
                                                     </td>
                                                 </tr>
 

@@ -39,6 +39,12 @@
                             </a>
                         </li>
                     @endif
+                    <li class="list-group-item">
+                        <a class="nav-link" href="{{ URL::to('/withdraw_request_list')}}">
+                            <i class="fas fa-heart"></i>
+                            Withdraw Request List
+                        </a>
+                    </li>
 						<li class="list-group-item">
 								<a class="nav-link" href="{{ URL::to('/orders')}}">
 										<i class="fas fa-shopping-cart"></i>

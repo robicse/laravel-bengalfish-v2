@@ -70,6 +70,7 @@ Route::group(['namespace' => 'Web','middleware' => $middleware], function () {
     Route::get('/cartButton', 'CartController@cartButton');
 
     Route::get('/withdraw_request', 'CustomersController@withdrawRequest')->middleware('Customer');
+    Route::get('/withdraw_request_list', 'CustomersController@withdrawRequestList')->middleware('Customer');
     Route::post('/withdrawRequestStore', 'CustomersController@withdrawRequestStore')->middleware('Customer');
     Route::get('/profile', 'CustomersController@profile')->middleware('Customer');
     Route::get('/wishlist', 'CustomersController@wishlist')->middleware('Customer');

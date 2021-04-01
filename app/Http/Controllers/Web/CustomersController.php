@@ -160,12 +160,22 @@ class CustomersController extends Controller
 	}
 
     public function withdrawRequest(){
+	    //dd('ooo');
         $title = array('pageTitle' => 'Withdraw Request');
-        $result['withdrawRequestLists'] = $this->customer->withdrawRequestLists();
+        //$result['withdrawRequestLists'] = $this->customer->withdrawRequestLists();
         $result['userInfo'] = $this->customer->userInfo();
         $result['commonContent'] = $this->index->commonContent();
         $final_theme = $this->theme->theme();
         return view('web.withdraw_request', ['result' =>$result,'title' => $title,'final_theme' => $final_theme]);
+    }
+
+    public function withdrawRequestList(){
+        $title = array('pageTitle' => 'Withdraw Request List');
+        $result['withdrawRequestLists'] = $this->customer->withdrawRequestLists();
+        $result['userInfo'] = $this->customer->userInfo();
+        $result['commonContent'] = $this->index->commonContent();
+        $final_theme = $this->theme->theme();
+        return view('web.withdraw_request_list', ['result' =>$result,'title' => $title,'final_theme' => $final_theme]);
     }
 
     public function withdrawRequestStore(Request $request){

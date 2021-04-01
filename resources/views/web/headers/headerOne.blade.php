@@ -227,6 +227,7 @@
                           @if($reward_point >= 250)
                           <a class="dropdown-item" href="{{url('withdraw_request')}}" class="nav-link">Withdraw Request</a>
                           @endif
+                          <a class="dropdown-item" href="{{url('withdraw_request_list')}}" class="nav-link">Withdraw Request List</a>
                           <a class="dropdown-item" href="{{url('wishlist')}}" class="nav-link">@lang('website.Wishlist') (<span id="liked_count">{{$liked_products->count()}}</span>)</a>
                           <a class="dropdown-item" href="{{url('compare')}}" class="nav-link">@lang('website.Compare')&nbsp;(<span id="compare">{{$count}}</span>)</a>
                           <a class="dropdown-item" href="{{url('orders')}}" class="nav-link">@lang('website.Orders')</a>
