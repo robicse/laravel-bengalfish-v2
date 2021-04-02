@@ -220,9 +220,14 @@
                         @php
                         $liked_products = \Illuminate\Support\Facades\DB::table('liked_products')->where('liked_customers_id',auth()->guard('customer')->user()->id)->get();
                         $reward_point = \Illuminate\Support\Facades\DB::table('users')->where('id',auth()->guard('customer')->user()->id)->pluck('current_reward_point')->first();
+                        $membership_category = \Illuminate\Support\Facades\DB::table('users')->where('id',auth()->guard('customer')->user()->id)->pluck('membership_category')->first();
                         @endphp
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="background-color:black">
                           <a class="dropdown-item" href="{{url('profile')}}" class="nav-link">@lang('website.Profile')</a>
+                          <a class="dropdown-item" href="#" class="nav-link">
+                              Membership ({{$membership_category}})
+                          </a>
+                          <a class="dropdown-item" href="{{url('withdraw_request_list')}}" class="nav-link">Withdraw Request List</a>
                           <a class="dropdown-item" href="{{url('reward_point')}}" class="nav-link">Reward Point ({{$reward_point}})</a>
                           @if($reward_point >= 250)
                           <a class="dropdown-item" href="{{url('withdraw_request')}}" class="nav-link">Withdraw Request</a>

@@ -35,7 +35,7 @@ class WithdrawCategoryController extends Controller
         $title = array('pageTitle' => 'List Withdraw Category');
         $result = array();
         $message = array();
-        $withdrawCategories = WithdrawCategory::orderBy('created_at', 'DESC')
+        $withdrawCategories = WithdrawCategory::orderBy('created_at', 'ASC')
             ->paginate(7);
 
         $result['withdrawCategories'] = $withdrawCategories;

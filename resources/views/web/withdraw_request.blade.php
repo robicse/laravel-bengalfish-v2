@@ -162,13 +162,13 @@
                  <div class="form-group row">
                    <label for="firstName" class="col-sm-2 col-form-label">Available Point</label>
                    <div class="col-sm-10">
-                     <input type="text" required name="available_point" class="form-control" id="inputName" value="{{$result['userInfo']->current_reward_point}}">
+                     <input type="text" required name="available_point" class="form-control" id="available_point" value="{{$result['userInfo']->current_reward_point}}">
                    </div>
                  </div>
                  <div class="form-group row">
                    <label for="lastName" class="col-sm-2 col-form-label">Requested Point</label>
                    <div class="col-sm-10">
-                     <input type="text" required name="request_point"  class="form-control field-validate" id="lastName">
+                     <input type="text" required name="request_point"  class="form-control field-validate" id="request_point">
                    </div>
                  </div>
                  <div class="form-group row">
@@ -217,6 +217,31 @@
             jQuery("#payment_by_number").hide();
         }
     });
+
+    jQuery(document).on('keyup', '#request_point', function(e){
+
+        var available_point = jQuery("#available_point").val();
+        var request_point = jQuery("#request_point").val();
+        console.log(request_point);
+        
+        if(request_point > available_point){
+            alert('You do not requested your current reward point!');
+            jQuery("#request_point").val('');
+        }
+    });
+
+    jQuery(document).on('blur', '#request_point', function(e){
+
+        var available_point = jQuery("#available_point").val();
+        var request_point = jQuery("#request_point").val();
+        console.log(request_point);
+
+        if(request_point < 20){
+            alert('You do not requested less than 20 reward point!');
+            jQuery("#request_point").val('');
+        }
+    });
+
 </script>
  @endsection
 
