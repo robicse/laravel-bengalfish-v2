@@ -686,6 +686,80 @@ class UserController extends Controller
         }
 
         if($order_insert_id){
+
+
+            /*Reward Point Start*/
+            // get current point info of customer
+
+            $one_point_to_tk = DB::table('withdraw_categories')
+                ->latest('id')
+                ->pluck('one_point_to_tk')
+                ->first();
+
+
+            $get_customer_current_point_infos = DB::table('users')
+                ->select(
+                    'membership_category',
+                    'current_reward_point',
+                    'current_reward_amount',
+                    'current_withdraw_point',
+                    'current_withdraw_amount'
+                )
+                ->where('id',$request->user_id)
+                ->first();
+
+            $get_customer_reward_point_category_infos = DB::table('customer_reward_point_categories')
+                ->select(
+                    'name',
+                    'from_point',
+                    'to_point',
+                    'get_point',
+                    'on_amount'
+                )
+                ->where('name',$get_customer_current_point_infos->membership_category)
+                ->first();
+
+
+            if($request->total_order_price >= $get_customer_reward_point_category_infos->on_amount){
+
+                $get_point = $get_customer_reward_point_category_infos->get_point;
+
+                DB::table('customer_reward_points')->insertGetId(
+                    [	'customer_id' => $request->user_id,
+                        'order_id'                  => $orders_id,
+                        'order_price'               =>  $request->total_order_price,
+                        'get_reward_point'          => $get_point,
+                        'get_reward_point_amount'   => $one_point_to_tk*$get_point,
+                        'created_at'	            =>   date('Y-m-d H:i:s'),
+                        'updated_at'	            =>   date('Y-m-d H:i:s')
+                    ]);
+
+
+
+
+                // update customer current point
+
+                $current_reward_point = $get_point + $get_customer_current_point_infos->current_reward_point;
+                $current_reward_amount = ($one_point_to_tk*$get_point) + $get_customer_current_point_infos->current_reward_amount;
+
+                $membership_category = DB::table('customer_reward_point_categories')
+                    ->where('from_point','<=',$current_reward_point)
+                    ->where('to_point','>=',$current_reward_point)
+                    ->pluck('name')
+                    ->first();
+
+                DB::table('users')->where('id', '=', $request->user_id)->update([
+                    'membership_category' => $membership_category,
+                    'current_reward_point' => $current_reward_point,
+                    'current_reward_amount' => $current_reward_amount
+                ]);
+            }
+
+            /*Reward Point End*/
+
+
+
+
             return response()->json(['success'=>true,'order_id' => $order_insert_id], $this-> successStatus);
         }else{
             return response()->json(['success'=>false,'order_id' => 'No Order Placed'], $this-> failStatus);
@@ -881,6 +955,96 @@ class UserController extends Controller
             return response()->json(['success'=>true,'response' => $reviews], $this-> successStatus);
         }else{
             return response()->json(['success'=>false,'response' => 'No Reviews Found'], $this-> failStatus);
+        }
+    }
+
+    public function reward_point_withdraw_request_list(Request $request)
+    {
+        $authorization = $request->header('Auth');
+        if(empty($authorization)){
+            return response()->json(['success'=>false,'response'=>'Unauthorised'], $this-> authStatus);
+        }else{
+            $user=User::find($request->user_id);
+
+            if($user->api_token!=$authorization){
+                return response()->json(['success'=>false,'response'=>'Unauthorised'], $this-> authStatus);
+            }
+
+            $customer_withdraw_requests = DB::table('customer_withdraw_requests')->where('customer_id', $request->user_id)->get();
+            return response()->json(['success'=>false,'response'=>$customer_withdraw_requests], $this-> successStatus);
+        }
+    }
+
+    public function reward_point_withdraw_request(Request $request)
+    {
+        $authorization = $request->header('Auth');
+        if(empty($authorization)){
+            return response()->json(['success'=>false,'response'=>'Unauthorised'], $this-> authStatus);
+        }else{
+            $user=User::find($request->user_id);
+
+
+            if($user->api_token!=$authorization){
+                return response()->json(['success'=>false,'response'=>'Unauthorised'], $this-> authStatus);
+            }
+
+
+            $sum_current_month_request_point = DB::table('customer_withdraw_requests')
+                ->where('customer_id', $request->user_id)
+                ->where('month', date('m'))
+                ->sum('request_point');
+
+            $final_sum_current_month_request_point = $sum_current_month_request_point + $request->request_point;
+
+            if($final_sum_current_month_request_point > 1000){
+                return response()->json(['success'=>false,'response'=>'You do not point withdraw request 1000 current month!'], $this->failStatus);
+            }
+
+            $withdraw_category = DB::table('withdraw_categories')->latest()->first();
+
+            $insert_id = DB::table('customer_withdraw_requests')->insert([
+                'customer_id'         => $request->user_id,
+                'available_point'     => $request->available_point,
+                'request_point'       => $request->request_point,
+                'available_amount'    => $request->available_point * $withdraw_category->one_point_to_tk,
+                'request_amount'      => $request->request_point * $withdraw_category->one_point_to_tk,
+                'request_payment_by'  => $request->request_payment_by,
+                'payment_by_number'   => $request->payment_by_number,
+                'month'	              => date('m'),
+                'date'	              => date('Y-m-d'),
+                'created_at'	      => date('Y-m-d H:i:s'),
+                'updated_at'	      => date('Y-m-d H:i:s')
+            ]);
+
+            $user_info = DB::table('users')->where('id', $request->user_id)->first();
+            $previous_current_reward_point = $user_info->current_reward_point;
+            $previous_current_reward_amount = $user_info->current_reward_amount;
+
+            $current_reward_point = $previous_current_reward_point - $request->request_point;
+            $current_reward_amount = $previous_current_reward_amount - ($request->request_point * $withdraw_category->one_point_to_tk);
+
+            $membership_category = DB::table('customer_reward_point_categories')
+                ->where('from_point','<=',$current_reward_point)
+                ->where('to_point','>=',$current_reward_point)
+                ->pluck('name')
+                ->first();
+
+            if($insert_id){
+                $customer_data = array(
+                    'membership_category'			     =>  $membership_category,
+                    'current_reward_point'			 =>  $current_reward_point,
+                    'current_reward_amount'			 =>  $current_reward_amount,
+                    //'current_withdraw_point'			 =>  '',
+                    //'current_withdraw_amount'			 =>  ''
+                );
+
+                //update into customer
+                DB::table('users')->where('id', $request->user_id)->update($customer_data);
+
+                return response()->json(['success'=>false,'response'=>'Successfully inserted.'], $this-> successStatus);
+            }
+
+            return response()->json(['success'=>false,'response'=>'Something Went Wrong.'], $this->failStatus);
         }
     }
 

@@ -162,7 +162,7 @@ class CustomersController extends Controller
     public function withdrawRequest(){
 	    //dd('ooo');
         $title = array('pageTitle' => 'Withdraw Request');
-        //$result['withdrawRequestLists'] = $this->customer->withdrawRequestLists();
+        $result['sumCurrentMonthWithdraw'] = $this->customer->sumCurrentMonthWithdraw();
         $result['userInfo'] = $this->customer->userInfo();
         $result['commonContent'] = $this->index->commonContent();
         $final_theme = $this->theme->theme();

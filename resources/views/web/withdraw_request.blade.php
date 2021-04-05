@@ -160,10 +160,16 @@
 {{--                </div>--}}
 
                  <div class="form-group row">
-                   <label for="firstName" class="col-sm-2 col-form-label">Available Point</label>
+                   <label for="firstName" class="col-sm-2 col-form-label">Sum Current month Withdraw Request</label>
                    <div class="col-sm-10">
-                     <input type="text" required name="available_point" class="form-control" id="available_point" value="{{$result['userInfo']->current_reward_point}}">
+                     <input type="text" name="current_month_withdraw_sum" class="form-control" id="current_month_withdraw_sum" value="{{$result['sumCurrentMonthWithdraw']}}" readonly>
                    </div>
+                 </div>
+                 <div class="form-group row">
+                     <label for="firstName" class="col-sm-2 col-form-label">Available Point</label>
+                     <div class="col-sm-10">
+                         <input type="text" required name="available_point" class="form-control" id="available_point" value="{{$result['userInfo']->current_reward_point}}">
+                     </div>
                  </div>
                  <div class="form-group row">
                    <label for="lastName" class="col-sm-2 col-form-label">Requested Point</label>
@@ -220,12 +226,31 @@
 
     jQuery(document).on('keyup', '#request_point', function(e){
 
+        var current_month_withdraw_sum = jQuery("#current_month_withdraw_sum").val();
         var available_point = jQuery("#available_point").val();
         var request_point = jQuery("#request_point").val();
-        console.log(request_point);
-        
+
+        console.log(typeof current_month_withdraw_sum);
+        current_month_withdraw_sum = parseInt(current_month_withdraw_sum);
+        console.log(typeof current_month_withdraw_sum);
+
+        console.log(typeof available_point);
+        available_point = parseInt(available_point);
+        console.log(typeof available_point);
+
+        console.log(typeof request_point);
+        request_point = parseInt(request_point);
+        console.log(typeof request_point);
+
         if(request_point > available_point){
             alert('You do not requested your current reward point!');
+            jQuery("#request_point").val('');
+        }
+
+        var sum_current_month_withdraw_sum = current_month_withdraw_sum + request_point;
+
+        if(sum_current_month_withdraw_sum > 1000){
+            alert('You do not requested greater than 1000 reward point current month!');
             jQuery("#request_point").val('');
         }
     });
@@ -235,8 +260,10 @@
         var available_point = jQuery("#available_point").val();
         var request_point = jQuery("#request_point").val();
         console.log(request_point);
+        request_point = parseInt(request_point);
+        console.log(typeof request_point);
 
-        if(request_point < 20){
+        if(request_point < 100){
             alert('You do not requested less than 20 reward point!');
             jQuery("#request_point").val('');
         }

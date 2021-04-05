@@ -227,7 +227,7 @@
                           <a class="dropdown-item" href="#" class="nav-link">
                               Membership ({{$membership_category}})
                           </a>
-                          <a class="dropdown-item" href="{{url('withdraw_request_list')}}" class="nav-link">Withdraw Request List</a>
+{{--                          <a class="dropdown-item" href="{{url('withdraw_request_list')}}" class="nav-link">Withdraw Request List</a>--}}
                           <a class="dropdown-item" href="{{url('reward_point')}}" class="nav-link">Reward Point ({{$reward_point}})</a>
                           @if($reward_point >= 250)
                           <a class="dropdown-item" href="{{url('withdraw_request')}}" class="nav-link">Withdraw Request</a>

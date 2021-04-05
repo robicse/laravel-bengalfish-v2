@@ -57,6 +57,8 @@ class Customer extends Model
           'request_amount'      => $request->request_point * $withdraw_category->one_point_to_tk,
           'request_payment_by'  => $request->request_payment_by,
           'payment_by_number'   => $request->payment_by_number,
+          'month'	            => date('m'),
+          'date'	            => date('Y-m-d'),
           'created_at'	        => date('Y-m-d H:i:s'),
           'updated_at'	        => date('Y-m-d H:i:s')
       ]);
@@ -666,5 +668,12 @@ class Customer extends Model
 
     public function userInfo(){
         return DB::table('users')->where('id', auth()->guard('customer')->user()->id)->first();
+    }
+
+    public function sumCurrentMonthWithdraw(){
+        return $sum_current_month_request_point = DB::table('customer_withdraw_requests')
+            ->where('customer_id', auth()->guard('customer')->user()->id)
+            ->where('month', date('m'))
+            ->sum('request_point');
     }
 }

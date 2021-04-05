@@ -82,3 +82,8 @@ Route::POST('/cancel', 'API\PublicSslCommerzPaymentController@cancel');
 Route::POST('/ipn', 'API\PublicSslCommerzPaymentController@ipn');
 
 Route::get('/ssl/redirect/{status}','API\PublicSslCommerzPaymentController@status');
+
+
+/* point */
+Route::post('user/reward_point_withdraw_request_list', 'API\UserController@reward_point_withdraw_request_list');
+Route::post('user/reward_point_withdraw_request', 'API\UserController@reward_point_withdraw_request');
