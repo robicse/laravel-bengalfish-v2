@@ -958,6 +958,23 @@ class UserController extends Controller
         }
     }
 
+    public function membership_and_reward_point(Request $request)
+    {
+        $authorization = $request->header('Auth');
+        if(empty($authorization)){
+            return response()->json(['success'=>false,'response'=>'Unauthorised'], $this-> authStatus);
+        }else{
+            $user=User::find($request->user_id);
+
+            if($user->api_token!=$authorization){
+                return response()->json(['success'=>false,'response'=>'Unauthorised'], $this-> authStatus);
+            }
+
+            $users = DB::table('users')->where('id', $request->user_id)->get();
+            return response()->json(['success'=>false,'response'=>$users], $this-> successStatus);
+        }
+    }
+
     public function reward_point_withdraw_request_list(Request $request)
     {
         $authorization = $request->header('Auth');
