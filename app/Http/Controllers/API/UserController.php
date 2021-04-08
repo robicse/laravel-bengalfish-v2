@@ -970,7 +970,41 @@ class UserController extends Controller
                 return response()->json(['success'=>false,'response'=>'Unauthorised'], $this-> authStatus);
             }
 
-            $users = DB::table('users')->where('id', $request->user_id)->get();
+            //$users = DB::table('users')->where('id', $request->user_id)->get();
+            $users_data = DB::table('users')
+                ->where('id', $request->user_id)
+                ->select(
+                    'membership_category',
+                    'current_reward_point',
+                    'current_reward_amount',
+                    'current_withdraw_point',
+                    'current_withdraw_amount'
+                )
+                ->first();
+
+            if($users_data){
+                $users = [];
+
+
+                $sum_current_month_request_point = DB::table('customer_withdraw_requests')
+                    ->where('customer_id', $request->user_id)
+                    ->where('month', date('m'))
+                    ->sum('request_point');
+
+
+
+                $nested_data['sum_current_month_request_point']=$sum_current_month_request_point;
+                $nested_data['membership_category']=$users_data->membership_category;
+                $nested_data['current_reward_point']=$users_data->current_reward_point;
+                $nested_data['current_reward_amount']=$users_data->current_reward_amount;
+                $nested_data['current_withdraw_point']=$users_data->current_withdraw_point;
+                $nested_data['current_withdraw_amount']=$users_data->current_withdraw_amount;
+
+                array_push($users,$nested_data);
+
+            }
+            return response()->json(['success'=>false,'response'=>$users], $this-> successStatus);
+
             return response()->json(['success'=>false,'response'=>$users], $this-> successStatus);
         }
     }

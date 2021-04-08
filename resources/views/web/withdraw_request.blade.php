@@ -160,7 +160,7 @@
 {{--                </div>--}}
 
                  <div class="form-group row">
-                   <label for="firstName" class="col-sm-2 col-form-label">Sum Current month Withdraw Request</label>
+                   <label for="firstName" class="col-sm-2 col-form-label">Sum Current month Withdraw Request Point</label>
                    <div class="col-sm-10">
                      <input type="text" name="current_month_withdraw_sum" class="form-control" id="current_month_withdraw_sum" value="{{$result['sumCurrentMonthWithdraw']}}" readonly>
                    </div>
@@ -168,7 +168,7 @@
                  <div class="form-group row">
                      <label for="firstName" class="col-sm-2 col-form-label">Available Point</label>
                      <div class="col-sm-10">
-                         <input type="text" required name="available_point" class="form-control" id="available_point" value="{{$result['userInfo']->current_reward_point}}">
+                         <input type="text" required name="available_point" class="form-control" id="available_point" value="{{$result['userInfo']->current_reward_point}}" readonly>
                      </div>
                  </div>
                  <div class="form-group row">
@@ -264,7 +264,7 @@
         console.log(typeof request_point);
 
         if(request_point < 100){
-            alert('You do not requested less than 20 reward point!');
+            alert('You do not requested less than 100 reward point!');
             jQuery("#request_point").val('');
         }
     });
