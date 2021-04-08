@@ -70,6 +70,11 @@ class UserController extends Controller
         if(Auth::attempt($credentials))
         {
             $user = Auth::user();
+            $user['sum_current_month_request_point'] = DB::table('customer_withdraw_requests')
+                ->where('customer_id', $user->id)
+                ->where('month', date('m'))
+                ->sum('request_point');
+
             //$success['token'] =  $user->createToken('knoprotec')-> accessToken;
             $success['user'] =  $user;
             return response()->json(['success'=>true,'response' => $success], $this-> successStatus);
