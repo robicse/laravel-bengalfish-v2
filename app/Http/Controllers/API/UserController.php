@@ -150,7 +150,7 @@ class UserController extends Controller
             $user=User::find($request->user_id);
 
             unset($user['country_code']);
-            unset($user['avatar']);
+            //unset($user['avatar']);
             unset($user['phone_verified']);
             unset($user['auth_id_tiwilo']);
             unset($user['created_at']);
@@ -191,6 +191,55 @@ class UserController extends Controller
         }else{
             return response()->json(['success'=>false,'response' => 'current password do not matched'], $this-> failStatus);
         }
+    }
+
+    public function forgot_password_by_phone(Request $request)
+    {
+        $password = substr(md5(uniqid(mt_rand(), true)) , 0, 8);
+        $phone    		  =   $request->phone;
+
+        //check email exist
+        $existUser = DB::table('users')->where('role_id', 2)->where('phone', $phone)->get();
+        if(count($existUser)>0){
+
+            DB::table('users')->where('phone', $phone)->update([
+                'password'	=>	Hash::make($password)
+            ]);
+
+            $text = "Dear ".$existUser[0]->first_name.",\r\nYour New Password Of Bengalfish: ".$password;
+            UserInfo::smsAPI("88".$phone,$text);
+
+            return response()->json(['success'=>true,'response' => 'Password has been sent to your phone number'], $this-> successStatus);
+        }else{
+            return response()->json(['success'=>false,'response' => 'Phone number does not exist'], $this-> failStatus);
+        }
+    }
+
+    public function forgot_password_by_email(Request $request)
+    {
+        $password = substr(md5(uniqid(mt_rand(), true)) , 0, 8);
+        $email    		  =   $request->email;
+
+        //check email exist
+        $existUser = DB::table('users')->where('role_id', 2)->where('email', $email)->get();
+        if(count($existUser)>0){
+
+            DB::table('users')->where('email', $email)->update([
+                'password'	=>	Hash::make($password)
+            ]);
+
+            $phone = $existUser[0]->phone;
+            if(!empty($phone)){
+                $text = "Dear ".$existUser[0]->first_name.",\r\nYour New Password Of Bengalfish: ".$password;
+                UserInfo::smsAPI("88".$existUser[0]->phone,$text);
+            }
+
+            return response()->json(['success'=>true,'response' => 'Password has been sent to your phone number'], $this-> successStatus);
+        }else{
+            return response()->json(['success'=>false,'response' => 'Phone number does not exist'], $this-> failStatus);
+        }
+
+
     }
 
     public function shipping_address_post(Request $request)

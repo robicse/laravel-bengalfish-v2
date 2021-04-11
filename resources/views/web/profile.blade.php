@@ -208,7 +208,7 @@
 
                    </div>
                    <div class="form-group row">
-                       <label for="inputPassword" class="col-sm-2 col-form-label">Gender</label>
+                       <label for="inputPassword" class="col-sm-2 col-form-label">Date</label>
                        <div class="col-7 col-sm-5">
                            <div class="input-group date">
                                <input readonly name="customers_dob" type="text" data-provide="datepicker" class="form-control" placeholder="@lang('website.Date of Birth')" value="{{ auth()->guard('customer')->user()->dob }}" aria-label="date-picker" aria-describedby="date-picker-addon1">

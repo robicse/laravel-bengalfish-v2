@@ -32,6 +32,8 @@ Route::group(['middleware' => 'auth:api'], function () {
 Route::post('user/details', 'API\UserController@details');
 Route::post('user/profile/update', 'API\UserController@profile_update');
 Route::post('user/password', 'API\UserController@password_reset');
+Route::post('user/forgot-password-by-phone', 'API\UserController@forgot_password_by_phone');
+Route::post('user/forgot-password-by-email', 'API\UserController@forgot_password_by_email');
 
 Route::post('user/shipping-address/post', 'API\UserController@shipping_address_post');
 Route::post('user/shipping-address/edit', 'API\UserController@shipping_address_edit');
