@@ -335,7 +335,9 @@ class Order extends Model
         if($payment_status=='success'){
 
             $orders_id = DB::table('orders')->insertGetId(
-                [	 'customers_id' => $customers_id,
+                [
+                    'order_from_platform' => 'Web',
+                    'customers_id' => $customers_id,
                      'customers_name'  => $delivery_firstname.' '.$delivery_lastname,
                      'customers_street_address' => $delivery_street_address,
                      'customers_suburb'  =>  $delivery_suburb,

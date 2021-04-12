@@ -191,7 +191,7 @@
                    <label for="gender"  class="col-sm-2 col-form-label">@lang('website.Gender')</label>
                      <div class="col-5 col-sm-5">
                          <div class="select-control">
-                             <select name="gender" required class="form-control" id="exampleSelectGender1" aria-describedby="genderHelp">
+                             <select name="gender" required class="form-control" id="exampleSelectGender1" aria-describedby="genderHelp" readonly>
                                <option value="0" @if(auth()->guard('customer')->user()->gender == 0) selected @endif>@lang('website.Male')</option>
                                <option value="1"  @if(auth()->guard('customer')->user()->gender == 1) selected @endif>@lang('website.Female')</option>
                               </select>
@@ -202,7 +202,7 @@
                            <div class="input-group-prepend">
                                <span class="input-group-text"><i class="fas fa-phone"></i></span>
                              </div>
-                             <input name="customers_telephone" type="tel"  placeholder="@lang('website.Phone Number')" value="{{ auth()->guard('customer')->user()->phone }}" class="form-control">
+                             <input name="customers_telephone" type="tel"  placeholder="@lang('website.Phone Number')" value="{{ auth()->guard('customer')->user()->phone }}" class="form-control" readonly>
                            </div>
                      </div>
 

@@ -236,7 +236,7 @@ class UserController extends Controller
 
             return response()->json(['success'=>true,'response' => 'Password has been sent to your phone number'], $this-> successStatus);
         }else{
-            return response()->json(['success'=>false,'response' => 'Phone number does not exist'], $this-> failStatus);
+            return response()->json(['success'=>false,'response' => 'Email does not exist'], $this-> failStatus);
         }
 
 
@@ -672,6 +672,7 @@ class UserController extends Controller
 
         $orders_id = DB::table('orders')->insertGetId(
             [
+                'order_from_platform' => 'Apps',
                 'customers_id' => $request->user_id,
                 'customers_name' => $request->delivery_firstname . ' ' . $request->delivery_lastname,
                 'customers_street_address' => $request->delivery_street_address,
