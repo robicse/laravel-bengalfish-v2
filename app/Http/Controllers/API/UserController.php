@@ -117,6 +117,7 @@ class UserController extends Controller
         //$userReg->last_name = $request->lastName;
         $userReg->last_name = '';
         $userReg->email = $request->email;
+        $userReg->phone = $request->phone;
         $userReg->gender = $request->gender;
         $userReg->status = 1;
         $userReg->api_token = Str::random(60);
