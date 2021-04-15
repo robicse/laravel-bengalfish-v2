@@ -19,7 +19,7 @@ class OrdersController extends Controller
     }
 
     //add listingOrders
-    public function display()
+    public function display(Request $request)
     {
 
         $title = array('pageTitle' => Lang::get("labels.ListingOrders"));
@@ -29,8 +29,22 @@ class OrdersController extends Controller
         $message = array();
         $errorMessage = array();
 
-        $orders = DB::table('orders')->latest('date_purchased')
-            ->where('customers_id', '!=', '')->get();
+
+//        $orders = DB::table('orders')->latest('date_purchased')
+//            ->where('customers_id', '!=', '')->get();
+
+        if(empty($request->direction)){
+            $orders = DB::table('orders')
+                ->latest('orders_id')
+                ->where('customers_id', '!=', '')
+                ->get();
+        }else{
+            $orders = DB::table('orders')
+                //->latest('date_purchased')
+                    ->orderBy('orders_id',$request->direction)
+                ->where('customers_id', '!=', '')
+                ->get();
+        }
 
 
         $index = 0;

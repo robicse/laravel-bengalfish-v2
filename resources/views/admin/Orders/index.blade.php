@@ -43,11 +43,13 @@
                                     <table id="ordr" class="table table-bordered table-striped">
                                         <thead>
                                         <tr>
-                                            <th>{{ trans('labels.ID') }}</th>
+{{--                                            <th>{{ trans('labels.ID') }}</th>--}}
+                                            <th>@sortablelink('orders_id', trans('labels.ID') )</th>
                                             <th>{{ trans('labels.CustomerName') }}</th>
                                             <th>{{ trans('labels.OrderTotal') }}</th>
                                             <th>Reward Point</th>
                                             <th>Reward Point Amount</th>
+                                            <th>Order From</th>
                                             <th>{{ trans('labels.DatePurchased') }}</th>
                                             <th>{{ trans('labels.Status') }} </th>
                                             <th>{{ trans('labels.Action') }}</th>
@@ -63,9 +65,19 @@
                                                     <td>{{ $orderData->orders_id }}</td>
                                                     <td>{{ $orderData->customers_name }}</td>
                                                     <td>{{ $listingOrders['currency'][19]->value }}{{ $orderData->order_price }}</td>
-                                                    <td>{{ \Illuminate\Support\Facades\DB::table('customer_reward_points')->where('order_id',$orderData->orders_id)->pluck('get_reward_point')->first() }}</td>
-                                                    <td>{{ $listingOrders['currency'][19]->value }}{{ \Illuminate\Support\Facades\DB::table('customer_reward_points')->where('order_id',$orderData->orders_id)->pluck('get_reward_point_amount')->first() }}</td>
-                                                    <td>{{ date('d/m/Y', strtotime($orderData->date_purchased)) }}</td>
+                                                    @php
+                                                        $get_reward_point = \Illuminate\Support\Facades\DB::table('customer_reward_points')->where('order_id',$orderData->orders_id)->pluck('get_reward_point')->first();
+                                                        $get_reward_point_amount = \Illuminate\Support\Facades\DB::table('customer_reward_points')->where('order_id',$orderData->orders_id)->pluck('get_reward_point_amount')->first();
+                                                    @endphp
+                                                    <td>
+                                                        {{ $get_reward_point ? $get_reward_point : 0 }}
+                                                    </td>
+                                                    <td>
+                                                        {{ $listingOrders['currency'][19]->value }}
+                                                        {{ $get_reward_point_amount ? $get_reward_point_amount : 0 }}
+                                                    </td>
+                                                    <td>{{ $orderData->order_from_platform }}</td>
+                                                    <td>{{ $orderData->date_purchased }}</td>
                                                     <td>
                                                         @if($orderData->orders_status_id==1)
                                                             <span class="label label-warning">
