@@ -91,12 +91,14 @@
           <table class="table table-striped">
             <thead>
             <tr>
-              <th>{{ trans('labels.Qty') }}</th>
+
               <th>{{ trans('labels.Image') }}</th>
               <th>{{ trans('labels.ProductName') }}</th>
               {{--<th>{{ trans('labels.ProductModal') }}</th>
               <th>{{ trans('labels.Options') }}</th>--}}
+              <th>{{ trans('labels.Qty') }}</th>
               <th>{{ trans('labels.Price') }}</th>
+              <th>Sub Total</th>
             </tr>
             </thead>
             <tbody>
@@ -104,7 +106,6 @@
             @foreach($data['orders_data'][0]->data as $products)
 
             <tr>
-                <td>{{  $products->products_quantity }}</td>
                 <td >
                    <img src="{{ asset('').$products->image }}" width="60px"> <br>
                 </td>
@@ -121,8 +122,9 @@
                     <b>{{ trans('labels.Price') }}:</b> {{ $data['currency'][19]->value }}{{ $attributes->options_values_price }}<br>
 
                 @endforeach</td>--}}
-
-                <td>{{ $data['currency'][19]->value }}{{ $products->final_price }}</td>
+                <td>{{  $products->products_quantity }}</td>
+                <td>{{ $data['currency'][19]->value }}{{ $products->products_price }}</td>
+                <td>{{ $data['currency'][19]->value }}{{ $products->products_quantity*$products->products_price }}</td>
              </tr>
             @endforeach
 

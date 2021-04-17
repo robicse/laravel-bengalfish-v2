@@ -81,21 +81,29 @@ class Categories extends Model
             ->leftJoin('images','images.id', '=', 'categories.categories_image')
             ->leftJoin('image_categories as categoryTable','categoryTable.image_id', '=', 'categories.categories_image')
             ->leftJoin('image_categories as iconTable','iconTable.image_id', '=', 'categories.categories_icon')
-          //  ->select('categories.categories_id as id', 'categories.categories_image as image',  'categories.categories_icon as icon',  'categories.created_at as date_added', 'categories.updated_at as last_modified', 'categories_description.categories_name as name', 'categories_description.language_id','categoryTable.path as imgpath','iconTable.path as iconpath')
-            ->select('categories.categories_id as id', 'categories.categories_image as image',
-            'categories.categories_icon as icon',  'categories.created_at as date_added',
-            'categories.updated_at as last_modified', 'categories_description.categories_name as name',
-            'categories_description.language_id','categoryTable.path as imgpath','iconTable.path as iconpath','categories.categories_status  as categories_status')
-          //  ->where('parent_id', '0')
+//            ->select('categories.categories_id as id', 'categories.categories_image as image',  'categories.categories_icon as icon',  'categories.created_at as date_added', 'categories.updated_at as last_modified', 'categories_description.categories_name as name', 'categories_description.language_id','categoryTable.path as imgpath','iconTable.path as iconpath')
+            ->select(
+                'categories.categories_id as id',
+                'categories.categories_image as image',
+                'categories.categories_icon as icon',
+                'categories.categories_status  as categories_status',
+                'categories.created_at as date_added',
+                'categories.updated_at as last_modified',
+                'categories_description.categories_name as name',
+                'categories_description.language_id',
+                'categoryTable.path as imgpath',
+                'iconTable.path as iconpath'
+            )
+            ->where('parent_id', '0')
             ->where('categories_description.language_id', '1')
-            ->where(function($query) {
-                $query->where('categoryTable.image_type', '=',  'THUMBNAIL')
-                    ->where('categoryTable.image_type','!=',   'THUMBNAIL')
-                    ->orWhere('categoryTable.image_type','=',   'ACTUAL')
-                    ->where('iconTable.image_type', '=',  'THUMBNAIL')
-                    ->where('iconTable.image_type','!=',   'THUMBNAIL')
-                    ->orWhere('iconTable.image_type','=',   'ACTUAL');
-            })
+//            ->where(function($query) {
+//                $query->where('categoryTable.image_type', '=',  'THUMBNAIL')
+//                    ->where('categoryTable.image_type','!=',   'THUMBNAIL')
+//                    ->orWhere('categoryTable.image_type','=',   'ACTUAL')
+//                    ->where('iconTable.image_type', '=',  'THUMBNAIL')
+//                    ->where('iconTable.image_type','!=',   'THUMBNAIL')
+//                    ->orWhere('iconTable.image_type','=',   'ACTUAL');
+//            })
             ->groupby('categories.categories_id')
             ->paginate($commonsetting['pagination']);
 

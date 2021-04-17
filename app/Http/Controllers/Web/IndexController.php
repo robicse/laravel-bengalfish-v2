@@ -107,11 +107,11 @@ class IndexController extends Controller
             }
         }
 
-        /*echo '<pre>';
-        print_r($result['categoryLists']);
-        echo '</pre>';
-
-        die();*/
+//        echo '<pre>';
+//        print_r($result['categoryLists']);
+//        echo '</pre>';
+//
+//        die();
 
 
 

@@ -778,7 +778,8 @@ class UserController extends Controller
 
             if($request->total_order_price >= $get_customer_reward_point_category_infos->on_amount){
 
-                $get_point = $get_customer_reward_point_category_infos->get_point;
+                $filter_point = $request->total_order_price/$get_customer_reward_point_category_infos->on_amount;
+                $get_point = $get_customer_reward_point_category_infos->get_point * (int)$filter_point;
 
                 DB::table('customer_reward_points')->insertGetId(
                     [	'customer_id' => $request->user_id,

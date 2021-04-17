@@ -81,7 +81,8 @@ echo '</pre>';*/
     //   echo '</pre>';
 
       if($product_section_order['order'] == 2 && $product_section_order['status'] == 1){
-        $r =   'web.product-sections.' . $product_section_order['file_name'];
+          // resource pages 'web.product-sections.categories'
+          $r =   'web.product-sections.' . $product_section_order['file_name'];
         ?>
         @include($r)
         <?php

@@ -79,7 +79,11 @@
                                                         <td>{{ $category->id }}</td>
                                                         <td>  {{ $category->name }}</td>
                                                         <td><img src="{{asset($category->imgpath)}}" alt="{{ $category->name }}" width=" 100px"></td>
-                                                        <td><img src="{{asset($category->iconpath)}}" alt="{{ $category->name }}" width=" 100px"></td>
+                                                        <td>
+                                                            @if($category->iconpath)
+                                                                <img src="{{asset($category->iconpath)}}" alt="{{ $category->name }}" width=" 100px">
+                                                            @endif
+                                                        </td>
                                                         <!-- <td>{{ $category->mainCategoryName }}</td> -->
                                                         <td>
                                                             <strong>{{ trans('labels.AddedDate') }}: </strong> {{ $category->date_added }}<br>
