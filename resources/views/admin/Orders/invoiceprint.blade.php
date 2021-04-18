@@ -35,6 +35,8 @@
       <div class="row">
           <div class="col-xs-12" style="text-align: center">
               <img src="../../dist/img/logo.png" alt="Logo">
+              <h5>www.bengalfish.com.bd</h5>
+              <h5>Contact: 01311-154001</h5>
           </div>
         <div class="col-xs-12">
           <h2 class="page-header" style="padding-bottom: 25px">
@@ -48,7 +50,8 @@
       <div class="row invoice-info">
         <div class="col-sm-4 invoice-col">
           {{ trans('labels.CustomerInfo') }}:
-          <address>
+          <hr>
+            <address>
             <strong>{{ $data['orders_data'][0]->customers_name }}</strong><br>
             {{ $data['orders_data'][0]->customers_street_address }} <br>
             {{ $data['orders_data'][0]->customers_city }}, {{ $data['orders_data'][0]->customers_state }} {{ $data['orders_data'][0]->customers_postcode }}, {{ $data['orders_data'][0]->customers_country }}<br>
@@ -59,6 +62,7 @@
         <!-- /.col -->
         <div class="col-sm-4 invoice-col">
           {{ trans('labels.ShippingInfo') }}
+          <hr>
           <address>
             <strong>{{ $data['orders_data'][0]->delivery_name }}</strong><br>
             {{ trans('labels.Phone') }}: {{ $data['orders_data'][0]->delivery_phone }}<br>
@@ -71,6 +75,7 @@
         <!-- /.col -->
         <div class="col-sm-4 invoice-col">
          {{ trans('labels.BillingInfo') }}
+          <hr>
           <address>
             <strong>{{ $data['orders_data'][0]->billing_name }}</strong><br>
             {{ trans('labels.Phone') }}: {{ $data['orders_data'][0]->billing_phone }}<br>
@@ -82,28 +87,34 @@
       </div>
       <!-- /.row -->
 
+
+      <div style="height: 10px !important;">&nbsp;</div>
+
       <!-- Table row -->
       <div class="row">
         <div class="col-xs-12 table-responsive">
           <table class="table table-striped">
             <thead>
             <tr>
-              <th>{{ trans('labels.Qty') }}</th>
+                <th>SL NO</th>
               <th>{{ trans('labels.ProductName') }}</th>
+                <th>{{ trans('labels.Qty') }}</th>
               {{--<th>{{ trans('labels.ProductModal') }}</th>
               <th>{{ trans('labels.Options') }}</th>--}}
               <th>{{ trans('labels.Price') }}</th>
+                <th style="float: right;margin-right: 40px;">Sub Total</th>
             </tr>
             </thead>
             <tbody>
 
-            @foreach($data['orders_data'][0]->data as $products)
+            @foreach($data['orders_data'][0]->data as $key => $products)
 
             <tr>
-                <td>{{  $products->products_quantity }}</td>
+                <td>{{$key + 1}}</td>
                 <td  width="30%">
                     {{  $products->products_name }}<br>
                 </td>
+                <td>{{  $products->products_quantity }}</td>
                 {{--<td>
                     {{  $products->products_model }}
                 </td>
@@ -115,7 +126,8 @@
 
                 @endforeach</td>--}}
 
-                <td>{{ $data['currency'][19]->value }}{{ $products->final_price }}</td>
+                <td>{{ $data['currency'][19]->value }}{{ $products->products_price }}</td>
+                <td style="float: right;margin-right: 40px;">{{ $data['currency'][19]->value }}{{ $products->products_quantity*$products->products_price }}</td>
              </tr>
             @endforeach
 
@@ -160,7 +172,14 @@
                     @endforeach
 				</table>
           @endif
-
+            <p class="lead" style="margin-bottom:10px">Order Note:</p>
+            @if(count($data['orders_status_history']) > 0)
+                @foreach( $data['orders_status_history'] as $orders_status_history)
+                <p class="lead" style="margin-bottom:10px">
+                    {{$orders_status_history->comments}}
+                </p>
+                @endforeach
+            @endif
         </div>
         <!-- /.col -->
         <div class="col-xs-5">

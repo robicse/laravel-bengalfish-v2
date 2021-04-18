@@ -120,15 +120,14 @@
                       {{Session::get('symbol_left')}}{{$orders->order_price*$currency_value}}{{Session::get('symbol_right')}}
                     </td>
                       <td class="col-12 col-md-2">
-                          {{ \Illuminate\Support\Facades\DB::table('customer_reward_points')->where('order_id',$orders->orders_id)->pluck('get_reward_point')->first() }}
-                      </td>
-                      <td class="col-12 col-md-2">
                           @php
+                              $reward_point = \Illuminate\Support\Facades\DB::table('customer_reward_points')->where('order_id',$orders->orders_id)->pluck('get_reward_point')->first();
                               $get_reward_point_amount = \Illuminate\Support\Facades\DB::table('customer_reward_points')->where('order_id',$orders->orders_id)->pluck('get_reward_point_amount')->first()
                           @endphp
-                          @if($get_reward_point_amount != NULL)
-                              {{Session::get('symbol_left')}} {{$get_reward_point_amount}}
-                          @endif
+                          {{ $reward_point ? $reward_point : 0 }}
+                      </td>
+                      <td class="col-12 col-md-2">
+                          {{Session::get('symbol_left')}} {{$get_reward_point_amount ? $get_reward_point_amount : 0}}
                       </td>
                     <td class="col-12 col-md-2">
                         @if($orders->orders_status_id == '2')

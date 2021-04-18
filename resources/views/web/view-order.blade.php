@@ -281,33 +281,63 @@
 
           </tbody>
         </table>
-        <div class="row">
-            <div class="col-xs-12 col-sm-12">
-                @if(count($result['orders'][0]->statusess)>0)
-                    <div style="border-radius:5px;"class="card">
-                        <div style="background: none;" class="card-header">
-                          @lang('website.Comments')
-                        </div>
-                        <div class="card-body">
-                        @foreach($result['orders'][0]->statusess as $key=>$statusess)
-{{--                            @php--}}
-{{--                            dd($statusess);--}}
-{{--                            @endphp--}}
-                            @if(!empty($statusess->comments))
-                                @if(++$key==1)
-                                  <h6>@lang('website.Order Comments'): {{ date('d/m/Y', strtotime($statusess->date_added))}}</h6>
 
-                                @else
-                                  <h6>@lang('website.Admin Comments'): {{ date('d/m/Y', strtotime($statusess->date_added))}}</h6>
-                                @endif
-                                <p class="card-text">{{$statusess->comments}}</p>
-                            @endif
-                        @endforeach
-                        </div>
-                    </div>
-                @endif
-            </div>
-        </div>
+
+      <div class="row">
+
+          <div class="col-12 col-md-5">&nbsp;</div>
+          <div class="col-12 col-md-7">
+              <div class="heading">
+                  <h2><small></small></h2>
+              </div>
+
+              <table class="table order-id">
+                  <tbody>
+                  <tr class="d-flex">
+                      <td class="col-6">Subtotal</td>
+                      <td class="col-6">{{Session::get('symbol_left')}}{{number_format((float)$price+0, 2, '.', '')}}</td>
+                  </tr>
+                  <tr class="d-flex">
+                      <td class="col-6">Shipping Cost</td>
+                      <td class="underline col-6">{{Session::get('symbol_left')}}{{$result['orders'][0]->shipping_cost}}</td>
+                  </tr>
+                  <tr class="d-flex">
+                      <td class="col-6">Total</td>
+                      <td class="col-6">{{Session::get('symbol_left')}}{{$result['orders'][0]->order_price}}</td>
+                  </tr>
+                  </tbody>
+              </table>
+
+          </div>
+      </div>
+
+      <div class="row">
+          <div class="col-xs-12 col-sm-12">
+              @if(count($result['orders'][0]->statusess)>0)
+                  <div style="border-radius:5px;"class="card">
+                      <div style="background: none;" class="card-header">
+                          @lang('website.Comments')
+                      </div>
+                      <div class="card-body">
+                          @foreach($result['orders'][0]->statusess as $key=>$statusess)
+                              {{--                            @php--}}
+                              {{--                            dd($statusess);--}}
+                              {{--                            @endphp--}}
+                              @if(!empty($statusess->comments))
+                                  @if(++$key==1)
+                                      <h6>@lang('website.Order Comments'): {{ date('d/m/Y', strtotime($statusess->date_added))}}</h6>
+
+                                  @else
+                                      <h6>@lang('website.Admin Comments'): {{ date('d/m/Y', strtotime($statusess->date_added))}}</h6>
+                                  @endif
+                                  <p class="card-text">{{$statusess->comments}}</p>
+                              @endif
+                          @endforeach
+                      </div>
+                  </div>
+              @endif
+          </div>
+      </div>
 
 
       <!-- ............the end..... -->
