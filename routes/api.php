@@ -60,6 +60,10 @@ Route::post('user/add-rating-review', 'API\UserController@addRatingReview');
 //Route::post('user/rating-review-details', 'API\UserController@ratingReviewDetails');
 Route::post('user/product-rating-review-details', 'API\UserController@productRatingReviewDetails');
 
+Route::post('user/wishlist/post', 'API\UserController@wishlist_post');
+Route::post('user/wishlist/delete', 'API\UserController@wishlist_delete');
+Route::post('user/wishlist/get', 'API\UserController@wishlist_get');
+
 Route::get('category', 'API\CategoriesController@category');
 Route::post('subcategory', 'API\CategoriesController@subcategory');
 

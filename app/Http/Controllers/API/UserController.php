@@ -12,6 +12,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -453,6 +454,174 @@ class UserController extends Controller
 
         if($shipping_address_billing){
             return response()->json(['success'=>true,'response' => $shipping_address_billing], $this-> successStatus);
+        }else{
+            return response()->json(['success'=>false,'response' => 'No Get Shipping Address'], $this-> failStatus);
+        }
+    }
+
+    // wishlist
+
+    public function wishlist_post(Request $request)
+    {
+        $authorization = $request->header('Auth');
+        if(empty($authorization)){
+            return response()->json(['success'=>false,'response'=>'Unauthorised'], $this-> authStatus);
+        }else{
+            $user=User::find($request->user_id);
+            if($user->api_token!=$authorization){
+                return response()->json(['success'=>false,'response'=>'Unauthorised'], $this-> authStatus);
+            }
+        }
+
+
+
+        $liked_products_id  = $request->products_id;
+        $liked_customers_id = $request->user_id;
+        $date_liked			= date('Y-m-d H:i:s');
+
+        //to avoide duplicate record
+        $record = DB::table('liked_products')->where([
+            'liked_products_id'  => $liked_products_id,
+            'liked_customers_id' => $liked_customers_id
+        ])->get();
+
+
+
+        if(count($record)>0){
+
+            DB::table('liked_products')->where([
+                'liked_products_id'  => $liked_products_id,
+                'liked_customers_id' => $liked_customers_id
+            ])->delete();
+
+
+
+            DB::table('products')->where('products_id','=',$liked_products_id)->decrement('products_liked');
+            $products = DB::table('products')->where('products_id','=',$liked_products_id)->get();
+
+            $responseData = array('success'=>'1', 'message'=>Lang::get("website.Product is disliked"), 'total_likes' => $products[0]->products_liked,'id' => 'like_count_'.$liked_products_id);
+            return response()->json(['success'=>true,'response' => $responseData], $this-> successStatus);
+        }else{
+
+            DB::table('liked_products')->insert([
+                'liked_products_id'  => $liked_products_id,
+                'liked_customers_id' => $liked_customers_id,
+                'date_liked' 		 => $date_liked
+            ]);
+            DB::table('products')->where('products_id','=',$liked_products_id)->increment('products_liked');
+            $products = DB::table('products')->where('products_id','=',$liked_products_id)->get();
+
+            $responseData = array('success'=>'2', 'message'=>Lang::get("website.Product is liked"), 'total_likes' => $products[0]->products_liked,'id' => 'like_count_'.$liked_products_id);
+            return response()->json(['success'=>true,'response' => $responseData], $this-> successStatus);
+
+        }
+
+    }
+
+    public function wishlist_delete(Request $request)
+    {
+        $authorization = $request->header('Auth');
+        if(empty($authorization)){
+            return response()->json(['success'=>false,'response'=>'Unauthorised'], $this-> authStatus);
+        }else{
+            $user=User::find($request->user_id);
+            if($user->api_token!=$authorization){
+                return response()->json(['success'=>false,'response'=>'Unauthorised'], $this-> authStatus);
+            }
+        }
+
+
+
+        $liked_products_id  = $request->products_id;
+        $liked_customers_id = $request->user_id;
+
+
+        $delete_status = DB::table('liked_products')->where([
+            'liked_products_id'  => $liked_products_id,
+            'liked_customers_id' => $liked_customers_id
+        ])->delete();
+
+
+        if($delete_status){
+            DB::table('products')->where('products_id','=',$liked_products_id)->decrement('products_liked');
+            return response()->json(['success'=>true,'response' => 'Successfully Unlike Wishlist'], $this-> successStatus);
+        }else{
+            return response()->json(['success'=>false,'response' => 'Something went wrong!'], $this-> failStatus);
+        }
+
+    }
+
+    public function wishlist_get(Request $request)
+    {
+        $authorization = $request->header('Auth');
+        if(empty($authorization)){
+            return response()->json(['success'=>false,'response'=>'Unauthorised'], $this-> authStatus);
+        }else{
+            $user=User::find($request->user_id);
+            if($user->api_token!=$authorization){
+                return response()->json(['success'=>false,'response'=>'Unauthorised'], $this-> authStatus);
+            }
+        }
+
+        $wishlist_products = DB::table('liked_products')->where('liked_customers_id','=', $request->user_id)->get();
+        $data = [];
+        if(count($wishlist_products) > 0){
+            foreach ($wishlist_products as $wishlist_product){
+                $nested_data['like_id'] = $wishlist_product->like_id;
+                $nested_data['liked_products_id'] = $wishlist_product->liked_products_id;
+                $nested_data['liked_customers_id'] = $wishlist_product->liked_customers_id;
+                $nested_data['date_liked'] = $wishlist_product->date_liked;
+
+
+                $product = DB::table('products_to_categories')
+                        ->join('products', 'products_to_categories.products_id', '=', 'products.products_id')
+                        ->join('products_description', 'products.products_id', '=', 'products_description.products_id')
+                        ->where('products.products_id',$wishlist_product->liked_products_id)
+                        ->where('language_id',1)
+                        ->first();
+
+                if(!empty($product)){
+                    $nested_data['products_name'] = $product->products_name;
+                    $nested_data['products_slug'] = $product->products_slug;
+                    //$product_info['products_description'] = $product->products_description;
+                    $nested_data['products_description'] = stripslashes($product->products_description);
+                    $nested_data['products_price'] = $product->products_price;
+                    $nested_data['products_weight'] = $product->products_weight;
+                    $nested_data['products_weight_unit'] = $product->products_weight_unit;
+                    $nested_data['products_status'] = $product->products_status;
+                    $nested_data['products_ordered'] = $product->products_ordered;
+                    $nested_data['products_liked'] = $product->products_liked;
+                    $nested_data['is_feature'] = $product->is_feature;
+                    $nested_data['products_min_order'] = $product->products_min_order;
+                }
+
+
+
+                $images = DB::table('products')
+                    ->join('image_categories', 'products.products_image', '=', 'image_categories.image_id')
+                    ->where('products.products_id',$wishlist_product->liked_products_id)
+                    ->select('image_categories.path as product_image')
+                    ->get();
+
+                $image = [];
+                if(count($images) > 0){
+                    foreach($images as $data2){
+                        $nested_data2['product_image'] = $data2->product_image;
+
+                        $image[] = $nested_data2;
+                    }
+                }
+                $nested_data['image'] = $image;
+
+
+                array_push($data, $nested_data);
+            }
+        }
+
+
+
+        if($data){
+            return response()->json(['success'=>true,'response' => $data], $this-> successStatus);
         }else{
             return response()->json(['success'=>false,'response' => 'No Get Shipping Address'], $this-> failStatus);
         }
