@@ -745,11 +745,59 @@ class UserController extends Controller
             ->latest('orders_id')
             ->get();
 
+
+        $data = [];
+        if(count($orders) > 0){
+
+            foreach($orders as $orders_data){
+                $nested_data['orders_id']=$orders_data->orders_id;
+                $nested_data['customers_id']=$orders_data->customers_id;
+                $nested_data['customers_name']=$orders_data->customers_name;
+                $nested_data['customers_street_address']=$orders_data->customers_street_address;
+                $nested_data['customers_city']=$orders_data->customers_city;
+                $nested_data['customers_postcode']=$orders_data->customers_postcode;
+                $nested_data['email']=$orders_data->email;
+                $nested_data['delivery_phone']=$orders_data->delivery_phone;
+                $nested_data['delivery_name']=$orders_data->delivery_name;
+                $nested_data['delivery_street_address']=$orders_data->delivery_street_address;
+                $nested_data['delivery_city']=$orders_data->delivery_city;
+                $nested_data['delivery_postcode']=$orders_data->delivery_postcode;
+                $nested_data['billing_street_address']=$orders_data->billing_street_address;
+                $nested_data['billing_city']=$orders_data->billing_city;
+                $nested_data['billing_postcode']=$orders_data->billing_postcode;
+                $nested_data['billing_phone']=$orders_data->billing_phone;
+                $nested_data['payment_method']=$orders_data->payment_method;
+                $nested_data['order_price']=$orders_data->order_price;
+                $nested_data['shipping_cost']=$orders_data->shipping_cost;
+                $nested_data['shipping_method']=$orders_data->shipping_method;
+                $nested_data['coupon_amount']=$orders_data->coupon_amount;
+                $nested_data['free_shipping']=$orders_data->free_shipping;
+
+
+
+
+                $orders_status_history = DB::table('orders_status_history')
+                    ->LeftJoin('orders_status', 'orders_status.orders_status_id', '=', 'orders_status_history.orders_status_id')
+                    ->LeftJoin('orders_status_description', 'orders_status_description.orders_status_id', '=', 'orders_status.orders_status_id')
+                    ->select('orders_status_description.orders_status_name', 'orders_status.orders_status_id')
+                    ->where('orders_id', '=', $orders_data->orders_id)
+                    ->where('orders_status_description.language_id',1)
+                    ->orderby('orders_status_history.orders_status_history_id', 'DESC')
+                    ->limit(1)->get();
+
+                $nested_data['orders_status_id'] = $orders_status_history[0]->orders_status_id;
+                $nested_data['orders_status'] = $orders_status_history[0]->orders_status_name;
+
+
+                array_push($data, $nested_data);
+            }
+        }
+
         //unset unnecessary field
-        unset($orders['customers_company']);
+        //unset($orders['customers_company']);
 
         if($orders){
-            return response()->json(['success'=>true,'response' => $orders], $this-> successStatus);
+            return response()->json(['success'=>true,'response' => $data], $this-> successStatus);
         }else{
             return response()->json(['success'=>false,'response' => 'No Order Found.'], $this-> failStatus);
         }
@@ -916,70 +964,70 @@ class UserController extends Controller
             /*Reward Point Start*/
             // get current point info of customer
 
-            $one_point_to_tk = DB::table('withdraw_categories')
-                ->latest('id')
-                ->pluck('one_point_to_tk')
-                ->first();
-
-
-            $get_customer_current_point_infos = DB::table('users')
-                ->select(
-                    'membership_category',
-                    'current_reward_point',
-                    'current_reward_amount',
-                    'current_withdraw_point',
-                    'current_withdraw_amount'
-                )
-                ->where('id',$request->user_id)
-                ->first();
-
-            $get_customer_reward_point_category_infos = DB::table('customer_reward_point_categories')
-                ->select(
-                    'name',
-                    'from_point',
-                    'to_point',
-                    'get_point',
-                    'on_amount'
-                )
-                ->where('name',$get_customer_current_point_infos->membership_category)
-                ->first();
-
-
-            if($request->total_order_price >= $get_customer_reward_point_category_infos->on_amount){
-
-                $filter_point = $request->total_order_price/$get_customer_reward_point_category_infos->on_amount;
-                $get_point = $get_customer_reward_point_category_infos->get_point * (int)$filter_point;
-
-                DB::table('customer_reward_points')->insertGetId(
-                    [	'customer_id' => $request->user_id,
-                        'order_id'                  => $orders_id,
-                        'order_price'               =>  $request->total_order_price,
-                        'get_reward_point'          => $get_point,
-                        'get_reward_point_amount'   => $one_point_to_tk*$get_point,
-                        'created_at'	            =>   date('Y-m-d H:i:s'),
-                        'updated_at'	            =>   date('Y-m-d H:i:s')
-                    ]);
-
-
-
-
-                // update customer current point
-
-                $current_reward_point = $get_point + $get_customer_current_point_infos->current_reward_point;
-                $current_reward_amount = ($one_point_to_tk*$get_point) + $get_customer_current_point_infos->current_reward_amount;
-
-                $membership_category = DB::table('customer_reward_point_categories')
-                    ->where('from_point','<=',$current_reward_point)
-                    ->where('to_point','>=',$current_reward_point)
-                    ->pluck('name')
-                    ->first();
-
-                DB::table('users')->where('id', '=', $request->user_id)->update([
-                    'membership_category' => $membership_category,
-                    'current_reward_point' => $current_reward_point,
-                    'current_reward_amount' => $current_reward_amount
-                ]);
-            }
+//            $one_point_to_tk = DB::table('withdraw_categories')
+//                ->latest('id')
+//                ->pluck('one_point_to_tk')
+//                ->first();
+//
+//
+//            $get_customer_current_point_infos = DB::table('users')
+//                ->select(
+//                    'membership_category',
+//                    'current_reward_point',
+//                    'current_reward_amount',
+//                    'current_withdraw_point',
+//                    'current_withdraw_amount'
+//                )
+//                ->where('id',$request->user_id)
+//                ->first();
+//
+//            $get_customer_reward_point_category_infos = DB::table('customer_reward_point_categories')
+//                ->select(
+//                    'name',
+//                    'from_point',
+//                    'to_point',
+//                    'get_point',
+//                    'on_amount'
+//                )
+//                ->where('name',$get_customer_current_point_infos->membership_category)
+//                ->first();
+//
+//
+//            if($request->total_order_price >= $get_customer_reward_point_category_infos->on_amount){
+//
+//                $filter_point = $request->total_order_price/$get_customer_reward_point_category_infos->on_amount;
+//                $get_point = $get_customer_reward_point_category_infos->get_point * (int)$filter_point;
+//
+//                DB::table('customer_reward_points')->insertGetId(
+//                    [	'customer_id' => $request->user_id,
+//                        'order_id'                  => $orders_id,
+//                        'order_price'               =>  $request->total_order_price,
+//                        'get_reward_point'          => $get_point,
+//                        'get_reward_point_amount'   => $one_point_to_tk*$get_point,
+//                        'created_at'	            =>   date('Y-m-d H:i:s'),
+//                        'updated_at'	            =>   date('Y-m-d H:i:s')
+//                    ]);
+//
+//
+//
+//
+//                // update customer current point
+//
+//                $current_reward_point = $get_point + $get_customer_current_point_infos->current_reward_point;
+//                $current_reward_amount = ($one_point_to_tk*$get_point) + $get_customer_current_point_infos->current_reward_amount;
+//
+//                $membership_category = DB::table('customer_reward_point_categories')
+//                    ->where('from_point','<=',$current_reward_point)
+//                    ->where('to_point','>=',$current_reward_point)
+//                    ->pluck('name')
+//                    ->first();
+//
+//                DB::table('users')->where('id', '=', $request->user_id)->update([
+//                    'membership_category' => $membership_category,
+//                    'current_reward_point' => $current_reward_point,
+//                    'current_reward_amount' => $current_reward_amount
+//                ]);
+//            }
 
             /*Reward Point End*/
 

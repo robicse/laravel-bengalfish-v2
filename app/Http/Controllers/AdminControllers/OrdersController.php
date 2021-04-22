@@ -197,6 +197,12 @@ class OrdersController extends Controller
                         'comments' => $comments,
                     ]);
 
+                $orders = DB::table('orders')->where('orders_id', '=', $orders_id)
+                    ->where('customers_id', '!=', '')->get();
+
+                $customers_id = $orders[0]->customers_id;
+                $order_price = $orders[0]->order_price;
+
                 if ($orders_status == '2') {
 
                     $orders_products = DB::table('orders_products')->where('orders_id', '=', $orders_id)->get();
@@ -207,13 +213,79 @@ class OrdersController extends Controller
                             'products_ordered' => DB::raw('products_ordered + 1'),
                         ]);
                     }
+
+
+                    /*Reward Point Start*/
+                    // get current point info of customer
+
+                    $one_point_to_tk = DB::table('withdraw_categories')
+                        ->latest('id')
+                        ->pluck('one_point_to_tk')
+                        ->first();
+
+
+                    $get_customer_current_point_infos = DB::table('users')
+                        ->select(
+                            'membership_category',
+                            'current_reward_point',
+                            'current_reward_amount',
+                            'current_withdraw_point',
+                            'current_withdraw_amount'
+                        )
+                        ->where('id',$customers_id)
+                        ->first();
+
+                    $get_customer_reward_point_category_infos = DB::table('customer_reward_point_categories')
+                        ->select(
+                            'name',
+                            'from_point',
+                            'to_point',
+                            'get_point',
+                            'on_amount'
+                        )
+                        ->where('name',$get_customer_current_point_infos->membership_category)
+                        ->first();
+
+                    if($order_price >= $get_customer_reward_point_category_infos->on_amount){
+
+                        $filter_point = $order_price/$get_customer_reward_point_category_infos->on_amount;
+                        $get_point = $get_customer_reward_point_category_infos->get_point * (int)$filter_point;
+
+                        DB::table('customer_reward_points')->insertGetId(
+                            [	'customer_id' => $customers_id,
+                                'order_id' => $orders_id,
+                                'order_price'  =>  $order_price,
+                                'get_reward_point' => $get_point,
+                                'get_reward_point_amount'  => $one_point_to_tk*$get_point,
+                                'created_at'	             =>   date('Y-m-d H:i:s'),
+                                'updated_at'	             =>   date('Y-m-d H:i:s')
+                            ]);
+
+                        // update customer current point
+
+                        $current_reward_point = $get_point + $get_customer_current_point_infos->current_reward_point;
+                        $current_reward_amount = ($one_point_to_tk*$get_point) + $get_customer_current_point_infos->current_reward_amount;
+
+                        $membership_category = DB::table('customer_reward_point_categories')
+                            ->where('from_point','<=',$current_reward_point)
+                            ->where('to_point','>=',$current_reward_point)
+                            ->pluck('name')
+                            ->first();
+
+                        DB::table('users')->where('id', '=', $customers_id)->update([
+                            'membership_category' => $membership_category,
+                            'current_reward_point' => $current_reward_point,
+                            'current_reward_amount' => $current_reward_amount
+                        ]);
+                    }
+
+                    /*Reward Point End*/
                 }
 
-                $orders = DB::table('orders')->where('orders_id', '=', $orders_id)
-                    ->where('customers_id', '!=', '')->get();
+
 
                 $data = array();
-                $data['customers_id'] = $orders[0]->customers_id;
+                $data['customers_id'] = $customers_id;
                 $data['orders_id'] = $orders_id;
                 $data['status'] = $status[0]->orders_status_name;
 
