@@ -334,73 +334,142 @@ class Order extends Model
         //check if order is verified
         if($payment_status=='success'){
 
+//            $orders_id = DB::table('orders')->insertGetId(
+//                [
+//                    'order_from_platform' => 'Web',
+//                    'customers_id' => $customers_id,
+//                     'customers_name'  => $delivery_firstname.' '.$delivery_lastname,
+//                     'customers_street_address' => $delivery_street_address,
+//                     'customers_suburb'  =>  $delivery_suburb,
+//                     'customers_city' => $delivery_city,
+//                     'customers_postcode'  => $delivery_postcode,
+//                     //'customers_state' => $delivery_state,
+//                     //'customers_country'  =>  $delivery_country,
+//                     //'customers_telephone' => $customers_telephone,
+//                     'email'  => $email,
+//                    // 'customers_address_format_id' => $delivery_address_format_id,
+//
+//                     'delivery_name'  =>  $delivery_firstname.' '.$delivery_lastname,
+//                     'delivery_street_address' => $delivery_street_address,
+//                     'delivery_suburb'  => $delivery_suburb,
+//                     'delivery_city' => $delivery_city,
+//                     'delivery_postcode'  =>  $delivery_postcode,
+//                     //'delivery_state' => $delivery_state,
+//                     //'delivery_country'  => $delivery_country,
+//                    // 'delivery_address_format_id' => $delivery_address_format_id,
+//
+//                     'billing_name'  => $billing_firstname.' '.$billing_lastname,
+//                     'billing_street_address' => $billing_street_address,
+//                     'billing_suburb'  =>  $billing_suburb,
+//                     'billing_city' => $billing_city,
+//                     'billing_postcode'  => $billing_postcode,
+//                     //'billing_state' => $billing_state,
+//                     //'billing_country'  =>  $billing_country,
+//                     //'billing_address_format_id' => $billing_address_format_id,
+//
+//                     'payment_method'  =>  $payment_method,
+//                     'cc_type' => $cc_type,
+//                     'cc_owner'  => $cc_owner,
+//                     'cc_number' =>$cc_number,
+//                     'cc_expires'  =>  $cc_expires,
+//                     'last_modified' => $last_modified,
+//                     'date_purchased'  => $date_purchased,
+//                     'order_price'  => $order_price,
+//                     'shipping_cost' =>$shipping_cost,
+//                     'shipping_method'  =>  $shipping_method,
+//                    // 'orders_status' => $orders_status,
+//                     //'orders_date_finished'  => $orders_date_finished,
+//                     'currency'  =>  $currency,
+//                     'order_information' => 	json_encode($order_information),
+//                     'coupon_code'		 =>		$code,
+//                     'coupon_amount' 	 =>		$coupon_amount,
+//                     'total_tax'		 =>		$total_tax,
+//                     'ordered_source' 	 => 	'1',
+//                     'delivery_phone'	 =>	 	$delivery_phone,
+//                     'billing_phone'	 =>	 	$billing_phone,
+//                ]);
+//
+//            //orders status history
+//            $orders_history_id = DB::table('orders_status_history')->insertGetId(
+//                                    [	 'orders_id'  => $orders_id,
+//                                         'orders_status_id' => $orders_status,
+//                                         'date_added'  => $date_added,
+//                                         'customer_notified' =>'1',
+//                                         'comments'  =>  $comments
+//                                    ]);
+
+
+        $cart = $cart->myCart(array());
+        if(count($cart) == 0) {
+            return redirect()->back()->with('warning', 'Your Card Added Data Session Out, Please Try Again!');
+        }
+        if(count($cart) > 0){
+
             $orders_id = DB::table('orders')->insertGetId(
                 [
                     'order_from_platform' => 'Web',
                     'customers_id' => $customers_id,
-                     'customers_name'  => $delivery_firstname.' '.$delivery_lastname,
-                     'customers_street_address' => $delivery_street_address,
-                     'customers_suburb'  =>  $delivery_suburb,
-                     'customers_city' => $delivery_city,
-                     'customers_postcode'  => $delivery_postcode,
-                     //'customers_state' => $delivery_state,
-                     //'customers_country'  =>  $delivery_country,
-                     //'customers_telephone' => $customers_telephone,
-                     'email'  => $email,
+                    'customers_name'  => $delivery_firstname.' '.$delivery_lastname,
+                    'customers_street_address' => $delivery_street_address,
+                    'customers_suburb'  =>  $delivery_suburb,
+                    'customers_city' => $delivery_city,
+                    'customers_postcode'  => $delivery_postcode,
+                    //'customers_state' => $delivery_state,
+                    //'customers_country'  =>  $delivery_country,
+                    //'customers_telephone' => $customers_telephone,
+                    'email'  => $email,
                     // 'customers_address_format_id' => $delivery_address_format_id,
 
-                     'delivery_name'  =>  $delivery_firstname.' '.$delivery_lastname,
-                     'delivery_street_address' => $delivery_street_address,
-                     'delivery_suburb'  => $delivery_suburb,
-                     'delivery_city' => $delivery_city,
-                     'delivery_postcode'  =>  $delivery_postcode,
-                     //'delivery_state' => $delivery_state,
-                     //'delivery_country'  => $delivery_country,
+                    'delivery_name'  =>  $delivery_firstname.' '.$delivery_lastname,
+                    'delivery_street_address' => $delivery_street_address,
+                    'delivery_suburb'  => $delivery_suburb,
+                    'delivery_city' => $delivery_city,
+                    'delivery_postcode'  =>  $delivery_postcode,
+                    //'delivery_state' => $delivery_state,
+                    //'delivery_country'  => $delivery_country,
                     // 'delivery_address_format_id' => $delivery_address_format_id,
 
-                     'billing_name'  => $billing_firstname.' '.$billing_lastname,
-                     'billing_street_address' => $billing_street_address,
-                     'billing_suburb'  =>  $billing_suburb,
-                     'billing_city' => $billing_city,
-                     'billing_postcode'  => $billing_postcode,
-                     //'billing_state' => $billing_state,
-                     //'billing_country'  =>  $billing_country,
-                     //'billing_address_format_id' => $billing_address_format_id,
+                    'billing_name'  => $billing_firstname.' '.$billing_lastname,
+                    'billing_street_address' => $billing_street_address,
+                    'billing_suburb'  =>  $billing_suburb,
+                    'billing_city' => $billing_city,
+                    'billing_postcode'  => $billing_postcode,
+                    //'billing_state' => $billing_state,
+                    //'billing_country'  =>  $billing_country,
+                    //'billing_address_format_id' => $billing_address_format_id,
 
-                     'payment_method'  =>  $payment_method,
-                     'cc_type' => $cc_type,
-                     'cc_owner'  => $cc_owner,
-                     'cc_number' =>$cc_number,
-                     'cc_expires'  =>  $cc_expires,
-                     'last_modified' => $last_modified,
-                     'date_purchased'  => $date_purchased,
-                     'order_price'  => $order_price,
-                     'shipping_cost' =>$shipping_cost,
-                     'shipping_method'  =>  $shipping_method,
+                    'payment_method'  =>  $payment_method,
+                    'cc_type' => $cc_type,
+                    'cc_owner'  => $cc_owner,
+                    'cc_number' =>$cc_number,
+                    'cc_expires'  =>  $cc_expires,
+                    'last_modified' => $last_modified,
+                    'date_purchased'  => $date_purchased,
+                    'order_price'  => $order_price,
+                    'shipping_cost' =>$shipping_cost,
+                    'shipping_method'  =>  $shipping_method,
                     // 'orders_status' => $orders_status,
-                     //'orders_date_finished'  => $orders_date_finished,
-                     'currency'  =>  $currency,
-                     'order_information' => 	json_encode($order_information),
-                     'coupon_code'		 =>		$code,
-                     'coupon_amount' 	 =>		$coupon_amount,
-                     'total_tax'		 =>		$total_tax,
-                     'ordered_source' 	 => 	'1',
-                     'delivery_phone'	 =>	 	$delivery_phone,
-                     'billing_phone'	 =>	 	$billing_phone,
+                    //'orders_date_finished'  => $orders_date_finished,
+                    'currency'  =>  $currency,
+                    'order_information' => 	json_encode($order_information),
+                    'coupon_code'		 =>		$code,
+                    'coupon_amount' 	 =>		$coupon_amount,
+                    'total_tax'		 =>		$total_tax,
+                    'ordered_source' 	 => 	'1',
+                    'delivery_phone'	 =>	 	$delivery_phone,
+                    'billing_phone'	 =>	 	$billing_phone,
                 ]);
 
             //orders status history
             $orders_history_id = DB::table('orders_status_history')->insertGetId(
-                                    [	 'orders_id'  => $orders_id,
-                                         'orders_status_id' => $orders_status,
-                                         'date_added'  => $date_added,
-                                         'customer_notified' =>'1',
-                                         'comments'  =>  $comments
-                                    ]);
+                [	 'orders_id'  => $orders_id,
+                    'orders_status_id' => $orders_status,
+                    'date_added'  => $date_added,
+                    'customer_notified' =>'1',
+                    'comments'  =>  $comments
+                ]);
 
 
-            $cart = $cart->myCart(array());
-        if(count($cart) > 0){
             foreach($cart as $products){
                 //get products info
                 $orders_products_id = DB::table('orders_products')->insertGetId(
