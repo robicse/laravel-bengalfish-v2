@@ -129,13 +129,14 @@
 
                   <td class="col-12 col-md-2 Qty">
                         <div class="input-group">
-                          <span class="input-group-btn qtyminuscart">
-                              <button class="btn btn-defualt" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button>
-                            </span>
-                            <input name="quantity[]" type="text" readonly value="{{$products->customers_basket_quantity}}" class="form-control qty" min="{{$products->min_order}}" max="{{$products->max_order}}">
-                            <span class="input-group-btn qtypluscart">
-                              <button class="btn btn-defualt" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button>
-                            </span>
+{{--                          <span class="input-group-btn qtyminuscart">--}}
+{{--                              <button class="btn btn-defualt" type="button"><i class="fa fa-minus" aria-hidden="true"></i></button>--}}
+{{--                            </span>--}}
+{{--                            <input name="quantity[]" type="number" readonly value="{{$products->customers_basket_quantity}}" class="form-control qty" min="{{$products->min_order}}" max="{{$products->max_order}}">--}}
+{{--                            <span class="input-group-btn qtypluscart">--}}
+{{--                              <button class="btn btn-defualt" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button>--}}
+{{--                            </span>--}}
+                            <input type="number" value="{{$products->customers_basket_quantity}}" name="quantity[]" class="form-control qty" id="quantity" min="{{$products->min_order}}" max="{{$products->max_order}}">
                         </div>
                    </td>
 

@@ -741,7 +741,7 @@ class UserController extends Controller
         }
 
         $orders=Order::where('customers_id',$request->user_id)
-            ->select('orders_id','customers_id','customers_name','customers_street_address','customers_city','customers_postcode','email','delivery_phone','delivery_name','delivery_street_address','delivery_city','delivery_postcode','billing_name','billing_street_address','billing_city','billing_postcode','billing_phone','payment_method','order_price','shipping_cost','shipping_method','coupon_amount','free_shipping')
+            ->select('orders_id','customers_id','customers_name','customers_street_address','customers_city','customers_postcode','email','delivery_phone','delivery_name','delivery_street_address','delivery_city','delivery_postcode','billing_name','billing_street_address','billing_city','billing_postcode','billing_phone','payment_method','order_price','shipping_cost','shipping_method','coupon_amount','free_shipping','date_purchased')
             ->latest('orders_id')
             ->get();
 
@@ -772,6 +772,7 @@ class UserController extends Controller
                 $nested_data['shipping_method']=$orders_data->shipping_method;
                 $nested_data['coupon_amount']=$orders_data->coupon_amount;
                 $nested_data['free_shipping']=$orders_data->free_shipping;
+                $nested_data['date_purchased']=$orders_data->date_purchased;
 
 
 
@@ -779,7 +780,7 @@ class UserController extends Controller
                 $orders_status_history = DB::table('orders_status_history')
                     ->LeftJoin('orders_status', 'orders_status.orders_status_id', '=', 'orders_status_history.orders_status_id')
                     ->LeftJoin('orders_status_description', 'orders_status_description.orders_status_id', '=', 'orders_status.orders_status_id')
-                    ->select('orders_status_description.orders_status_name', 'orders_status.orders_status_id')
+                    ->select('orders_status_description.orders_status_name', 'orders_status.orders_status_id','orders_status_history.comments')
                     ->where('orders_id', '=', $orders_data->orders_id)
                     ->where('orders_status_description.language_id',1)
                     ->orderby('orders_status_history.orders_status_history_id', 'DESC')
@@ -787,6 +788,7 @@ class UserController extends Controller
 
                 $nested_data['orders_status_id'] = $orders_status_history[0]->orders_status_id;
                 $nested_data['orders_status'] = $orders_status_history[0]->orders_status_name;
+                $nested_data['comments'] = $orders_status_history[0]->comments;
 
 
                 array_push($data, $nested_data);
@@ -914,8 +916,8 @@ class UserController extends Controller
                 'payment_method' => $request->payment_method_name,
                 'last_modified' => date("Y-m-d h:i:s"),
                 'date_purchased' => date("Y-m-d h:i:s"),
-//                'coupon_code' => $request->coupon_code,
-//                'coupon_amount' => $request->coupon_amount,
+                'coupon_code' => $request->coupon_code,
+                'coupon_amount' => $request->coupon_amount,
                 'order_price' => $request->total_order_price,
                 'shipping_cost' => $request->shipping_cost,
                 'shipping_method' => "flateRate",
@@ -933,6 +935,7 @@ class UserController extends Controller
                 'orders_status_id' => 1,
                 'date_added' => date("Y-m-d h:i:s"),
                 'customer_notified' => '1',
+                'comments'  =>  $request->comments
             ]);
 
 
