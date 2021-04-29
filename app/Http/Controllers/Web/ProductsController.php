@@ -56,7 +56,8 @@ class ProductsController extends Controller
 				'reviews_rating' => $request->rating,
 				'customers_id' => Auth::guard('customer')->user()->id,
 				'customers_name' => Auth::guard('customer')->user()->first_name,
-				'created_at' =>  time()
+				//'created_at' =>  time()
+				'created_at' =>  date('Y-m-d H:i:s')
 			]);
 
 			DB::table('reviews_description')
