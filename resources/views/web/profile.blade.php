@@ -168,6 +168,9 @@
                               <div class="col-12 col-sm-4 col-md-6">
                                  <input name="picture" id="userImage" type="file" class="inputFile" onChange="showPreview(this);" /><br>
                               </div>
+                                <div class="col-12 col-sm-4 col-md-6">
+                                    Membership ({{$membership_category = \Illuminate\Support\Facades\DB::table('users')->where('id',auth()->guard('customer')->user()->id)->pluck('membership_category')->first()}})
+                                </div>
                             </div>
                           </div>
 
@@ -176,16 +179,19 @@
                 </div>
 
                  <div class="form-group row">
-                   <label for="firstName" class="col-sm-2 col-form-label">@lang('website.First Name')</label>
-                   <div class="col-sm-10">
+                   <label for="firstName" class="col-sm-2 col-form-label">Name</label>
+                   <div class="col-sm-5">
                      <input type="text" required name="customers_firstname" class="form-control" id="inputName" value="{{ auth()->guard('customer')->user()->first_name }}" placeholder="@lang('website.First Name')">
                    </div>
+                     <div class="col-sm-5">
+                         <input type="text" required name="customers_lastname" placeholder="@lang('website.Last Name')" class="form-control field-validate" id="lastName" value="{{ auth()->guard('customer')->user()->last_name }}">
+                     </div>
                  </div>
                  <div class="form-group row">
-                   <label for="lastName" class="col-sm-2 col-form-label">@lang('website.Last Name')</label>
-                   <div class="col-sm-10">
-                     <input type="text" required name="customers_lastname" placeholder="@lang('website.Last Name')" class="form-control field-validate" id="lastName" value="{{ auth()->guard('customer')->user()->last_name }}">
-                   </div>
+{{--                   <label for="lastName" class="col-sm-2 col-form-label">@lang('website.Last Name')</label>--}}
+{{--                   <div class="col-sm-10">--}}
+{{--                     <input type="text" required name="customers_lastname" placeholder="@lang('website.Last Name')" class="form-control field-validate" id="lastName" value="{{ auth()->guard('customer')->user()->last_name }}">--}}
+{{--                   </div>--}}
                  </div>
                  <div class="form-group row">
                    <label for="gender"  class="col-sm-2 col-form-label">@lang('website.Gender')</label>

@@ -240,6 +240,20 @@
                           <a class="dropdown-item" href="{{url('logout')}}" class="nav-link padding-r0">@lang('website.Logout')</a>
                         </div>
                     </li>
+                     <li>
+                         <div class="avatar">
+                             <?php
+                             if(auth()->guard('customer')->check()){
+                             if(auth()->guard('customer')->user()->avatar == null){ ?>
+                             <img class="img-fluid" src="{{asset('web/images/miscellaneous/avatar.jpg')}}" width="50px">
+                             <?php }else{ ?>
+                             <img class="img-fluid" src="{{auth()->guard('customer')->user()->avatar}}" width="50px">
+                             <?php
+                             }
+                             }
+                             ?>
+                         </div>
+                     </li>
                     <?php }else{ ?>
                     <li class="nav-item p-0" style="background-color: #f89e20;padding: 4px 18px;">
                         <a href="{{ URL::to('/login')}}" class="nav-link -before">
@@ -319,28 +333,6 @@
                         @endif
                     </ul>
                 </div>
-
-                <div class="navbar-collapse" style="font-family: Roboto Condensed;">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <div class="nav-avatar nav-link">
-                          <div class="avatar">
-                          <?php
-                          if(auth()->guard('customer')->check()){
-                           if(auth()->guard('customer')->user()->avatar == null){ ?>
-                            <img class="img-fluid" src="{{asset('web/images/miscellaneous/avatar.jpg')}}" width="50px">
-                          <?php }else{ ?>
-                            <img class="img-fluid" src="{{auth()->guard('customer')->user()->avatar}}" width="50px">
-                          <?php
-                                }
-                             }
-                          ?>
-                          </div>
-
-                        </div>
-                    </li>
-                </ul>
-              </div>
             </nav>
           </div>
           <div class="col-12 col-lg-4">

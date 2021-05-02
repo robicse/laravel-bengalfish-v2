@@ -150,29 +150,34 @@
                 </p>
             @endif
           @if(!empty($data['orders_data'][0]->coupon_code))
+{{--              {{dd($data['orders_data'][0]->coupon_code)}}--}}
               <p class="lead" style="margin-bottom:10px">{{ trans('labels.Coupons') }}:</p>
                 <table class="text-muted well well-sm no-shadow stripe-border table table-striped" style="text-align: center; ">
                 	<tr>
                         <th style="text-align: center; ">{{ trans('labels.Code') }}</th>
                         <th style="text-align: center; ">{{ trans('labels.Amount') }}</th>
                     </tr>
-                	@foreach( json_decode($data['orders_data'][0]->coupon_code) as $couponData)
-                    	<tr>
-                        	<td>{{ $couponData->code}}</td>
-                            <td>{{ $couponData->amount}}
+{{--                	@foreach( json_decode($data['orders_data'][0]->coupon_code) as $couponData)--}}
+{{--                    	<tr>--}}
+{{--                        	<td>{{ $couponData->code}}</td>--}}
+{{--                            <td>{{ $couponData->amount}}--}}
 
-                                @if($couponData->discount_type=='percent_product')
-                                    ({{ trans('labels.Percent') }})
-                                @elseif($couponData->discount_type=='percent')
-                                    ({{ trans('labels.Percent') }})
-                                @elseif($couponData->discount_type=='fixed_cart')
-                                    ({{ trans('labels.Fixed') }})
-                                @elseif($couponData->discount_type=='fixed_product')
-                                    ({{ trans('labels.Fixed') }})
-                                @endif
-                            </td>
-                        </tr>
-                    @endforeach
+{{--                                @if($couponData->discount_type=='percent_product')--}}
+{{--                                    ({{ trans('labels.Percent') }})--}}
+{{--                                @elseif($couponData->discount_type=='percent')--}}
+{{--                                    ({{ trans('labels.Percent') }})--}}
+{{--                                @elseif($couponData->discount_type=='fixed_cart')--}}
+{{--                                    ({{ trans('labels.Fixed') }})--}}
+{{--                                @elseif($couponData->discount_type=='fixed_product')--}}
+{{--                                    ({{ trans('labels.Fixed') }})--}}
+{{--                                @endif--}}
+{{--                            </td>--}}
+{{--                        </tr>--}}
+{{--                    @endforeach--}}
+                                        	<tr>
+                                            	<td>{{ $data['orders_data'][0]->coupon_code}}</td>
+                                                <td>{{ $data['currency'][19]->value }}{{ $data['orders_data'][0]->coupon_amount}}</td>
+                                            </tr>
 				</table>
                <!-- {{ $data['orders_data'][0]->coupon_code }}-->
 
