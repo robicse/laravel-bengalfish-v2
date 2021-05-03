@@ -64,7 +64,7 @@
                                                         @if($review->reviews_read == 0 and $review->reviews_status == 0)
                                                         <span class="label label-success">{{ trans('labels.new') }}</span>
                                                         @elseif($review->reviews_read == 1 and $review->reviews_status == 0)
-                                                        <span class="label label-info">{{ trans('labels.pending') }}</span>
+                                                        <span class="label label-info">Delete</span>
                                                         @elseif($review->reviews_read == 1 and $review->reviews_status == 1)
                                                         <span class="label label-primary">{{ trans('labels.seen') }}</span>
                                                         @elseif($review->reviews_read == 1 and $review->reviews_status == -1)
@@ -75,11 +75,14 @@
                                                     <td>{{ $review->reviews_text }}</td>
                                                     <td>{{ $review->created_at }}</td>
                                                     <td>
-                                                      <a class="btn btn-warning" style="width: 100%;  margin-bottom: 5px;" href="{{ URL::to('admin/reviews/edit/'.$review->reviews_id.'/0')}}">{{ trans('labels.pending') }}</a>
-                                                      </br>
-                                                      <a class="btn btn-success" style="width: 100%;  margin-bottom: 5px;"  href="{{ URL::to('admin/reviews/edit/'.$review->reviews_id.'/1')}}">{{ trans('labels.Active') }}</a>
-                                                    </br>
-                                                    <a class="btn btn-danger" style="width: 100%;  margin-bottom: 5px;"  href="{{ URL::to('admin/reviews/edit/'.$review->reviews_id.'/-1')}}">{{ trans('labels.Deactive') }}</a>
+                                                        <a class="btn btn-info" style="width: 100%;  margin-bottom: 5px;"  href="{{ URL::to('admin/reviews/edit/'.$review->reviews_id.'/2')}}">Edit</a>
+                                                        </br>
+                                                        <a class="btn btn-success" style="width: 100%;  margin-bottom: 5px;"  href="{{ URL::to('admin/reviews/edit/'.$review->reviews_id.'/1')}}">{{ trans('labels.Active') }}</a>
+                                                        </br>
+                                                        <a class="btn btn-danger" style="width: 100%;  margin-bottom: 5px;"  href="{{ URL::to('admin/reviews/edit/'.$review->reviews_id.'/-1')}}">{{ trans('labels.Deactive') }}</a>
+                                                        </br>
+                                                        <a class="btn btn-warning" style="width: 100%;  margin-bottom: 5px;" href="{{ URL::to('admin/reviews/edit/'.$review->reviews_id.'/0')}}">Delete</a>
+                                                        </br>
                                                       </td>
                                                 </tr>
                                             @endforeach

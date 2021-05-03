@@ -235,6 +235,7 @@ Route::group(['middleware' => ['installer']], function()
     Route::group(['prefix'=>'admin/reviews','middleware' => 'auth','namespace' => 'AdminControllers'], function () {
         Route::get('/display', 'ProductController@reviews')->middleware('view_product');
         Route::get('/edit/{id}/{status}', 'ProductController@editreviews')->middleware('edit_product');
+        Route::post('/update', 'ProductController@updateReview')->middleware('edit_product');
     });
     //customers
     Route::group(['prefix'=>'admin/customers','middleware' => 'auth','namespace' => 'AdminControllers'], function () {

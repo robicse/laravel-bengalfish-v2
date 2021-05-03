@@ -58,11 +58,27 @@ class ProductController extends Controller
           'reviews_read' => 1
         ]);
     }elseif($status == 0){
+        DB::table('reviews')
+            ->where('reviews_id',$id)
+            ->update([
+                'reviews_status' => 0
+            ]);
       DB::table('reviews')
         ->where('reviews_id',$id)
         ->update([
           'reviews_read' => 1
         ]);
+    }elseif($status == 2){
+        $title = array('pageTitle' => Lang::get("labels.reviews"));
+        $results = array();
+        $results['reviews'] = $reviews = DB::table('reviews')
+            ->leftJoin('reviews_description','reviews.reviews_id','reviews_description.review_id')
+            ->leftJoin('products_description','reviews.products_id','products_description.products_id')
+            ->select('reviews.*','reviews_description.reviews_text','products_description.products_name')
+            ->where('reviews.reviews_id',$id)
+            ->first();
+        //dd($results['reviews']);
+        return view("admin.reviews.edit",$title)->with('result', $results);
     }else{
       DB::table('reviews')
         ->where('reviews_id',$id)
@@ -75,6 +91,24 @@ class ProductController extends Controller
     return redirect()->back()->withErrors([$message]);;
 
   }
+
+    public function updateReview(Request $request){
+        //dd($request->all());
+        //$this->News->updaterecord($request);
+        DB::table('reviews')
+            ->where('reviews_id',$request->id)
+            ->update([
+                'reviews_rating' => $request->reviews_rating
+            ]);
+        DB::table('reviews_description')
+            ->where('review_id',$request->id)
+            ->update([
+                'reviews_text' => $request->reviews_text
+            ]);
+        $message = Lang::get("labels.reviewupdateMessage");
+        return redirect()->back()->withErrors([$message]);
+
+    }
 
   public function display(Request $request){
       $language_id = '1';

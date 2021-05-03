@@ -20,6 +20,7 @@ class Reviews extends Model
           ->leftJoin('reviews_description','reviews.reviews_id','reviews_description.review_id')
           ->leftJoin('products_description','reviews.products_id','products_description.products_id')
           ->select('reviews.*','reviews_description.reviews_text','products_description.products_name')
+              ->where('reviews_status','!=',0)
           ->groupBy('reviews.reviews_id')
           ->paginate(50);
              return $reviews;

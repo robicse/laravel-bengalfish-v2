@@ -240,14 +240,14 @@
                           <a class="dropdown-item" href="{{url('logout')}}" class="nav-link padding-r0">@lang('website.Logout')</a>
                         </div>
                     </li>
-                     <li>
-                         <div class="avatar">
+                     <li style="min-height: 20px !important;">
+                         <div class="">
                              <?php
                              if(auth()->guard('customer')->check()){
                              if(auth()->guard('customer')->user()->avatar == null){ ?>
-                             <img class="img-fluid" src="{{asset('web/images/miscellaneous/avatar.jpg')}}" width="50px">
+                             <img src="{{asset('web/images/miscellaneous/avatar.jpg')}}" width="30px" style="margin-left: 0;margin-top: 5px">
                              <?php }else{ ?>
-                             <img class="img-fluid" src="{{auth()->guard('customer')->user()->avatar}}" width="50px">
+                             <img src="{{auth()->guard('customer')->user()->avatar}}" width="30px" style="margin-left: 0;margin-top: 5px">
                              <?php
                              }
                              }
