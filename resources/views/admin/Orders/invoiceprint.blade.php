@@ -106,7 +106,9 @@
             </tr>
             </thead>
             <tbody>
-
+            @php
+                $sub_total = 0;
+            @endphp
             @foreach($data['orders_data'][0]->data as $key => $products)
 
             <tr>
@@ -128,6 +130,9 @@
 
                 <td>{{ $data['currency'][19]->value }}{{ $products->products_price }}</td>
                 <td style="float: right;margin-right: 40px;">{{ $data['currency'][19]->value }}{{ $products->products_quantity*$products->products_price }}</td>
+                @php
+                    $sub_total += $products->products_quantity*$products->products_price;
+                @endphp
              </tr>
             @endforeach
 
@@ -193,7 +198,8 @@
             <table class="table order-table">
               <tr>
                 <th style="width:50%">{{ trans('labels.Subtotal') }}:</th>
-                <td>{{ $data['currency'][19]->value }}{{ $data['subtotal'] }}</td>
+{{--                <td>{{ $data['currency'][19]->value }}{{ $data['subtotal'] }}</td>--}}
+                <td>{{ $data['currency'][19]->value }}{{ $sub_total }}</td>
               </tr>
               {{--<tr>
                 <th>{{ trans('labels.Tax') }}:</th>
@@ -211,7 +217,8 @@
               @endif
               <tr>
                 <th>{{ trans('labels.Total') }}:</th>
-                <td>{{ $data['currency'][19]->value }}{{ $data['orders_data'][0]->order_price }}</td>
+{{--                <td>{{ $data['currency'][19]->value }}{{ $data['orders_data'][0]->order_price }}</td>--}}
+                  <td>{{ $data['currency'][19]->value }}{{ ($sub_total + $data['orders_data'][0]->shipping_cost) - $data['orders_data'][0]->coupon_amount}}</td>
               </tr>
             </table>
           </div>

@@ -304,7 +304,7 @@ class OrdersController extends Controller
 		foreach($request->all() as $key=>$value){
 
 		  if($key=='shipping_price' and !empty($result['commonContent']['setting'][82]->value) and $result['commonContent']['setting'][82]->value <= session('total_price')){
-			$shipping_detail['shipping_price'] = 0;
+			$shipping_detail['shipping_price'] = 60;
 		  }else{
 			$shipping_detail[$key] = $value;
 		  }

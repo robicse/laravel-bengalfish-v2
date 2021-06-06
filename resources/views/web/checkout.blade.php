@@ -386,10 +386,12 @@ jQuery(document).ready(function() {
                        <?php
                            if(!empty(session('shipping_detail')) and !empty(session('shipping_detail'))>0){
                              $shipping_price = session('shipping_detail')->shipping_price;
+                             //$shipping_price = 60;
                              $shipping_name = session('shipping_detail')->mehtod_name;
                            }else{
-                             $shipping_price = 0;
-                             $shipping_name = '';
+                               //dd('sss');
+                             $shipping_price = 60;
+                             $shipping_name = 'Flat Rate';
                            }
                            $tax_rate = number_format((float)session('tax_rate'), 2, '.', '');
                            $coupon_discount = number_format((float)session('coupon_discount'), 2, '.', '');
@@ -431,7 +433,7 @@ jQuery(document).ready(function() {
                                                    <input id="{{$payment_methods['payment_method']}}_public_key" type="hidden" name="public_key" value="{{$payment_methods['public_key']}}">
                                                    <input id="{{$payment_methods['payment_method']}}_environment" type="hidden" name="{{$payment_methods['payment_method']}}_environment" value="{{$payment_methods['environment']}}">
                                                    <li>
-                                                        <input type="radio" onClick="paymentMethods();" name="payment_method" class="payment_method" value="{{$payment_methods['payment_method']}}" @if(!empty(session('payment_method'))) @if(session('payment_method')==$payment_methods['payment_method']) checked @endif @endif>
+                                                        <input type="radio" onClick="paymentMethods();" name="payment_method" class="payment_method" value="sss{{$payment_methods['payment_method']}}" @if(!empty(session('payment_method'))) @if(session('payment_method')==$payment_methods['payment_method']) checked @endif @endif>
                                                         <label for="{{$payment_methods['payment_method']}}">{{$payment_methods['name']}}</label>
                                                    </li>
                                                @else
@@ -630,11 +632,11 @@ jQuery(document).ready(function() {
                <td align="right">{{Session::get('symbol_left')}}{{$tax_rate*$currency_value}}{{Session::get('symbol_right')}}</td>
 
              </tr>--}}
-{{--             <tr>--}}
-{{--                 <th scope="row">@lang('website.Shipping Cost')</th>--}}
-{{--                 <td align="right">{{Session::get('symbol_left')}}{{$shipping_price*$currency_value}}{{Session::get('symbol_right')}}</td>--}}
+             <tr>
+                 <th scope="row">@lang('website.Shipping Cost')</th>
+                 <td align="right">{{Session::get('symbol_left')}}{{$shipping_price*$currency_value}}{{Session::get('symbol_right')}}</td>
 
-{{--               </tr>--}}
+               </tr>
            <tr class="item-price">
              <th scope="row">@lang('website.Total')</th>
              <td align="right" >{{Session::get('symbol_left')}}{{number_format((float)$total_price+0, 2, '.', '')+0*$currency_value}}{{Session::get('symbol_right')}}</td>

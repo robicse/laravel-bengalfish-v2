@@ -137,7 +137,8 @@ class Order extends Model
 
         //price
         if(!empty(session('shipping_detail'))){
-            $shipping_price = session('shipping_detail')->shipping_price;
+            //$shipping_price = session('shipping_detail')->shipping_price;
+            $shipping_price = 60;
         }else{
             $shipping_price = 0;
         }
@@ -145,7 +146,8 @@ class Order extends Model
         $coupon_discount = number_format((float)session('coupon_discount'), 2, '.', '');
         $order_price = (session('products_price')+$tax_rate+$shipping_price)-$coupon_discount;
 
-        $shipping_cost            			=   session('shipping_detail')->shipping_price;
+        //$shipping_cost            			=   session('shipping_detail')->shipping_price;
+        $shipping_cost            			=   60;
         $shipping_method            		=   session('shipping_detail')->mehtod_name;
         $orders_status            			=   '1';
         //$orders_date_finished            	=   $request->orders_date_finished;
