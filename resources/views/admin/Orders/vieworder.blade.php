@@ -98,7 +98,7 @@
               <th>{{ trans('labels.Options') }}</th>--}}
               <th>{{ trans('labels.Qty') }}</th>
               <th>{{ trans('labels.Price') }}</th>
-              <th>Sub Total</th>
+              <th>Total</th>
             </tr>
             </thead>
             <tbody>
