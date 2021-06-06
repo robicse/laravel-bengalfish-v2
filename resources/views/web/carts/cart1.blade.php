@@ -19,12 +19,12 @@
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
            </div>
        @endif
-       @if(session::get('out_of_stock') == 1)
+{{--       @if(session::get('out_of_stock') == 1)--}}
           <div class="alert alert-danger alert-dismissible fade show" role="alert">
                This Product is out of stock.
                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           </div>
-      @endif
+{{--      @endif--}}
         <div class="row">
 
           <div class="col-12 col-lg-9">
@@ -58,7 +58,7 @@
               <?php
               $price+= $products->final_price * $products->customers_basket_quantity;
               ?>
-              <tbody  @if(session::get('out_of_stock') == 1 and session::get('out_of_stock_product') == $products->products_id)style="	box-shadow: 0 20px 50px rgba(0,0,0,.5); border:2px solid #FF9999;"@endif>
+              <tbody  >
 
                   <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
                   <input type="hidden" name="cart[]" value="{{$products->customers_basket_id}}">

@@ -550,237 +550,237 @@ class Cart extends Model
 
 			}
 		}else{
-		//insert into cart
-		if(count($exist)==0){
+            //insert into cart
+            if(count($exist)==0){
 
-			$customers_basket_id = DB::table('customers_basket')->insertGetId(
-				[
-					 'customers_id' => $customers_id,
-					 'products_id'  => $products_id,
-					 'session_id'   => $session_id,
-					 'customers_basket_quantity' => $customers_basket_quantity,
-					 'final_price' => $final_price,
-					 'customers_basket_date_added' => $customers_basket_date_added,
-				]);
+                $customers_basket_id = DB::table('customers_basket')->insertGetId(
+                    [
+                         'customers_id' => $customers_id,
+                         'products_id'  => $products_id,
+                         'session_id'   => $session_id,
+                         'customers_basket_quantity' => $customers_basket_quantity,
+                         'final_price' => $final_price,
+                         'customers_basket_date_added' => $customers_basket_date_added,
+                    ]);
 
-				if(!empty($request->option_id) && count($request->option_id)>0){
-					foreach($request->option_id as $option_id){
+                    if(!empty($request->option_id) && count($request->option_id)>0){
+                        foreach($request->option_id as $option_id){
 
-						DB::table('customers_basket_attributes')->insert(
-						[
-							 'customers_id' => $customers_id,
-							 'products_id'  => $products_id,
-							 'products_options_id' =>$option_id,
-							 'products_options_values_id'  =>  $request->$option_id,
-							 'session_id' => $session_id,
-							 'customers_basket_id'=>$customers_basket_id,
-						]);
+                            DB::table('customers_basket_attributes')->insert(
+                            [
+                                 'customers_id' => $customers_id,
+                                 'products_id'  => $products_id,
+                                 'products_options_id' =>$option_id,
+                                 'products_options_values_id'  =>  $request->$option_id,
+                                 'session_id' => $session_id,
+                                 'customers_basket_id'=>$customers_basket_id,
+                            ]);
 
-					 }
+                         }
 
-				}else if(!empty($detail['product_data'][0]->attributes)){
+                    }else if(!empty($detail['product_data'][0]->attributes)){
 
-					foreach($detail['product_data'][0]->attributes as $attribute){
+                        foreach($detail['product_data'][0]->attributes as $attribute){
 
-						DB::table('customers_basket_attributes')->insert(
-						[
-							 'customers_id' => $customers_id,
-							 'products_id'  => $products_id,
-							 'products_options_id' =>$attribute['option']['id'],
-							 'products_options_values_id'  =>  $attribute['values'][0]['id'],
-							 'session_id' => $session_id,
-							 'customers_basket_id'=>$customers_basket_id,
-						]);
-					}
-				}
-		}
-		else{
+                            DB::table('customers_basket_attributes')->insert(
+                            [
+                                 'customers_id' => $customers_id,
+                                 'products_id'  => $products_id,
+                                 'products_options_id' =>$attribute['option']['id'],
+                                 'products_options_values_id'  =>  $attribute['values'][0]['id'],
+                                 'session_id' => $session_id,
+                                 'customers_basket_id'=>$customers_basket_id,
+                            ]);
+                        }
+                    }
+            }
+            else{
 
-			$existAttribute = '0';
-			$totalAttribute = '0';
-			$basket_id 		= '0';
+                $existAttribute = '0';
+                $totalAttribute = '0';
+                $basket_id 		= '0';
 
-			if(!empty($request->option_id)){
-			if(count($request->option_id)>0){
+                if(!empty($request->option_id)){
+                if(count($request->option_id)>0){
 
-				foreach($exist as $exists){
-					$totalAttribute = '0';
-					foreach($request->option_id as $option_id){
-						$checkexistAttributes = DB::table('customers_basket_attributes')->where([
-								['customers_basket_id', '=', $exists->customers_basket_id],
-								['products_id', '=', $products_id],
-								['products_options_id', '=', $option_id],
-								['customers_id', '=', $customers_id],
-								['products_options_values_id', '=', $request->$option_id],
-								['session_id', '=', $session_id],
-							])->get();
-					$totalAttribute++;
-					if(count($checkexistAttributes)>0){
-						$existAttribute++;
-					}else{
-						$existAttribute=0;
-					}
+                    foreach($exist as $exists){
+                        $totalAttribute = '0';
+                        foreach($request->option_id as $option_id){
+                            $checkexistAttributes = DB::table('customers_basket_attributes')->where([
+                                    ['customers_basket_id', '=', $exists->customers_basket_id],
+                                    ['products_id', '=', $products_id],
+                                    ['products_options_id', '=', $option_id],
+                                    ['customers_id', '=', $customers_id],
+                                    ['products_options_values_id', '=', $request->$option_id],
+                                    ['session_id', '=', $session_id],
+                                ])->get();
+                        $totalAttribute++;
+                        if(count($checkexistAttributes)>0){
+                            $existAttribute++;
+                        }else{
+                            $existAttribute=0;
+                        }
 
-					}
+                        }
 
-					if($totalAttribute==$existAttribute){
-						$basket_id = $exists->customers_basket_id;
-					}
-				}
-
-
-
-			}else
-			if(!empty($detail['product_data'][0]->attributes)){
-					foreach($exist as $exists){
-						$totalAttribute = '0';
-						foreach($detail['product_data'][0]->attributes as $attribute){
-							$checkexistAttributes = DB::table('customers_basket_attributes')->where([
-									['customers_basket_id', '=', $exists->customers_basket_id],
-									['products_id', '=', $products_id],
-									['products_options_id', '=', $attribute['option']['id']],
-									['customers_id', '=', $customers_id],
-									['products_options_values_id', '=', $attribute['values'][0]['id']],
-									['products_options_id', '=', $option_id],
-								])->get();
-						$totalAttribute++;
-						if(count($checkexistAttributes)>0){
-							$existAttribute++;
-						}else{
-							$existAttribute=0;
-						}
-							if($totalAttribute==$existAttribute){
-								$basket_id = $exists->customers_basket_id;
-							}
-						}
-					}
+                        if($totalAttribute==$existAttribute){
+                            $basket_id = $exists->customers_basket_id;
+                        }
+                    }
 
 
-				}
+
+                }else
+                if(!empty($detail['product_data'][0]->attributes)){
+                        foreach($exist as $exists){
+                            $totalAttribute = '0';
+                            foreach($detail['product_data'][0]->attributes as $attribute){
+                                $checkexistAttributes = DB::table('customers_basket_attributes')->where([
+                                        ['customers_basket_id', '=', $exists->customers_basket_id],
+                                        ['products_id', '=', $products_id],
+                                        ['products_options_id', '=', $attribute['option']['id']],
+                                        ['customers_id', '=', $customers_id],
+                                        ['products_options_values_id', '=', $attribute['values'][0]['id']],
+                                        ['products_options_id', '=', $option_id],
+                                    ])->get();
+                            $totalAttribute++;
+                            if(count($checkexistAttributes)>0){
+                                $existAttribute++;
+                            }else{
+                                $existAttribute=0;
+                            }
+                                if($totalAttribute==$existAttribute){
+                                    $basket_id = $exists->customers_basket_id;
+                                }
+                            }
+                        }
 
 
-			//attribute exist
-			if($basket_id==0){
+                    }
 
-				$customers_basket_id = DB::table('customers_basket')->insertGetId(
-				[
-					 'customers_id' => $customers_id,
-					 'products_id'  => $products_id,
-					 'session_id'   => $session_id,
-					 'customers_basket_quantity' => $customers_basket_quantity,
-					 'final_price' => $final_price,
-					 'customers_basket_date_added' => $customers_basket_date_added,
-				]);
 
-				if(count($request->option_id)>0){
-					foreach($request->option_id as $option_id){
+                //attribute exist
+                if($basket_id==0){
 
-						DB::table('customers_basket_attributes')->insert(
-						[
-							 'customers_id' => $customers_id,
-							 'products_id'  => $products_id,
-							 'products_options_id' =>$option_id,
-							 'products_options_values_id'  =>  $request->$option_id,
-							 'session_id' => $session_id,
-							 'customers_basket_id'=>$customers_basket_id,
-						]);
+                    $customers_basket_id = DB::table('customers_basket')->insertGetId(
+                    [
+                         'customers_id' => $customers_id,
+                         'products_id'  => $products_id,
+                         'session_id'   => $session_id,
+                         'customers_basket_quantity' => $customers_basket_quantity,
+                         'final_price' => $final_price,
+                         'customers_basket_date_added' => $customers_basket_date_added,
+                    ]);
 
-					 }
+                    if(count($request->option_id)>0){
+                        foreach($request->option_id as $option_id){
 
-				}else if(!empty($detail['product_data'][0]->attributes)){
+                            DB::table('customers_basket_attributes')->insert(
+                            [
+                                 'customers_id' => $customers_id,
+                                 'products_id'  => $products_id,
+                                 'products_options_id' =>$option_id,
+                                 'products_options_values_id'  =>  $request->$option_id,
+                                 'session_id' => $session_id,
+                                 'customers_basket_id'=>$customers_basket_id,
+                            ]);
 
-					foreach($detail['product_data'][0]->attributes as $attribute){
+                         }
 
-						DB::table('customers_basket_attributes')->insert(
-						[
-							 'customers_id' => $customers_id,
-							 'products_id'  => $products_id,
-							 'products_options_id' =>$attribute['option']['id'],
-							 'products_options_values_id'  =>  $attribute['values'][0]['id'],
-							 'session_id' => $session_id,
-							 'customers_basket_id'=>$customers_basket_id,
-						]);
-					}
-				}
+                    }else if(!empty($detail['product_data'][0]->attributes)){
 
-			}
-			else{
+                        foreach($detail['product_data'][0]->attributes as $attribute){
 
-				//update into cart
-				DB::table('customers_basket')->where('customers_basket_id', '=', $basket_id)->update(
-				[
-					 'customers_id' => $customers_id,
-					 'products_id'  => $products_id,
-					 'session_id'   => $session_id,
-					 'customers_basket_quantity' => DB::raw('customers_basket_quantity+'.$customers_basket_quantity),
-					 'final_price' => $final_price,
-					 'customers_basket_date_added' => $customers_basket_date_added,
-				]);
+                            DB::table('customers_basket_attributes')->insert(
+                            [
+                                 'customers_id' => $customers_id,
+                                 'products_id'  => $products_id,
+                                 'products_options_id' =>$attribute['option']['id'],
+                                 'products_options_values_id'  =>  $attribute['values'][0]['id'],
+                                 'session_id' => $session_id,
+                                 'customers_basket_id'=>$customers_basket_id,
+                            ]);
+                        }
+                    }
 
-				if(count($request->option_id)>0){
-					foreach($request->option_id as $option_id){
+                }
+                else{
 
-						DB::table('customers_basket_attributes')->where([
-							['customers_basket_id', '=', $basket_id],
-							['products_id', '=', $products_id],
-							['products_options_id', '=', $option_id],
-						])->update(
-						[
-							 'customers_id' => $customers_id,
-							 'products_options_values_id'  =>  $request->$option_id,
-							 'session_id' => $session_id,
-						]);
-					 }
+                    //update into cart
+                    DB::table('customers_basket')->where('customers_basket_id', '=', $basket_id)->update(
+                    [
+                         'customers_id' => $customers_id,
+                         'products_id'  => $products_id,
+                         'session_id'   => $session_id,
+                         'customers_basket_quantity' => DB::raw('customers_basket_quantity+'.$customers_basket_quantity),
+                         'final_price' => $final_price,
+                         'customers_basket_date_added' => $customers_basket_date_added,
+                    ]);
 
-				}else if(!empty($detail['product_data'][0]->attributes)){
+                    if(count($request->option_id)>0){
+                        foreach($request->option_id as $option_id){
 
-					foreach($detail['product_data'][0]->attributes as $attribute){
+                            DB::table('customers_basket_attributes')->where([
+                                ['customers_basket_id', '=', $basket_id],
+                                ['products_id', '=', $products_id],
+                                ['products_options_id', '=', $option_id],
+                            ])->update(
+                            [
+                                 'customers_id' => $customers_id,
+                                 'products_options_values_id'  =>  $request->$option_id,
+                                 'session_id' => $session_id,
+                            ]);
+                         }
 
-						DB::table('customers_basket_attributes')->where([
-							['customers_basket_id', '=', $basket_id],
-							['products_id', '=', $products_id],
-							['products_options_id', '=', $option_id],
-						])->update(
-						[
-							 'customers_id' => $customers_id,
-							 'products_id'  => $products_id,
-							 'products_options_id' =>$attribute['option']['id'],
-							 'products_options_values_id'  =>  $attribute['values'][0]['id'],
-							 'session_id' => $session_id,
-							 'customers_basket_id'=>$customers_basket_id,
-						]);
-					}
-				}
+                    }else if(!empty($detail['product_data'][0]->attributes)){
 
-			}
+                        foreach($detail['product_data'][0]->attributes as $attribute){
 
-			}else{
-				//update into cart
-				DB::table('customers_basket')->where('customers_basket_id', '=', $exist[0]->customers_basket_id)->update(
-				[
-					 'customers_id' => $customers_id,
-					 'products_id'  => $products_id,
-					 'session_id'   => $session_id,
-					 'customers_basket_quantity' =>  DB::raw('customers_basket_quantity+'.$customers_basket_quantity),
-					 'final_price' => $final_price,
-					 'customers_basket_date_added' => $customers_basket_date_added,
-				]);
+                            DB::table('customers_basket_attributes')->where([
+                                ['customers_basket_id', '=', $basket_id],
+                                ['products_id', '=', $products_id],
+                                ['products_options_id', '=', $option_id],
+                            ])->update(
+                            [
+                                 'customers_id' => $customers_id,
+                                 'products_id'  => $products_id,
+                                 'products_options_id' =>$attribute['option']['id'],
+                                 'products_options_values_id'  =>  $attribute['values'][0]['id'],
+                                 'session_id' => $session_id,
+                                 'customers_basket_id'=>$customers_basket_id,
+                            ]);
+                        }
+                    }
 
-			}
-			//apply coupon
-			if(count(session('coupon'))>0){
-				$session_coupon_data = session('coupon');
-				session(['coupon' => array()]);
-				$response = array();
-				if(!empty($session_coupon_data)){
-					foreach($session_coupon_data as $key=>$session_coupon){
-							$response = $this->common_apply_coupon($session_coupon->code);
-					}
-				}
-			}
+                }
 
-		}
-	}
+                }else{
+                    //update into cart
+                    DB::table('customers_basket')->where('customers_basket_id', '=', $exist[0]->customers_basket_id)->update(
+                    [
+                         'customers_id' => $customers_id,
+                         'products_id'  => $products_id,
+                         'session_id'   => $session_id,
+                         'customers_basket_quantity' =>  DB::raw('customers_basket_quantity+'.$customers_basket_quantity),
+                         'final_price' => $final_price,
+                         'customers_basket_date_added' => $customers_basket_date_added,
+                    ]);
+
+                }
+                //apply coupon
+                if(count(session('coupon'))>0){
+                    $session_coupon_data = session('coupon');
+                    session(['coupon' => array()]);
+                    $response = array();
+                    if(!empty($session_coupon_data)){
+                        foreach($session_coupon_data as $key=>$session_coupon){
+                                $response = $this->common_apply_coupon($session_coupon->code);
+                        }
+                    }
+                }
+
+            }
+        }
 		$result['commonContent'] = $index->commonContent();
 		return $result;
 	}
