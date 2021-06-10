@@ -1241,7 +1241,8 @@ class Cart extends Model
                 }
                 //session(['coupon' => $coupon]);
             }elseif($coupons[0]->discount_type=='percent'){
-                return $coupons[0]->discount_type;
+                //return $coupons[0]->discount_type;
+
                 $cart_price = $cart_price - ($coupons[0]->amount/100 * $cart_price) ;
                 //print 'percentage cart amount: '.$cart_price;
                 if($cart_price > 0){
