@@ -19,12 +19,12 @@
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
            </div>
        @endif
-{{--       @if(session::get('out_of_stock') == 1)--}}
+       @if(session::get('out_of_stock') == 1)
           <div class="alert alert-danger alert-dismissible fade show" role="alert">
                This Product is out of stock.
                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           </div>
-{{--      @endif--}}
+      @endif
         <div class="row">
 
           <div class="col-12 col-lg-9">
@@ -212,7 +212,8 @@
                 <tr>
                   <th scope="row">@lang('website.SubTotal')</th>
                   <td align="right">
-                    {{Session::get('symbol_left')}}{{$currency_value * $price+0-number_format((float)session('coupon_discount'), 2, '.', '')}}{{Session::get('symbol_right')}}
+{{--                    {{Session::get('symbol_left')}}{{$currency_value * $price+0-number_format((float)session('coupon_discount'), 2, '.', '')}}{{Session::get('symbol_right')}}--}}
+                    {{Session::get('symbol_left')}}{{$currency_value * $price}}{{Session::get('symbol_right')}}
                   </td>
                 </tr>
                 <tr>
