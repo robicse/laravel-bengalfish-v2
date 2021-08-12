@@ -27,14 +27,13 @@ class UserInfo
 
     public static function smsAPI($receiver_number, $sms_text)
     {
-        //$api = "https://api.mobireach.com.bd/SendTextMessage?Username=taxman&Password=Abcd@2020&From=TaxManBD&To=".$receiver_number."&Message=". urlencode($sms_text);
-        //https://api.mobireach.com.bd/SendTextMessage?Username=bengalfish&Password=Windows@55&From=BENGAL FISH&To=8801725930131&Message=testmessage
+        //dd("https://71bulksms.com/sms_api/bulk_sms_sender.php?api_key=16630227328497042020/04/0406:34:27amPriyojon&sender_id=188&message=[".$sms_text."]&mobile_no=[".$receiver_number."]&User_Email=info@priyojon.com");
+        //$api = "https://api.mobireach.com.bd/SendTextMessage?Username=bbichitra&Password=1@BoiBichitrax360&From=BoiBichitra&To=".$receiver_number."&Message=". urlencode($sms_text);
+        $api = "https://api.mobireach.com.bd/SendTextMessage?Username=bengalfish&Password=Dh@ka202!&From=".urlencode('BENGAL FISH')."&To=".$receiver_number."&Message=". urlencode($sms_text);
 
-        $api = "https://api.mobireach.com.bd/SendTextMessage?Username=bengalfish&Password=Aa921191@7&From=".urlencode('BENGAL FISH')."&To=".$receiver_number."&Message=". urlencode($sms_text);
-        //$api ="http://isms.zaman-it.com/smsapi?api_key=C20000365d831ca2c90451.06457950&type=text&contacts=".$receiver_number."&senderid=8809612451614&msg=".urlencode($sms_text);
-
-
-
+        //$api ="//http://isms.zaman-it.com/smsapi?api_key=C20000365d831ca2c90451.06457950&type=text&contacts=".$receiver_number."&senderid=8809612451614&msg=".urlencode($sms_text);
+        //$api = "https://71bulksms.com/sms_api/bulk_sms_sender.php?api_key=16630227328497042020/04/0406:34:27amPriyojon&sender_id=188&message=".urlencode($sms_text)."&mobile_no=".$receiver_number."&User_Email=info@priyojon.com";
+        //dd($api);
 
         $curl = curl_init();
         curl_setopt_array($curl, array(

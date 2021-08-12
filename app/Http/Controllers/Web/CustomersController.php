@@ -320,7 +320,10 @@ class CustomersController extends Controller
         if(count($existUser)>0){
             $this->customer->UpdateExistUserPhone($phone,$password);
 
-            $text = "Dear ".$existUser[0]->first_name.",\r\nYour New Password Of Bengalfish: ".$password;
+            $text = "Dear ".$existUser[0]->first_name.",\nYour New Password Of Bengalfish: ".$password;
+            //$text = "আপনার নতুন পাসওয়ার্ড";
+            //UserInfo::smsAPI('88' .$phone,$text);
+            //$text = "Dear, Your New Password Of Bengalfish: ".$password;
             UserInfo::smsAPI("88".$phone,$text);
 
             return redirect('login')->with('success', Lang::get("website.Password has been sent to your phone number"));
