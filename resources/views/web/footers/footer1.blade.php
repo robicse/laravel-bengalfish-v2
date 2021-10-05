@@ -22,7 +22,7 @@
               <li> <i class="fas fa-map-marker"></i><span style="float: left;padding-left: 20px;">Bengel Fish (Dhanmondi Zone)
 Plot No 03, Road No 03, Block D, Dhaka Uddan Housing, Mohammedpur, Dhaka.</span> </li>
               {{--<li> <i class="fas fa-phone"></i><span>({{$result['commonContent']['setting'][11]->value}})</span> </li>--}}
-              <li> <i class="fas fa-phone"></i><span>09613-850 850, 01311-154001</span> </li>
+              <li> <i class="fas fa-phone"></i><span>09613-850 850, 01311-154006</span> </li>
               <li> <i class="fas fa-envelope"></i><span> <a href="mailto:{{$result['commonContent']['setting'][3]->value}}">{{$result['commonContent']['setting'][3]->value}}</a> </span> </li>
 
             </ul>
