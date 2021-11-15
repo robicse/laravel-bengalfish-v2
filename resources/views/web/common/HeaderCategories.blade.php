@@ -83,6 +83,7 @@ function list_of_specific_categories(){
         ->orWhere('categories_description.categories_name','=', 'Dry Fish')
         ->orWhere('categories_description.categories_name','=', 'Fresh Fish')
         ->orWhere('categories_description.categories_name','=', 'Sea Fish')
+        ->orWhere('categories_description.categories_name','=', 'Meat')
         //->orderby('categories_id','ASC')
         ->get();
 }
